@@ -1,0 +1,52 @@
+﻿@model Oazachaosu.Models.UploadedGroup
+       
+@{
+  ViewBag.Title = "Nowa grupa";
+}
+
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+    </div>
+    <div class="col-sm-8 text-left">
+      <section id="MainSection">
+        <div style="margin-left: 20px">
+          <p>
+            Nazwa grupy: <strong>@Model.Name</strong><br>
+          </p>
+        </div>
+        <div class="tableDiv">
+          <table id="newGroupTable">
+            <tr>
+              <th title="Słowo w pierwszym języku">Język 1</th>
+              <th title="Słowo w drugim języku">Język 2</th>
+              <th></th>
+            </tr>
+            @foreach (var word in @Model.Words)
+            {
+              <tr>
+                <td><input class="tableInput" type="text" name="language1" value="@word.Language1"></td>
+                <td><input class="tableInput" type="text" name="language2" value="@word.Language2"></td>
+                <td>
+                  <a class="button buttonDelete" onclick="$(this).closest('tr').remove();">Usuń</a>
+                </td>
+              </tr>
+            }
+          </table>
+          <a class="button buttonAdd" onclick="createGroup();">Stwórz</a>
+        </div>
+      </section>
+    </div>
+    <div class="col-sm-2 sidenav">
+    </div>
+  </div>
+</div>
+
+@section scripts{
+  <script src="@Url.Content("~/Scripts/WordkiScript.js")"></script>
+}
+
+@section styles{
+  <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/WordkiStyle.css")">
+}

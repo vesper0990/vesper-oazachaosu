@@ -1,0 +1,52 @@
+﻿@using PagedList.Mvc
+@model Oazachaosu.Models.GroupPagedViewModel
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div class="container-fluid text-center">
+  <section id="MainSection">
+    <div style="margin-left: 20px;">
+      <p>
+        Nazwa grupy: <strong>@Model.Name</strong>
+      </p>
+    </div>
+    <div class="tableDiv">
+      <table id=tableResults>
+        <tr>
+          <th>Id</th>
+          <th>Poprawne</th>
+          <th>Zaakceptowane</th>
+          <th>Błędne</th>
+          <th>Niewidoczne</th>
+          <th>Data</th>
+          <th>Czas</th>
+        </tr>
+        @foreach (var result in Model.Results) {
+          <tr>
+            <td class="idText">@result.Id</td>
+            <td>@result.Correct</td>
+            <td>@result.Accepted</td>
+            <td>@result.Wrong</td>
+            <td>@result.Invisibilities</td>
+            <td>@result.DateTime</td>
+            <td>@result.TimeCount</td>
+          </tr>
+        }
+      </table>
+    </div>
+    <div>
+      <br />
+      <span class="text-center">
+        @Html.PagedListPager(Model.Results, page => Url.Action("Index", new { page }))
+      </span>
+    </div>
+  </section>
+</div>
+</div>
+
+@section scripts{
+  <script src="@Url.Content("~/Scripts/WordkiScript.js")"></script>
+}
+
+@section styles{
+  <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/WordkiStyle.css")">
+}

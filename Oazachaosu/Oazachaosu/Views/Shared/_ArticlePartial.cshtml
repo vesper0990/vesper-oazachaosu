@@ -1,0 +1,21 @@
+﻿@model OazachaosuRepository.Model.Article
+<div class="blogArticle">
+  <div>
+    @Html.RouteLink(Model.Title, "BlogDetails", new { url = Model.ContentUrl }, new { @class = "blogTitle" })
+  </div>
+  <span class="blogDate">@Model.DateTime</span>
+  @foreach (var category in @Model.Categories) {
+    @Html.RouteLink(category.Name, "CategoryDetails", new { url = category.Url }, new { @class = "blogCategory" })
+  }
+  @if (User.Identity.IsAuthenticated && User.IsInRole("admin")) {
+    @Html.ActionLink("Edytuj", "Edit", "Blog", new { id = Model.Id }, new { @class = "btn btn-info" })
+    @*@Html.RouteLink("Edytuj", "ArticleEdit", new { id = Model.Id }, new { @class = "btn btn-info" })*@
+  }
+  <br>
+  <p>
+    @Model.Abstract
+    @*@Html.RouteLink("Czytaj dalej", "BlogDetails", new { url = Model.Article.ContentUrl }, new { @class = "blogReadAllText" })<br>*@
+  </p>
+  <div class="blogCommentCount"></div>
+
+</div>

@@ -1,0 +1,123 @@
+@{
+  ViewBag.Title = "Dekorator - wzorce projektowe";
+}
+
+<p>
+  &emsp;Jednym z najważniejszych zasad programowania zorientowanego obiektowo są zasady SOLID. Druga litera określa zasadę otwarte/zamknięte (open/close), która mówi, że elementy kodu (klasy, funkcje)
+  powinny być otwarte na rozbudowę, ale zamknięte na modyfikacje. Na pierwszy rzut oka jest to sprzecznością, ponieważ jak można coś rozbudować nie modyfikujące tego. Wzorce projektowe dostarczają nam
+  jednak pewnych mechanizmów pozwalających na takie tworzenie kodu, który da się rozbudować (zwiększyć jego możliwości) nie modyfikując go. Jednym ze wzorców pozwalających na to jest omawiany poprzednio
+  <b>Obserwator</b>, który może przekazywać pewne informacje do coraz to nowszych obserwatorów (bez modyfikacji kodu podmiotu). W tym artykule przedstawię drugi wzorzec <b>Dekorator</b>, który zwiększa
+  możliwości konkretnych obiektów, bez modyfikacji klasy podstawowej.
+</p>
+
+<h3>Wykorzystanie</h3>
+
+<p>
+  &emsp;Wzorzec stosujemy kiedy istnieje potrzeba dodania nowych funkcjonalności do obiektów pewnej klasy, której nie chcemy albo nie możemy modyfikować. Dodanie tych funkcjonalności powinno być przeźroczyste
+  dla klasy obiektu oraz dynamicznie przypisywane. Poprzez odpowiednie zarządzanie komponentem bazowym oraz dekoratorami mamy możliwość cofania przypisanych funkcjonalności. Dodatkowo jeżeli istnieje
+  potrzeba niestatycznego rozszerzenia obiektu, nie przez dziedziczenie które powoduje rozszerzenie całej klasy, a nie tylko określonego obiektu. Dzięki <b>Dekoratorowi</b> mamy możliwość każdy z obiektów
+  potraktować indywidualnie zmieniając ich zachowanie w zależności od wykorzystania.
+</p>
+
+<h3>Elementy Dekoratora</h3>
+
+<ul>
+
+  <li>
+    <b>IComponent</b> - interfejs komponentów, do których będziemy dynamicznie przypisywali nowe funkcjonalności.
+
+    <pre><code class="java">package pl.oazachaosu.designpatterns;
+public interface IComponent {
+    int doSomething();
+}</code></pre>
+
+  </li>
+  <li>
+    <b>ConcreteComponent</b> - klasa implementująca interfejs <b>IComponent</b>. Do obiektów tej klasy będziemy przypisywali nowe funkcjonalności.
+
+    <pre><code class="java">package pl.oazachaosu.designpatterns;
+public class ConcreteComponent implements IComponent {
+    public int doSomething(){
+      //cos tutaj robimy
+      return 0;
+    }
+}</code></pre>
+
+  </li>
+  <li>
+    <b>Decorator</b> - klasa bazowa dekoratorów. Przechowuje referencje do <b>IComponent</b>, która zazwyczaj przekazywana jest w konstruktorze.
+
+    <pre><code class="java">package pl.oazachaosu.designpatterns;
+public abstract class Decorator implements IComponent {
+      
+    protected IComponent mComponent;
+      
+    protected Decorator(IComponent component){
+      mCoponent = component;
+    }
+    public abstract int doSomething();
+}</code></pre>
+
+  </li>
+  <li>
+    <b>ConcreteDecorator</b> - klasa dziedzicząca po <b>Decorator</b>. W tej klasie definiujemy nowe funkcjonalności które później są wykorzystywane w <b>ConcreteComponent</b>.
+
+    <pre><code class="java">package pl.oazachaosu.designpatterns;
+public class ConcreteDecorator implements Decorator {
+      
+    protected ConcreteDecorator(IComponent component){
+      super(component);
+    }
+    public int doSomething(){
+      return mComponent.doSomething + 1; //nasz dekorator zwraca wartość o jeden większą
+    }
+}</code></pre>
+
+    Oczywiście możemy zrobić więcej dekoratorów jeżeli sytuacja tego będzie wymagała.
+
+    <pre><code class="java">package pl.oazachaosu.designpatterns;
+public class ConcreteDecorator2 implements Decorator {
+      
+    protected ConcreteDecorator2(IComponent component){
+      super(component);
+    }
+    public int doSomething(){
+      return mComponent.doSomething / 2; //ten dekorator zwraca liczbę o dwa mniejszą
+    }
+}</code></pre>
+
+  </li>
+
+</ul>
+
+<h3>Komunikacja</h3>
+
+<p>
+  &emsp;W przypadku <b>Dekoratora</b> ciężko powiedzieć o jakiejkolwiek komunikacji. Cała magia tego wzorca odbywa się w obiektach <b>ConcreteDecorator</b>, a konkretnie w nadpisanych funkcjach
+  odziedziczonych z <b>IComponent</b>. W nich właśnie definiujemy nowe funkcjonalności a następnie wykonujemy funkcje z referencji <b>IComponent</b>. Dzięki takiemu postępowaniu mamy pewność, że
+  wykonają się nowe zadania zdefiniowane w <b>ConcreteDecorator</b>, a następnie podstawowe z <b>ConcreteComponent</b>.<br>
+  Oczywiście istnieje możliwość łączenia dekoratorów w łańcuchy. Robimy to przez traktowanie raz udekorowanego obiektu jako zwykły obiekt <b>IComponent</b> i przypisujemy do niego nowe zadanie. Przy
+  wywołaniu określonej funkcji następuje kolejkowe wywołania tej samej funkcji w obiektach dekoratorów.
+</p>
+
+<h3>Plusy</h3>
+
+<p>
+  &emsp;Wszystkie plusy zostały już omówione, ale zbierając je razem zacznijmy od zysku dynamicznego uzyskiwania przez obiekty nowych funkcjonalności. W zależności od tego jakich dekoratorów użyjemy
+  w danej sytuacji te same komponenty mogą znacząco różnić się w swoim działaniu. W trakcie działania programu mamy możliwość dodawania i usuwania dekoratorów. <b>Dekorator</b> zapewnia zdecydowanie
+  większą elastyczność w porównaniu ze zwykłym dziedziczeniem. Nie musimy tworzyć hierarchii klas dla każdej permutacji stworzonych przez nas funkcjonalności. Jeżeli sytuacja tego wymaga możemy użyć tego
+  samego dekoratora wielokrotnie. Tworząc swój system, możemy opierać się na prostych klasach i w określonym przypadku dodawać nowe zadania.
+</p>
+
+<h3>Minusy</h3>
+
+<p>
+  &emsp;W zależności od ilość koniecznych dekoratorów w dużych projektach może ich liczba urosnąć do niebotycznych rozmiarów. Jeżeli postawimy na proste dekoratory, to otrzymamy wiele podobnych do
+  siebie obiektów. Może to spowodować trudne do zlokalizowania problemy.
+</p>
+
+<h3>Literatura</h3>
+<ul>
+  <li>Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra - "Wzorce projektowe. Rusz głową!"</li>
+  <li>Erich Gamma, Richard Helm, Ralph Johnson, John M. Vlissides - "Wzorce projektowe. Elementy oprogramowania obiektowego wielokrotnego użytku "</li>
+</ul>

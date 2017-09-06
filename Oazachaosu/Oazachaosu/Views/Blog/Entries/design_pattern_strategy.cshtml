@@ -1,0 +1,222 @@
+﻿@{
+  ViewBag.Title = "Startegia - wzorce projektowe";
+}
+<p>
+  &emsp;Wzorzec projektowy Strategia należy do wzorców operacyjnych. Jego zadaniem jest rozdzielenie algorytmów pewnej rodziny. Umożliwia on korzystanie z każdego z nich poprzez wstrzykiwanie obiektu strategii do obiektu kontekstu. Dodatkowo w czasie działania programu umożliwia on zmianę algorytmu od strony klienta.<br>
+  Strategia jest bardzo powszechnie wykorzystywanym wzorcem, chociaż niektórzy nie są tego świadomi.
+</p>
+<h3>Wykorzystanie</h3>
+<p>
+  &emsp;Istnieje pewna rodzina klas, która w różny sposób będzie wykonywała tą samą czynność, np.: wyświetlanie tekstu na ekranie (poziomo, pionowo, ukośnie, wspak), parsowanie i serializacja obiektów (do pliku CSV, XML, JSON).<br>
+  Sytuacja w której mamy instrukcje warunkowe if/switch w których występują operacje, które kapsułkujemy w odrębnych klasach wspólnego interfejsu.
+</p>
+<h3>Elementy Strategii</h3>
+<ul>
+  <li>
+    <p>
+      <b>IStrategy</b> - interfejs, w którym definiujemy wszystkie wspólne zachowania danej rodziny algorytmów.
+      W zależności od tego co dana operacja ma wykonywać, przekazujemy do niej określone parametry, bądź nie.
+    </p>
+<pre><code class="java">public interface IStrategy {
+    String operation1();
+    int operation2(String[] params);
+    
+}</code></pre>
+  </li>
+
+  <li>
+    <b>ConcreteStrategy</b> - konkretne klasy implementujące interfejs <b>IStrategy</b>. Każda z klas w inny sposób wykonuje operacje ze wspólnej rodziny.
+    <pre><code class="java">public class ConcreateStrategyA implements IStrategy {
+    @@Override
+    public String operation1() {
+        //Pierwsza operacja strategii A
+        return "ConcreateStrategyA";
+    }
+    @@Override
+    public int operation2(String [] params) {
+        //Druga operacja strategii A
+        return params.length();
+    }
+}</code></pre>
+    <pre><code class="java">public class ConcreateStrategyB implements IStrategy {
+    @@Override
+    public String operation1() {
+        //Pierwsza operacja strategii B
+        return "ConcreateStrategyB";
+    }
+    @@Override
+    public int operation2(String [] params) {
+        //Druga operacja strategii B
+        int sum = 0;
+        for ( int i = 0; i &lt params.length(); i++) {
+            sum += params[i].length();
+        }
+        return sum;
+    }
+}</code></pre>
+    &emsp;Oczywiście przytoczone przykłady są dość abstrakcyjne. Jednak nie jest trudne wymyślenie przykładu bardziej rzeczywistego. Oprócz tych podanych na początku artykułu, wyobraźmy sobie sytuację gdzie mamy program do obliczania jakiegoś podatku. W zależności od pewnych ustawień startowych podatek może być wyliczony na różne sposoby. Jednak każdy możliwy sposób należy do pewnej rodziny, którą w całości możemy zamknąć w ten wzorzec.
+  </li>
+
+  <li>
+    <b>Context</b> - Klasa klienta zarządzająca konkretnym obiektem <b>ConcreteStrategy</b>. W niej znajduje się referencja do obiektu <b>IStrategy</b>. Obiekt <b>ConcreteStrategy</b> jest przekazywany do klasy kontekstu albo za pomocą konstruktora albo settera. Możliwa jest sytuacja, że w klasie kontekstu znajduję się mechanizm przekazywania referencji tej klasy do wszystkich klas <b>ConcreteStrategy</b>, aby dać dostęp do odpowiednich danych, jednak jest to nierzadko sytuacja nadmiarowa.
+<pre><code class="java">public class Context {
+    public void run() {
+        
+        IStrategy strategy = new ConcrateStrategyA();
+        System.out.println(strategy.operation1()); // wypisze: "ConcreateStrategyA"
+        
+        strategy = new ConcrateStrategyB();
+        System.out.println(strategy.operation1()); // wypisze: "ConcreateStrategyB"
+    }
+}</code></pre>
+  </li>
+</ul>
+
+
+<h3>Komunikacja</h3>
+<p>
+  &emsp;W przypadku Strategii istnieją dwa sposoby komunikacji pomiędzy klasą Kontekstu i algorytmem. W pierwszym z nich wszystkie dane potrzebne do przeprowadzenia operacji są przekazywane przed jej wywołaniem, np tekst do wyświetlenia, obiekt do serializacji.
+</p>
+<pre><code class="java">public class Context {
+    public String text = "Some text";
+    public void run() {
+        
+        IStrategy strategy = new ConcrateStrategyA();
+        System.out.println(strategy.operation2(text));
+        
+    }
+}</code></pre>
+<p>
+  &emsp;Drugi przypadek to taki w którym cały obiekt kontekstu zostaje przekazany jako argument do operacji. W tej sytuacji sam obiekty strategii sam decyduje co w danym momencie jest mu potrzebne i wyjmuje to z obiektu Kontekstu. Klient często ma do dyspozycji całą rodzinę klas strategii i w określonej sytuacji może korzystać z właściwej operacji.
+</p>
+<pre><code class="java">interface IStrategy{
+    int operation(Context context);
+}
+class ConcrateStrateyA implements IStrategy{
+    @@Override
+    public int operation(Context context) {
+        return context.getText().length();
+    }
+    
+}
+public class Context {
+    
+    private String text = "Some text";
+    public void run(){
+        IStrategy strategy = new ConcrateStrateyA();
+        strategy.operation(this);
+    }
+    
+    public String getText(){
+        return text;
+    }
+}</code></pre>
+<h3>Przykład</h3>
+<p>
+  Prosty przykład pokazujący działanie wzorca Strategia - wypisywanie na ekranie różnie sformatowanego tekstu.
+</p>
+<p>Definicja interfejsu strategii.</p>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public interface IStrategy {
+    void print(String pText);
+}</code></pre>
+
+<p>Trzy strategie, które wypisują tekst na trzy sposoby: normalnie, na skos oraz pionowo. Odpowiadają one elementom <b>ConcreteStrategy</b></p>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public class SimpleStrategy implements IStrategy {
+    @@Override
+    public void print(String pText) {
+        System.out.println(pText);
+    }
+}</code></pre>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public class CrossStrategy implements IStrategy {
+    @@Override
+    public void print(String pText) {
+        for (int i = 0; i < pText.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                System.out.print(" ");
+            }
+            System.out.println(pText.charAt(i));
+        }
+    }
+}</code></pre>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public class VerticalStrategy implements IStrategy {
+    @@Override
+    public void print(String pText) {
+        for (int i = 0; i < pText.length(); i++) {
+            System.out.println(pText.charAt(i));
+        }
+        System.out.println();
+    }
+}</code></pre>
+<p>Klasa która będzie w bezpośredni sposób wykorzystywała nasze obiekty. Moglibyśmy to wszystko zrobić w funkcji main(), jednak takie podejście daje nam mniejszą elastyczność. Jest to klasa kontekstu (<b>Context</b>)</p>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public class Printer {
+    private IStrategy strategy;
+    private String text;
+    public void printText() {
+        if (strategy != null && text != null) {
+            strategy.print(text);
+        }
+    }
+    public IStrategy getStrategy() {
+        return strategy;
+    }
+    public void setStrategy(IStrategy strategy) {
+        this.strategy = strategy;
+    }
+    public String getText() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text = text;
+    }
+}</code></pre>
+<p>Funkcja main oraz odpowiednie wywoływania funkcji printText(), odpowiadająca za stronę klienta.</p>
+<pre><code class="java">package pl.oazachaosu.designpatterns;
+public class Main {
+    public static void main(String[] args) {
+        Printer printer = new Printer();
+        printer.setText("simple");
+        printer.setStrategy(new SimpleStrategy());
+        printer.printText();
+        printer.setText("cross");
+        printer.setStrategy(new CrossStrategy());
+        printer.printText();
+        printer.setText("vertical");
+        printer.setStrategy(new VerticalStrategy());
+        printer.printText();
+    }
+}</code></pre>
+<p>Program wyrzuca na ekran taki napis:</p><br>
+<pre><code>simple
+c
+ r
+  o
+   s
+    s
+v
+e
+r
+t
+i
+c
+a
+l
+</code></pre>
+
+<h3>Plusy</h3>
+<p>
+  &emsp;Kapsułkujemy określone algorytmy dzięki dziedziczeniu. Powstają równorzędne klasy do wielokrotnego wykorzystania. Kiedy w kodzie znajdują się różne zachowania tej samej rodziny, możemy  wykorzystać Strategie do ograniczenia ilości instrukcji warunkowych. Wydzielenie każdej z operacji pomaga w organizacji, zrozumieniu i utrzymaniu czystości kodu. Wykorzystując obiekty bezstanowe (obiekty które nie mają żadnych pół), można zmniejszyć koszta związane z wprowadzeniem wzorca. Wzorzec pomaga spełnić jedną z zasad SOLID - open/closed.
+</p>
+<h3>Minusy</h3>
+<p>
+  &emsp;Wprowadzenie Stategii powoduje zwiększenie ilości klas. W zależności od ilości możliwości wykonania danej operacji liczba klas może być znacząca. Wraz ze wzrostem ilości klas, może wydarzyć się taka sytuacja, że nie wszystkie informacje przekazywane do interfejsu będą wykorzystywane w konkretnej operacji. Dodatkowym problemem jest fakt, że aby dobrze wykorzystać ten wzorzec to sam klient musi znać różnice pomiędzy wszystkimi algorytmami danej rodziny. W sytuacji kiedy różnice pozostają bardzo subtelne staje się coraz trudniejsze dostarczenie odpowiedniego algorytmu dla klienta.
+</p>
+<h3>Literatura</h3>
+<ul>
+  <li>Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra - "Wzorce projektowe. Rusz głową!"</li>
+  <li>Erich Gamma, Richard Helm, Ralph Johnson, John M. Vlissides - "Wzorce projektowe. Elementy oprogramowania obiektowego wielokrotnego użytku "</li>
+</ul>

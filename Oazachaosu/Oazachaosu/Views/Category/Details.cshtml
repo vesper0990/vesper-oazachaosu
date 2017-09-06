@@ -1,0 +1,11 @@
+﻿@model OazachaosuRepository.Model.Category
+@{
+    ViewBag.Title = string.Format("Kategoria - {0}", Model.Name);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>@Model.Name</h3>
+
+@foreach (var item in Model.Articles) {
+  @Html.Partial("_ArticlePartial", item);
+}

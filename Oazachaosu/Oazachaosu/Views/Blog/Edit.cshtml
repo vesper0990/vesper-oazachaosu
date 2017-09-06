@@ -1,0 +1,58 @@
+﻿@model OazachaosuRepository.Model.Article
+
+@{
+  ViewBag.Title = "Edycja";
+}
+
+@using (Html.BeginForm("Edit", "Blog", FormMethod.Post)) {
+  @Html.AntiForgeryToken()
+  <div class="form-horizontal">
+    <h4>Artykuł</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+      @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+      <div class="col-md-10">
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+      </div>
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(model => model.Abstract, htmlAttributes: new { @class = "control-label col-md-2" })
+      <div class="col-md-10">
+        @Html.EditorFor(model => model.Abstract, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Abstract, "", new { @class = "text-danger" })
+      </div>
+    </div>
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="form-group">
+      @Html.LabelFor(model => model.Categories, htmlAttributes: new { @class = "control-label col-md-2" })
+      <div class="col-md-10" id="categories">
+        @foreach (var category in @Model.Categories) {
+          @*@Ajax.RouteLink(category.Name + " - ", "RemoveCategory", new { articleId = Model.Id, categoryId = category.Id }, new AjaxOptions() { UpdateTargetId = "categories", HttpMethod = "POST"}, new { @class = "btn btn-danger" })*@
+          @Html.ActionLink(category.Name + " - ", "RemoveCategory", "Blog", new { articleId = Model.Id, categoryId = category.Id }, new { @class = "btn btn-danger" });
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Zapisz" class="btn btn-success" />
+      </div>
+    </div>
+  </div>
+}
+@{ Html.RenderAction("AddCategory", "Blog", new { articleId = Model.Id }); }
+
+<div>
+  @Html.ActionLink("Wróć", "Index", null, new { @class = "btn btn-warning" })
+</div>
+
+@section styles{
+  <link href="@Url.Content("~/Content/blogStyle.css")" rel="stylesheet" type="text/css">
+}
+
+@section scripts{
+  <script src="@Url.Content("~/Scripts/blogscripts.js")"></script>
+}

@@ -1,0 +1,68 @@
+﻿@using System.Globalization
+@using PagedList.Mvc
+@model PagedList.IPagedList<OazachaosuRepository.Model.Group>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+  ViewBag.Title = "Grupy użytkownika";
+}
+
+<div class="container-fluid text-center">
+  <section id="MainSection">
+    <div style="margin-left: 20px;">
+      <p>
+        Grupy użytkownika
+      </p>
+
+      @using (Html.BeginForm("Upload", "Group", FormMethod.Post, new { enctype = "multipart/form-data" })) {
+        <input type="file" name="file" />
+        <input type="submit" name="Submit" id="Submit" value="Upload" />
+      }
+    </div>
+    <div class="tableDiv">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th class="text-center">Nazwa grupy</th>
+            <th class="text-center">Języki</th>
+            <th class="text-center">Słowa</th>
+            <th class="text-center">Wyniki</th>
+            <th style="width: 5%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var group in Model) {
+            <tr>
+              <td class="groupId idText none">@group.Id</td>
+              <td style="vertical-align: middle">@group.Name</td>
+              <td style="vertical-align: middle">
+                <img alt="@group.Language1.ShortName" width="24" src="@Url.Content("~/Content/flags_circle/" + @group.Language1.ShortName+".png")" /> 
+                <img alt="@group.Language2.ShortName" width="24" src="@Url.Content("~/Content/flags_circle/" + @group.Language2.ShortName+".png")" />
+              </td>
+              <td style="vertical-align: middle">@Html.ActionLink(@group.Words.Count.ToString(CultureInfo.CurrentCulture), "Index", "Word", new { groupId = group.Id, page = 1 }, null)</td>
+              <td style="vertical-align: middle">@Html.ActionLink(@group.Results.Count.ToString(CultureInfo.CurrentCulture), "Index", "Word", new { groupId = group.Id, page = 1 }, null)</td>
+              <td style="width: 5%" class="actions">@Html.ActionLink("Edytuj", "Details", "Group", new { groupId = group.Id }, new { @class = "edit-icon" })</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <br />
+      <span class="text-center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+      </span>
+    </div>
+  </section>
+</div>
+
+@{
+  Html.RenderPartial("_modalPartial");
+}
+
+@section scripts{
+  <script src="@Url.Content("~/Scripts/WordkiScript.js")"></script>
+}
+
+@section styles{
+  <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/WordkiStyle.css")">
+}

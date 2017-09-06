@@ -1,0 +1,17 @@
+﻿@model Oazachaosu.Models.CategoryToSelect
+@{
+  ViewBag.Title = "_AddCategoryPartial";
+}
+
+@using (Html.BeginForm("AddCategoryAction", "Blog", FormMethod.Post)) {
+  <div class="form-group">
+    <div class="col-md-2">
+       
+    </div>
+    <div class="col-md-10">
+      @Html.DropDownListFor(m => m.SelectedCategory, Model.Categories)
+      @Html.HiddenFor(m => m.ArticleId)
+      <input type="submit" value="Dodaj" name="action" class="btn btn-info" />
+    </div>
+  </div>
+}

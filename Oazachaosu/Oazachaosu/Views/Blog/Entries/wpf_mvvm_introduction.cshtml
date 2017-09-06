@@ -1,0 +1,51 @@
+﻿@{
+  ViewBag.Title = "Wzorzec MVVM w WPF - wprowadzenie";
+}
+
+<h3>Wprowadzenie</h3>
+
+<p>
+  Wzorzec MVVM (Model - View - ViewModel) jest wzorcem architektonicznym, który pozwala na oddzielenie logiki biznesowej, interfejsu użytkownika i zarządzaniem nimi.
+  Ze względu na występowanie w WPF pewnych mechanizmów, które postaram się w tym i kolejnych artykułach wyjaśnić, staje się on bardzo dobrym polem na poznawanie tego wzorca
+  (wzorzec można z powodzeniem wykorzystać w innych technologiach - Android, WindowsPhone, Silverlight).
+  Wzorzec MVVM bazuje na podobnym wzorcu, a mianowicie MVC (Model - View - Controller), który jest używany w aplikacjach webowych, jednak występuję między nimi istotne różnice.
+</p>
+
+<h3>Elementy wzorca</h3>
+
+<ul>
+  <li>
+    <b>Model</b> - jest to część, która zawiera w sobie logikę biznesową. W najprostszych aplikacjach mogą to być tylko klasy, które reprezentują pewien byt którym ma zająć się nasz program.
+    Bardzo ważne jest to aby każdy element modelu implementował interfejs INotifyPropertyChanged. Za pomocą tego mechanizmu komunikacja pomiędzy modelem i widokiem będzie odbywała się
+    wręcz automatycznie, bez naszej ingerencji.
+  </li>
+  <li>
+    <b>Widok</b> - w skrócie interfejs użytkownika, to co widzimy. W projekcie WPF są to wszystkie okienka, strony, ale również kontrolki. Wszystko to z czym możemy mieć
+    interakcję w czasie działania programu
+  </li>
+  <li>
+    <b>Model widoku</b> - mechanizm który kontroluje i zarządza modelem i widokiem. Ciężko cokolwiek powiedzieć na ten temat więcej, bez odwołania się do konkretnych przykładów.
+    W niej znajdować się będą wszystkie komendy i zmienne, które mają być wykorzystane w po uruchomieniu aplikacji.
+  </li>
+</ul>
+
+<h3>Korzyści</h3>
+<p>
+  Wzorzec MVVM jest tak na prawdę nowszą odmiana wzorca MVC, więc największą korzyścią jest oddzielenie części biznesowej od prezentacyjnej. Poprzez separację uzyskujemy możliwość
+  szybkiej zmiany określonych części, np. możemy ten sam model i model widoku wykorzystać do aplikacji dektopowej w WPF i mobilnej w Windows Mobile. <b>Utrzymanie</b> kodu powinno być
+  znacznie łatwiejsze. Jeżeli nasz kod jest podzielony na małe części, które są ściśle powiązane ze sobą mamy możliwość wprowadzania zmian bez obaw, że pojawią się nowe błędy. Łatwiejsze jest
+  również <b>testowanie</b> kodu. Dużo łatwiej jest przetestować małe klasy niż jedną wielką kobyłę. W prawdziwym MVVM możemy nawet przetestować naszą aplikację bez korzystania z warstwy
+  prezentacyjnej, a jedynie we wierszu poleceń. Nasz kod możemy bez obaw <b>rozszerzać</b>, dodawać nowe funkcjonalności, tworzyć kod wielokrotnego użytku.
+</p>
+<h3>Wady</h3>
+
+<p>
+  Pamiętajmy jednak, że nie ma rzeczy bez wad. Jest tak samo i tutaj. Na początku możemy mieć wrażenie, że piszemy strasznie dużo niepotrzebnego kodu. Rzeczywiście tak jest - kodu jest dużo. 
+  W małych projektach użycie MVVM może okazać się zbędne, zwłaszcza w takich które nie mają szans na rozwój (o ile takie coś jest w ogóle możliwe). W takim przypadku może się okazać, że 
+  więcej będzie linii które umożliwiają wykorzystanie MVVM niż konkretnej funkcjonalności.<br/>
+  Podobnie może być z dodaniem nowych funkcjonalności do kodu. Występują pewne funkcje, które bardzo łatwo wykonać w zwykłym code-behind, a przeniesienie tego do modelu widoku może skutkować
+  powstaniem kilku dodatkowych klas. Dla przykładu stworzenie interakcji z przyciskiem bez MVVM to zwykłe stworzenie funkcji w pliku *.cs i przypisanie go do kontrolki w pliku *.xaml. 
+  W MVVM sprawa wygląda nieco bardziej skomplikowanie - posługujemy się tutaj interfejsem ICommand. Aby uzyskać sprawny mechanizm do tworzenia komend musimy opakować to w klase (w sieci
+  możemy się spotkać z tym pod hasłami BuilderCommand albo RelayCommand).<br/>
+  Ostatnim, często spotykanym problemem jest debugowanie operacji zbindowanych. Oczywiście jest to spowodowane nie rozumieniem pewnych określonych reguł.
+</p>
