@@ -217,6 +217,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\ResultController.cs" />
+    <Compile Include="Controllers\TeachController.cs" />
     <Compile Include="Controllers\WordController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -416,6 +417,7 @@
     <Content Include="Views\Blog\_AddCategoryPartial.cshtml" />
     <Content Include="Views\Blog\Entries\design_pattern_builder.cshtml" />
     <Content Include="Views\Word\Details.cshtml" />
+    <Content Include="Views\Teach\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

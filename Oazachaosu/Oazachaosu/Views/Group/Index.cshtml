@@ -41,6 +41,7 @@
               <td style="vertical-align: middle">@Html.ActionLink(@group.Words.Count.ToString(CultureInfo.CurrentCulture), "Index", "Word", new { groupId = group.Id, page = 1 }, null)</td>
               <td style="vertical-align: middle">@Html.ActionLink(@group.Results.Count.ToString(CultureInfo.CurrentCulture), "Index", "Word", new { groupId = group.Id, page = 1 }, null)</td>
               <td style="width: 5%" class="actions">@Html.ActionLink("Edytuj", "Details", "Group", new { groupId = group.Id }, new { @class = "edit-icon" })</td>
+              <td style="width: 5%" class="actions">@Html.ActionLink("Edytuj", "Index", "Teach", new { groupId = group.Id }, null)</td>
             </tr>
           }
         </tbody>

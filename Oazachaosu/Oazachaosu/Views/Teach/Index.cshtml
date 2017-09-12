@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+To jest tryb nauki
+<div id="response">
+
+
+</div>
+
+<button onclick="nextWord()">Następne</button>
+
+<script>
+
+  var words;
+  var iterator = 0;
+
+  window.onload = function () {
+    getGroupToTeach();
+  }
+
+  function getGroupToTeach() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+        var response = JSON.parse(xhttp.responseText);
+        console.log(response.Message);
+        words = JSON.parse(response.Message);
+        console.log(words);
+        var string = "";
+        for (var i = 0; i < words.length; i++) {
+          string += " Id:" + words[i].Id;
+        }
+        document.getElementById("response").innerHTML = string;
+      }
+    };
+    xhttp.open("GET", generateApiUrl('words/636407515745365624'), true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("authorization", getCookie('authorization'));
+    xhttp.send();
+  }
+
+  function nextWord() {
+    document.getElementById("response").innerHTML = words[i].Id;
+    i++;
+  }
+
+</script>
