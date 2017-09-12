@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="IRepo\IBlogRepository.cs" />
     <Compile Include="IRepo\ILocalDbContext.cs" />
+    <Compile Include="IRepo\IUserRepository.cs" />
     <Compile Include="IRepo\IWordkiRepository.cs" />
     <Compile Include="Migrations\201705111553192_Start.cs" />
     <Compile Include="Migrations\201705111553192_Start.Designer.cs">
@@ -135,7 +136,11 @@
     <Compile Include="Model\Word.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repo\BlogRepository.cs" />
+    <Compile Include="Repo\BlogRepositoryTest.cs" />
+    <Compile Include="Repo\UserRepository.cs" />
+    <Compile Include="Repo\UserRepositoryTest.cs" />
     <Compile Include="Repo\WordkiRepository.cs" />
+    <Compile Include="Repo\WordkiRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705111553192_Start.resx">
