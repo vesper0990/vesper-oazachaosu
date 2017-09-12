@@ -37,15 +37,15 @@ namespace Oazachaosu.Controllers.Api
         [Route("api/words/{groupId}")]
         public ActionResult Get(long? groupId)
         {
-            if (!groupId.HasValue)
-            {
-                ApiResponse.IsError = true;
-                return new ApiJsonResult { Data = ApiResponse };
-            }
-            if (!CheckAuthorization())
-            {
-                return new ApiJsonResult { Data = ApiResponse };
-            }
+            //if (!groupId.HasValue)
+            //{
+            //    ApiResponse.IsError = true;
+            //    return new ApiJsonResult { Data = ApiResponse };
+            //}
+            //if (!CheckAuthorization())
+            //{
+            //    return new ApiJsonResult { Data = ApiResponse };
+            //}
             ApiResponse.IsError = false;
             ApiResponse.Message = JsonConvert.SerializeObject(WordkiRepository.GetWords(UserId).Where(x => x.GroupId == groupId.Value), new FloatToStringConverter());
             return new ApiJsonResult { Data = ApiResponse };

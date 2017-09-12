@@ -54,6 +54,11 @@ namespace OazachaosuRepository.Repo
             throw new NotImplementedException();
         }
 
+        public Task<User> FindAsync(UserLoginInfo userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<User> FindAsync(string userName)
         {
             throw new NotImplementedException();

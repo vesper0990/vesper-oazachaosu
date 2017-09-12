@@ -3,48 +3,67 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 To jest tryb nauki
-<div id="response">
-
-
+<div ng-controller="MyCtrl">
+    <p ng-bind="firstname"></p>
+    <button ng-click="nextWord()">Click me</button>
 </div>
+<script>
+    var app = angular.module('myApp', []);
+    var words;
+    var iterator = 0;
+    window.onload = function () {
 
-<button onclick="nextWord()">Następne</button>
+        getGroupToTeach();
+    }
+
+    function getGroupToTeach() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
+                var response = JSON.parse(xhttp.responseText);
+                console.log(response.Message);
+                words = JSON.parse(response.Message);
+                console.log(words);
+                shuffle(words);
+                //var string = "";
+                //for (var i = 0; i < words.length; i++) {
+                //    string += " Id:" + words[i].Id;
+                //}
+                //document.getElementById("response").innerHTML = string;
+            }
+        };
+        xhttp.open("GET", generateApiUrl('words/1'), true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.setRequestHeader("authorization", getCookie('authorization'));
+        xhttp.send();
+    }
+
+    function nextWord($scope) {
+        $scope.firstname = "asdf";
+        $scope.lastname = "Doe";
+
+        //var app = angular.module('test', []);
+        //app.controller('control', function ($scope) {
+        //    $scope.id = words[i].Id;
+        //    $scope.language1 = words[i].Language1;
+        //    $scope.language2 = words[i].Language2;
+        //});
+        //i++;
+    }
+
+    function shuffle(a) {
+        for (let i = a.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [a[i - 1], a[j]] = [a[j], a[i - 1]];
+        }
+    }
+
+
+
+
+</script>
 
 <script>
-
-  var words;
-  var iterator = 0;
-
-  window.onload = function () {
-    getGroupToTeach();
-  }
-
-  function getGroupToTeach() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (xhttp.readyState === 4 && xhttp.status === 200) {
-        var response = JSON.parse(xhttp.responseText);
-        console.log(response.Message);
-        words = JSON.parse(response.Message);
-        console.log(words);
-        var string = "";
-        for (var i = 0; i < words.length; i++) {
-          string += " Id:" + words[i].Id;
-        }
-        document.getElementById("response").innerHTML = string;
-      }
-    };
-    xhttp.open("GET", generateApiUrl('words/636407515745365624'), true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("authorization", getCookie('authorization'));
-    xhttp.send();
-  }
-
-  function nextWord() {
-    document.getElementById("response").innerHTML = words[i].Id;
-    i++;
-  }
 
 </script>
