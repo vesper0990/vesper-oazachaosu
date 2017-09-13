@@ -4,52 +4,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 To jest tryb nauki
-<div ng-controller="MyCtrl">
-    <p ng-bind="firstname"></p>
-    <button ng-click="nextWord()">Click me</button>
+<div ng-app="myApp" ng-controller="testController" ng-init="loaded()">
+    <p>{{language1 || "test"}}</p><br />
+    <input ng-model="language2" />
+
+    <button id="knownButton" ng-click="knownButtonClick()">Wiem</button>
+    <button id="checkButton" ng-click="checkButtonClick()">Sprawdź</button>
+    <button id="unknownButton" ng-click="unknownButtonClick()">Nie Wiem</button>
+
+    <p>{{ test_binding }}</p>
 </div>
 <script>
-    var app = angular.module('myApp', []);
     var words;
-    var iterator = 0;
-    window.onload = function () {
 
-        getGroupToTeach();
-    }
+    var app = angular.module("myApp", []);
+    app.controller("testController", function ($scope) {
+
+        $scope.loaded = function () {
+            console.log("loaded");
+            getGroupToTeach();
+        }
+
+        $scope.knownButtonClick = function () {
+            console.log("knownButtonClick");
+            console.log(words[1].Id);
+        }
+
+
+        $scope.unknownButtonClick = function () {
+            console.log("unknownButtonClick");
+        }
+
+        $scope.checkButtonClick = function () {
+            console.log("checkButtonClick");
+
+        }
+
+
+
+    });
 
     function getGroupToTeach() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState === 4 && xhttp.status === 200) {
                 var response = JSON.parse(xhttp.responseText);
-                console.log(response.Message);
                 words = JSON.parse(response.Message);
                 console.log(words);
                 shuffle(words);
-                //var string = "";
-                //for (var i = 0; i < words.length; i++) {
-                //    string += " Id:" + words[i].Id;
-                //}
-                //document.getElementById("response").innerHTML = string;
+                console.log("words is loaded");
             }
         };
         xhttp.open("GET", generateApiUrl('words/1'), true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.setRequestHeader("authorization", getCookie('authorization'));
         xhttp.send();
-    }
-
-    function nextWord($scope) {
-        $scope.firstname = "asdf";
-        $scope.lastname = "Doe";
-
-        //var app = angular.module('test', []);
-        //app.controller('control', function ($scope) {
-        //    $scope.id = words[i].Id;
-        //    $scope.language1 = words[i].Language1;
-        //    $scope.language2 = words[i].Language2;
-        //});
-        //i++;
+        console.log("messgage sended...");
     }
 
     function shuffle(a) {
@@ -61,9 +71,5 @@ To jest tryb nauki
 
 
 
-
-</script>
-
-<script>
 
 </script>
