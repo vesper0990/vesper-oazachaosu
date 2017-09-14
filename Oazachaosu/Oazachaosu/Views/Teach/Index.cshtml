@@ -12,17 +12,27 @@ To jest tryb nauki
     <button id="checkButton" ng-click="checkButtonClick()">Sprawdź</button>
     <button id="unknownButton" ng-click="unknownButtonClick()">Nie Wiem</button>
 
-    <p>{{ test_binding }}</p>
 </div>
 <script>
     var words;
 
     var app = angular.module("myApp", []);
-    app.controller("testController", function ($scope) {
+    app.controller("testController", function ($scope, $http) {
 
         $scope.loaded = function () {
             console.log("loaded");
-            getGroupToTeach();
+
+            var onSuccess = function (date) {
+                console.log("success");
+                console.log("date: " + JSON.stringify(date));
+            };
+            var onError = function (date) {
+                console.log("error");
+                console.log("date: " + date);
+            };
+
+            $http.get("http://localhost:54774/api/date").then(onSuccess, onError);
+            console.log("Sended...")
         }
 
         $scope.knownButtonClick = function () {
@@ -39,8 +49,6 @@ To jest tryb nauki
             console.log("checkButtonClick");
 
         }
-
-
 
     });
 
