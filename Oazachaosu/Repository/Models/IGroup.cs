@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Repository.Helpers;
 using Repository.Models.Language;
+using System.Collections.Generic;
 
 namespace Repository.Models
 {
@@ -32,5 +33,11 @@ namespace Repository.Models
         [JsonProperty(PropertyName = "State")]
         [PropertyIndex(5)]
         int State { get; set; }
+
+        [JsonIgnore]
+        IList<IWord> Words { get; set; }
+
+        [JsonIgnore]
+        IList<IResult> Results { get; set; }
     }
 }

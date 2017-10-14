@@ -15,7 +15,7 @@ namespace Repository.Models {
 
     [JsonProperty(PropertyName = "GroupId")]
     [PropertyIndex(2)]
-    long GroupId { get; set; }
+    IGroup Group { get; set; }
 
     [JsonProperty(PropertyName = "Correct")]
     [PropertyIndex(3)]

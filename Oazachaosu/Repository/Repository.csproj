@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{602B7EB6-BC66-4207-BB40-51225F66D0C7}</ProjectGuid>
+    <ProjectGuid>{90D846A5-5CB3-4926-8719-88EC170A61AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Repository</RootNamespace>
@@ -44,7 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectionSwaper\DirectionSwaper.cs" />
+    <Compile Include="DirectionSwaper\IDirectionSwaper.cs" />
     <Compile Include="Helpers\PropertyIndexAttributes.cs" />
+    <Compile Include="LanguageSwaper\ILanguageSwaper.cs" />
+    <Compile Include="LanguageSwaper\LanguageSwaper.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\ArticleComment.cs" />
     <Compile Include="Models\Article_Category.cs" />
