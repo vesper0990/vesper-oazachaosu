@@ -36,7 +36,7 @@ namespace Oazachaosu.App_Start
         {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
-            bool test = true;
+            bool test = false;
             if (test)
             {
                 container.RegisterType<IBlogRepository, OazachaosuRepository.Repo.BlogRepositoryTest>(new PerRequestLifetimeManager());

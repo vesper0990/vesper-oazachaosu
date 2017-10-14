@@ -5,79 +5,142 @@
 }
 To jest tryb nauki
 <div ng-app="myApp" ng-controller="testController" ng-init="loaded()">
-    <p>{{language1 || "test"}}</p><br />
-    <input ng-model="language2" />
+  <p>Stan: {{state}}</p><br />
+  <p>{{language1 || "test"}}</p><br />
+  <input id="language2" ng-model="language2" /><br />
 
-    <button id="knownButton" ng-click="knownButtonClick()">Wiem</button>
-    <button id="checkButton" ng-click="checkButtonClick()">Sprawdź</button>
-    <button id="unknownButton" ng-click="unknownButtonClick()">Nie Wiem</button>
+  <button id="knownButton" ng-click="knownButtonClick()">Wiem</button>
+  <button id="checkButton" ng-click="checkButtonClick()">Sprawdź</button>
+  <button id="unknownButton" ng-click="unknownButtonClick()">Nie Wiem</button>
 
 </div>
 <script>
-    var words;
+  var words;
+  var wordsAfterTeach = [];
+  var counter;
+  var firstTime = true;
+  var state = 0; // 0 - check, 1 - correct, 2 - wrong
 
-    var app = angular.module("myApp", []);
-    app.controller("testController", function ($scope, $http) {
+  var app = angular.module("myApp", []);
+  app.controller("testController", function ($scope, $http) {
 
-        $scope.loaded = function () {
-            console.log("loaded");
-
-            var onSuccess = function (date) {
-                console.log("success");
-                console.log("date: " + JSON.stringify(date));
-            };
-            var onError = function (date) {
-                console.log("error");
-                console.log("date: " + date);
-            };
-
-            $http.get("http://localhost:54774/api/date").then(onSuccess, onError);
-            console.log("Sended...")
+    document.getElementById("language2")
+      .addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode == 13) {
+          switch (state) {
+            case 0:
+              console.log("0");
+              check();
+              break;
+            case 1:
+              console.log("1");
+              known();
+              break;
+            case 2:
+              console.log("2");
+              unknwon();
+              break;
+          }
         }
+      });
 
-        $scope.knownButtonClick = function () {
-            console.log("knownButtonClick");
-            console.log(words[1].Id);
+    $scope.loaded = function () {
+      console.log("loaded");
+
+      var onSuccess = function (data) {
+        console.log("success");
+
+        if (data.IsError) {
+          console.log("Upload word Failed!");
+          return;
         }
+        words = JSON.parse(data.data.Message);
+        shuffle(words);
+        counter = 0;
+        $scope.language1 = words[counter].Language1;
 
 
-        $scope.unknownButtonClick = function () {
-            console.log("unknownButtonClick");
-        }
+      };
+      var onError = function (data) {
+        console.log("error");
+        console.log("data: " + data);
+      };
 
-        $scope.checkButtonClick = function () {
-            console.log("checkButtonClick");
-
-        }
-
-    });
-
-    function getGroupToTeach() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState === 4 && xhttp.status === 200) {
-                var response = JSON.parse(xhttp.responseText);
-                words = JSON.parse(response.Message);
-                console.log(words);
-                shuffle(words);
-                console.log("words is loaded");
-            }
-        };
-        xhttp.open("GET", generateApiUrl('words/1'), true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.setRequestHeader("authorization", getCookie('authorization'));
-        xhttp.send();
-        console.log("messgage sended...");
+      $http.get('http://localhost:54774/api/words/636412463045120013', {
+        headers: { 'authorization': 'Akuku123' }
+      }).then(onSuccess, onError);
+      console.log("Sended...")
     }
 
-    function shuffle(a) {
-        for (let i = a.length; i; i--) {
-            let j = Math.floor(Math.random() * i);
-            [a[i - 1], a[j]] = [a[j], a[i - 1]];
-        }
+    var known = function () {
+      console.log("knownButtonClick");
+      correctAfterCheck();
+      refreshView();
+    }
+    $scope.knownButtonClick = known;
+
+
+
+    var unknown = function () {
+      console.log("unknownButtonClick");
+      wrongAfterCheck();
+      refreshView();
+    }
+    $scope.unknownButtonClick = unknown;
+
+    var check = function () {
+      if ($scope.language2 == words[counter].Language2) {
+        viewOnCorrect();
+      } else {
+        viewOnWrong();
+      }
+
+    }
+    $scope.checkButtonClick = check;
+
+
+    var wrongAfterCheck = function () {
+      counter++;
+      if (counter >= words.length) {
+        counter = 0;
+        firstTime = false;
+      }
     }
 
+    var correctAfterCheck = function () {
+      word = words[counter];
+      if (firstTime) {
+        word.Drawer++;
+        word.State = 1;
+      }
+      wordsAfterTeach.push(word);
+      words.splice(counter, 1);
+    }
 
+    var refreshView = function () {
+      $scope.state = "Wait";
+      $scope.language2 = "";
+      $scope.language1 = words[counter].language1;
+      state = check;
+    }
 
+    var viewOnWrong = function () {
+      $scope.state = "Wrong";
+      state = 2;
+    }
 
+    var viewOnCorrect = function () {
+      $scope.state = "Correct";
+      state = 1;
+    }
+
+  });
+
+  function shuffle(a) {
+    for (let i = a.length; i; i--) {
+      let j = Math.floor(Math.random() * i);
+      [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+  }
 </script>
