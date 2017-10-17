@@ -11,11 +11,6 @@ namespace Repository.Models
         [PropertyIndex(0)]
         long Id { get; set; }
 
-        [JsonProperty(PropertyName = "UserId")]
-        [JsonIgnore]
-        [PropertyIndex(1)]
-        long UserId { get; set; }
-
         [JsonProperty(PropertyName = "Name")]
         [PropertyIndex(2)]
         string Name { get; set; }

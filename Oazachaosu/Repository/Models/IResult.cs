@@ -9,10 +9,6 @@ namespace Repository.Models {
     [PropertyIndex(0)]
     long Id { get; set; }
 
-    [PropertyIndex(1)]
-    [JsonIgnore]
-    long UserId { get; set; }
-
     [JsonProperty(PropertyName = "GroupId")]
     [PropertyIndex(2)]
     IGroup Group { get; set; }
