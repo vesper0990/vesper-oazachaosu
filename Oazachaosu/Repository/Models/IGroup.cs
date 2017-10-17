@@ -39,5 +39,8 @@ namespace Repository.Models
 
         [JsonIgnore]
         IList<IResult> Results { get; set; }
+
+        void AddWord(IWord word);
+        void AddResult(IResult result);
     }
 }
