@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Newtonsoft.Json;
 using Repository.Helpers;
+using System;
 
 namespace Repository.Models
 {
@@ -46,7 +47,16 @@ namespace Repository.Models
 
         [JsonProperty(PropertyName = "Checked")]
         [DefaultValue(false)]
-        [PropertyIndex(9)]
+        [PropertyIndex(10)]
         bool Checked { get; set; }
+
+        [JsonProperty(PropertyName = "RepeatingNumber")]
+        [DefaultValue(0)]
+        [PropertyIndex(11)]
+        ushort RepeatingNumber { get; set; }
+
+        [JsonProperty(PropertyName = "LastRepeating")]
+        [PropertyIndex(12)]
+        DateTime LastRepeating { get; set; }
     }
 }
