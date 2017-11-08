@@ -5,7 +5,7 @@
     Polish = 2,//pol
     Germany = 3,//deu
     French = 4,//fra
-    Spanish = 5,//esp
+    Spanish = 5,//es
     Portuaglese = 6,//por
     Russian = 7,//rus
     Italian = 8,//ita

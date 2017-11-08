@@ -77,7 +77,7 @@ namespace Repository.Models.Language {
 
   public class LanguageSpanish : ILanguage {
     public LanguageType Type { get { return LanguageType.Spanish; } }
-    public string Code { get { return "esp"; } }
+    public string Code { get { return "es"; } }
     public string Description { get { return "Język hiszpański"; } }
     public string Name { get { return "Español"; } }
     public string ShortName { get { return "es"; } }
