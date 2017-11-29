@@ -5,7 +5,7 @@ using System;
 
 namespace Repository.Models
 {
-    public interface IWord
+    public interface IWord : ICloneable
     {
         [JsonProperty(PropertyName = "Id")]
         [PropertyIndex(0)]
