@@ -1,10 +1,15 @@
-﻿namespace Repository.Models.Language {
-  public interface ILanguage {
+﻿using System.Windows.Media.Imaging;
 
-    LanguageType Type { get; }
-    string Code { get; }
-    string Description { get; }
-    string Name { get; }
-    string ShortName { get; }
-  }
+namespace Repository.Models.Language
+{
+    public interface ILanguage
+    {
+
+        LanguageType Type { get; }
+        string Code { get; }
+        string Description { get; }
+        string Name { get; }
+        string ShortName { get; }
+
+    }
 }

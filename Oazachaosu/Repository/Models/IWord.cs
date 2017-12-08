@@ -40,7 +40,6 @@ namespace Repository.Models
         [PropertyIndex(8)]
         bool Visible { get; set; }
 
-
         [JsonProperty(PropertyName = "State")]
         [PropertyIndex(9)]
         int State { get; set; }
@@ -58,5 +57,9 @@ namespace Repository.Models
         [JsonProperty(PropertyName = "LastRepeating")]
         [PropertyIndex(12)]
         DateTime LastRepeating { get; set; }
+
+        [JsonProperty(PropertyName = "Comment")]
+        [PropertyIndex(13)]
+        string Comment { get; set; }
     }
 }
