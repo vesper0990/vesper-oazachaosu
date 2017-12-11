@@ -63,11 +63,12 @@
     <Compile Include="Models\IGroup.cs" />
     <Compile Include="Models\IResult.cs" />
     <Compile Include="Models\IUser.cs" />
-    <Compile Include="Models\IWord.cs" />
+    <Compile Include="Models\Word\IWord.cs" />
     <Compile Include="Models\Language\ILanguage.cs" />
     <Compile Include="Models\Language\LanguageFacory.cs" />
     <Compile Include="Models\Language\LanguageJsonCoverter.cs" />
     <Compile Include="Models\Language\LanguageType.cs" />
+    <Compile Include="Models\Word\WordExtenstions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
