@@ -18,6 +18,5 @@ namespace Repository.Models
         DateTime DownloadTime { get; set; }
         TranslationDirection TranslationDirection { get; set; }
         bool AllWords { get; set; }
-        int Timeout { get; set; }
     }
 }

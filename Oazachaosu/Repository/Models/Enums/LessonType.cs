@@ -9,5 +9,6 @@
         ChoiceLesson = 4,
         RandomLesson = 5,
         BestLesson = 6,
+        AllToTeach=7,
     }
 }
