@@ -1,19 +1,59 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Repository;
+using System.Collections.Generic;
 using System.Linq;
-using OazachaosuCore.Data;
+using System.Threading.Tasks;
 
 namespace OazachaosuCore.Controllers
 {
-    public class GroupsController : Controller
+    [Route("Groups")]
+    public class GroupsController : ApiControllerBase
     {
+        private IWordkiRepo Repository { get; set; }
+
+        public GroupsController(IWordkiRepo wordkiRepo) : base()
+        {
+            Repository = wordkiRepo;
+        }
+
+        [HttpGet("")]
         public IActionResult Get()
         {
-            IActionResult result = null;
-            using(var context = new ApplicationDbContext())
-            {
-                result = new JsonResult(context.Groups.ToList());
-            }
+            var list = Repository.GetGroups().ToList();
+            IActionResult result = new JsonResult(list);
             return result;
+        }
+
+        [HttpGet("{userId}")]
+        public IActionResult Get(long userId)
+        {
+            IActionResult result = new JsonResult(Repository.GetGroups(userId));
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post()
+        {
+            string content = await GetContnet();
+            IList<Group> groups = JsonConvert.DeserializeObject<List<Group>>(content);
+            IQueryable<Group> dbGroups = Repository.GetGroups();
+            foreach (Group group in groups)
+            {
+                if (dbGroups.Any(x => x.Id == group.Id))
+                {
+                    Repository.UpdateGroup(group);
+                }
+                else
+                {
+                    Repository.AddGroup(group);
+                }
+            }
+            await Repository.SaveChangesAsync();
+            return new ContentResult()
+            {
+                Content = "Ok",
+            };
         }
     }
 }

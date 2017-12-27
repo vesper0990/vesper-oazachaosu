@@ -1,15 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using WordkiModel.Enums;
 
-namespace OazachaosuCore.Models
+namespace Repository
 {
     public class Result
     {
         [Column("Id")]
         public long Id { get; set; }
 
+        [JsonConverter(typeof(GroupToIdConverter))]
+        [JsonIgnore]
         public Group Group { get; set; }
+
+        [NotMapped]
+        public long ParentId { get { return Group.Id; } }
 
         [Column("Correct")]
         public short Correct { get; set; }

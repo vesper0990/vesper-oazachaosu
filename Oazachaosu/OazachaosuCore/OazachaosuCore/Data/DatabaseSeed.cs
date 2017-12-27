@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using OazachaosuCore.Models;
+﻿using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OazachaosuCore.Data
 {
@@ -19,7 +15,7 @@ namespace OazachaosuCore.Data
             using (var context = new ApplicationDbContext())
             {
 
-                for (int i = 1; i <= 10; i++)
+                for (int i = 1; i <= 1; i++)
                 {
                     Group group = new Group()
                     {
@@ -73,7 +69,7 @@ namespace OazachaosuCore.Data
             {
                 foreach (var group in context.Groups)
                 {
-                    context.RemoveRange(context.Resutls.Where(x => x.Group == group));
+                    context.RemoveRange(context.Results.Where(x => x.Group == group));
                     context.RemoveRange(context.Words.Where(x => x.Group == group));
                 }
                 context.SaveChanges();

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OazachaosuCore.Data;
 using OazachaosuCore.Models;
 using OazachaosuCore.Services;
+using Repository;
 
 namespace OazachaosuCore
 {
@@ -34,6 +35,7 @@ namespace OazachaosuCore
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddSingleton<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
 
             services.AddMvc();
         }

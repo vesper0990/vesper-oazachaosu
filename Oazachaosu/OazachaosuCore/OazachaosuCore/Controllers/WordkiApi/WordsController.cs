@@ -12,6 +12,7 @@ namespace OazachaosuCore.Controllers.WordkiApi
             IActionResult result = null;
             using (var context = new ApplicationDbContext())
             {
+                context.Groups.ToList();
                 result = new JsonResult(context.Words.ToList());
             }
             return result;

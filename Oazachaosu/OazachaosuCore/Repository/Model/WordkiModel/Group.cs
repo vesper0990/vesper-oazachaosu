@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using WordkiModel;
 
-namespace OazachaosuCore.Models
+namespace Repository
 {
     public class Group
     {

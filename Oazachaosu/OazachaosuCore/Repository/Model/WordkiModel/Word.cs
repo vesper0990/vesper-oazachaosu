@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using WordkiModel;
 
-namespace OazachaosuCore.Models
+namespace Repository
 {
     public class Word
     {
@@ -10,7 +11,11 @@ namespace OazachaosuCore.Models
         [Column("Id")]
         public long Id { get; set; }
 
+        [JsonIgnore]
         public Group Group { get; set; }
+
+        [NotMapped]
+        public long ParentId { get { return Group.Id; } }
 
         [Column("Language1")]
         public string Language1 { get; set; }

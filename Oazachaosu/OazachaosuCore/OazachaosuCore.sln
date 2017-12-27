@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OazachaosuCore", "OazachaosuCore\OazachaosuCore.csproj", "{C067C3AF-8298-47B6-A2C8-83F1C2C11957}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OazachaosuCore", "OazachaosuCore\OazachaosuCore.csproj", "{C067C3AF-8298-47B6-A2C8-83F1C2C11957}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordkiModelCore", "..\..\..\vesper-wordki\DesktopWorki\Wordki\WordkiModelCore\WordkiModelCore.csproj", "{3C799A34-4F0E-4795-8EC2-28720C6E9F90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{00EDDB87-2B75-4169-95E0-1BA461BEDE01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OazachaosuCore.Test", "OazachaosuCore.Test\OazachaosuCore.Test.csproj", "{6DC3C4E6-9F33-423C-A711-BE818167FE22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{3C799A34-4F0E-4795-8EC2-28720C6E9F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C799A34-4F0E-4795-8EC2-28720C6E9F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C799A34-4F0E-4795-8EC2-28720C6E9F90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00EDDB87-2B75-4169-95E0-1BA461BEDE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00EDDB87-2B75-4169-95E0-1BA461BEDE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00EDDB87-2B75-4169-95E0-1BA461BEDE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00EDDB87-2B75-4169-95E0-1BA461BEDE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC3C4E6-9F33-423C-A711-BE818167FE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC3C4E6-9F33-423C-A711-BE818167FE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC3C4E6-9F33-423C-A711-BE818167FE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC3C4E6-9F33-423C-A711-BE818167FE22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
