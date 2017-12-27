@@ -1,0 +1,80 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using WordkiModel;
+
+namespace OazachaosuCore.Models
+{
+    public class Word
+    {
+
+        [Column("Id")]
+        public long Id { get; set; }
+
+        public Group Group { get; set; }
+
+        [Column("Language1")]
+        public string Language1 { get; set; }
+
+        [Column("Language2")]
+        public string Language2 { get; set; }
+
+        [Column("Language1Comment")]
+        public string Language1Comment { get; set; }
+
+        [Column("Language2Comment")]
+        public string Language2Comment { get; set; }
+
+        [Column("Drawer")]
+        public byte Drawer { get; set; }
+
+        [Column("Visible")]
+        public bool Visible { get; set; }
+
+        [Column("State")]
+        public int State { get; set; }
+
+        [Column("Selected")]
+        public bool Selected { get; set; }
+
+        [Column("RepeatingNumber")]
+        public ushort RepeatingNumber { get; set; }
+
+        [Column("LastRepeating")]
+        public DateTime LastRepeating { get; set; }
+
+        [Column("Comment")]
+        public string Comment { get; set; }
+
+        public Word()
+        {
+            Id = -1;
+            Language1 = string.Empty;
+            Language2 = string.Empty;
+            Language1Comment = string.Empty;
+            Language2Comment = string.Empty;
+            Visible = true;
+            State = int.MaxValue;
+            Comment = string.Empty;
+        }
+
+        public object Clone()
+        {
+            return new Word()
+            {
+                Id = Id,
+                Group = Group,
+                Language1 = Language1,
+                Language2 = Language2,
+                Language1Comment = Language1Comment,
+                Language2Comment = Language2Comment,
+                Drawer = Drawer,
+                Visible = Visible,
+                State = State,
+                Selected = Selected,
+                RepeatingNumber = RepeatingNumber,
+                LastRepeating = LastRepeating,
+                Comment = Comment
+            };
+        }
+    }
+}
