@@ -14,11 +14,12 @@ namespace OazachaosuCore.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<Result> Results { get; set; }
+        public DbContext Context { get { return this; } }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            test = true;
-        }
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        //{
+        //    //test = true;
+        //}
 
         public ApplicationDbContext() : base()
         {
@@ -26,7 +27,12 @@ namespace OazachaosuCore.Data
 
         public Task<int> SaveChangesAsync()
         {
-            return SaveChangesAsync(default(CancellationToken));
+            return base.SaveChangesAsync(default(CancellationToken));
+        }
+
+        public new void Add(object obj)
+        {
+            base.Add(obj);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

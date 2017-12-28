@@ -46,6 +46,7 @@ namespace OazachaosuCore.Controllers.WordkiApi
                 }
                 else
                 {
+                    result.Group = WordkiRepo.GetGroup(result.ParentId);
                     WordkiRepo.AddResult(result);
                 }
             }

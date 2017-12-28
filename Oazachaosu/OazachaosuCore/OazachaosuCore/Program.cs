@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using OazachaosuCore.Data;
+using Repository;
 
 namespace OazachaosuCore
 {
@@ -18,6 +19,14 @@ namespace OazachaosuCore
                 {
                     DatabaseSeed.Up();
                 }
+                //Group group = context.Groups.FirstOrDefault();
+                //Word word = new Word()
+                //{
+                //    Id = 100,
+                //};
+                //group.AddWord(word);
+                //context.Words.Add(word);
+                //context.SaveChanges();
 
             }
             BuildWebHost(args).Run();

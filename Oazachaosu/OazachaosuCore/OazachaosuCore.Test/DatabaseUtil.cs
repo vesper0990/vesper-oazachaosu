@@ -22,7 +22,7 @@ namespace OazachaosuCore.Test
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
                       .Options;
-            var context = new ApplicationDbContext(options);
+            ApplicationDbContext context = null;// new ApplicationDbContext(options);
             return context;
         }
 
@@ -31,7 +31,7 @@ namespace OazachaosuCore.Test
             ApplicationDbContext context = GetEmptyDbContext();
 
             context.Groups.Add(new Group() { Id = 1, Name = "jaks" });
-
+            context.SaveChanges();
             return context;
         }
 

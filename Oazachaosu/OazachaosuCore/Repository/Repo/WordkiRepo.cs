@@ -10,6 +10,8 @@ namespace Repository
 
         private readonly IDatabaseContext dbContext;
 
+        public DbContext Context { get { return dbContext.Context; } }
+
         public WordkiRepo(IDatabaseContext dbContext)
         {
             this.dbContext = dbContext;
@@ -23,6 +25,11 @@ namespace Repository
         public IQueryable<Group> GetGroups(long userId)
         {
             return GetGroups().Where(x => x.UserId == userId);
+        }
+
+        public Group GetGroup(long id)
+        {
+            return dbContext.Groups.AsNoTracking().SingleOrDefault(x => x.Id == id);
         }
 
         public IQueryable<Result> GetResults()
@@ -68,6 +75,21 @@ namespace Repository
         public void UpdateResult(Result result)
         {
             dbContext.Results.Update(result);
+        }
+
+        public void AddWord(Word word)
+        {
+            dbContext.Words.Add(word);
+        }
+
+        public void UpdateWord(Word word)
+        {
+            dbContext.Words.Update(word);
+        }
+
+        public void Add(object obj)
+        {
+            dbContext.Add(obj);
         }
 
         public void SaveChanges()

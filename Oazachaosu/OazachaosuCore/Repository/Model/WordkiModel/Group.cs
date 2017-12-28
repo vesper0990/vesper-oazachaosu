@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WordkiModel;
 
@@ -9,9 +10,11 @@ namespace Repository
     {
 
         [Column("Id")]
+        [Required]
         public long Id { get; set; }
 
         [Column("UserId")]
+        [Required]
         public long UserId { get; set; }
 
         [Column("Name")]

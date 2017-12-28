@@ -20,7 +20,7 @@ namespace OazachaosuCore.Controllers
         [HttpGet("")]
         public IActionResult Get()
         {
-            var list = Repository.GetGroups().ToList();
+            var list = Repository.GetGroups();
             IActionResult result = new JsonResult(list);
             return result;
         }

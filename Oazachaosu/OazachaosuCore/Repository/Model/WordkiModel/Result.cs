@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WordkiModel.Enums;
 
@@ -8,14 +9,15 @@ namespace Repository
     public class Result
     {
         [Column("Id")]
+        [Required]
         public long Id { get; set; }
 
-        [JsonConverter(typeof(GroupToIdConverter))]
         [JsonIgnore]
         public Group Group { get; set; }
 
+        private long parentId;
         [NotMapped]
-        public long ParentId { get { return Group.Id; } }
+        public long ParentId { get { return Group == null ? parentId : Group.Id; } set { parentId = value; } }
 
         [Column("Correct")]
         public short Correct { get; set; }
