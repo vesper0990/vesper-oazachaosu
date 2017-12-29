@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using OazachaosuCore.Data;
 using Repository;
 using System.Collections.Generic;
 using System.Linq;

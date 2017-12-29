@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
-using OazachaosuCore.Controllers;
+﻿using NUnit.Framework;
 
 namespace OazachaosuCore.Test
 {
@@ -8,19 +6,10 @@ namespace OazachaosuCore.Test
     public class GroupControllerTests
     {
 
-        GroupsController controller;
-
-        [SetUp]
-        public void SetUp()
-        {
-            controller = new GroupsController(DatabaseUtil.GetWordkiRepoWithDate());
-        }
-
         [Test]
-        public void Test()
+        public void Get_all_groups_test()
         {
-            var result = controller.Get() as JsonResult;
-            Assert.NotNull(result.Value);
+            
         }
 
     }

@@ -2,27 +2,18 @@
 using OazachaosuCore.Data;
 using Repository;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OazachaosuCore.Test
 {
     public static class DatabaseUtil
     {
 
-        public static IServiceProvider ServiceProvider { get; set; }
-
-        static DatabaseUtil()
-        {
-            //ServiceProvider = new 
-        }
-
         public static ApplicationDbContext GetEmptyDbContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
                       .Options;
-            ApplicationDbContext context = null;// new ApplicationDbContext(options);
+            ApplicationDbContext context = new ApplicationDbContext(options);
             return context;
         }
 
@@ -30,7 +21,7 @@ namespace OazachaosuCore.Test
         {
             ApplicationDbContext context = GetEmptyDbContext();
 
-            context.Groups.Add(new Group() { Id = 1, Name = "jaks" });
+            context.Groups.AddRange(Utility.GetGroups());
             context.SaveChanges();
             return context;
         }

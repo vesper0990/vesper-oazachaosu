@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using OazachaosuCore.Data;
 using Repository;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,18 +41,17 @@ namespace OazachaosuCore.Controllers.WordkiApi
             IQueryable<Word> dbWords = Repository.GetWords();
             foreach (Word word in words)
             {
-                if(dbWords.Any(x => x.Id == word.Id))
+                if (dbWords.Any(x => x.Id == word.Id))
                 {
                     Repository.UpdateWord(word);
                 }
                 else
                 {
-                    word.Group = Repository.GetGroup(word.ParentId);
-                    //Repository.GetGroup(word.ParentId).AddWord(word);
-                    Repository.Context.Update(word);
+                    Repository.GetGroup(word.ParentId).AddWord(word);
+                    Repository.AddWord(word);
                 }
             }
-            Repository.Context.SaveChanges();
+            Repository.SaveChanges();
             return new ContentResult()
             {
                 Content = "Ok",

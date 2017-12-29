@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OazachaosuCore.Helpers;
 using Repository;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +34,11 @@ namespace OazachaosuCore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider)
         {
-            string content = await GetContnet();
-            IList<Group> groups = JsonConvert.DeserializeObject<List<Group>>(content);
+            bodyProvider.Request = Request;
+            string content = await bodyProvider.GetBodyAsync();
+            IEnumerable<Group> groups = JsonConvert.DeserializeObject<IEnumerable<Group>>(content);
             IQueryable<Group> dbGroups = Repository.GetGroups();
             foreach (Group group in groups)
             {

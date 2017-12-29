@@ -29,7 +29,7 @@ namespace Repository
 
         public Group GetGroup(long id)
         {
-            return dbContext.Groups.AsNoTracking().SingleOrDefault(x => x.Id == id);
+            return dbContext.Groups.SingleOrDefault(x => x.Id == id);
         }
 
         public IQueryable<Result> GetResults()

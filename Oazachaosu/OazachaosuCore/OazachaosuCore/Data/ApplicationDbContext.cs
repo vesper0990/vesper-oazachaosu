@@ -16,10 +16,10 @@ namespace OazachaosuCore.Data
         public DbSet<Result> Results { get; set; }
         public DbContext Context { get { return this; } }
 
-        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        //{
-        //    //test = true;
-        //}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            test = true;
+        }
 
         public ApplicationDbContext() : base()
         {
