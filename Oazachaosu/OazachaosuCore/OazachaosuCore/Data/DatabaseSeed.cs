@@ -15,6 +15,15 @@ namespace OazachaosuCore.Data
             using (var context = new ApplicationDbContext())
             {
 
+                User user = new User()
+                {
+                    Id = 1,
+                    ApiKey = "1",
+                    Name = "admin",
+                    Password = "asdf"
+                };
+                context.Users.Add(user);
+
                 for (int i = 1; i <= 1; i++)
                 {
                     Group group = new Group()

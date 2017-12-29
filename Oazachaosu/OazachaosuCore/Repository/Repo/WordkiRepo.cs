@@ -10,11 +10,14 @@ namespace Repository
 
         private readonly IDatabaseContext dbContext;
 
-        public DbContext Context { get { return dbContext.Context; } }
-
         public WordkiRepo(IDatabaseContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        public IQueryable<User> GetUsers()
+        {
+            return dbContext.Users.AsNoTracking();
         }
 
         public IQueryable<Group> GetGroups()
@@ -85,11 +88,6 @@ namespace Repository
         public void UpdateWord(Word word)
         {
             dbContext.Words.Update(word);
-        }
-
-        public void Add(object obj)
-        {
-            dbContext.Add(obj);
         }
 
         public void SaveChanges()

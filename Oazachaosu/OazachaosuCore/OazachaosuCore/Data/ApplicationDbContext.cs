@@ -1,12 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 
 namespace OazachaosuCore.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Models.ApplicationUser>, IDatabaseContext
+    public class ApplicationDbContext : DbContext, IDatabaseContext
     {
 
         private static bool test = false;
@@ -14,11 +13,11 @@ namespace OazachaosuCore.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<Result> Results { get; set; }
-        public DbContext Context { get { return this; } }
+        public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            test = true;
+            //test = true;
         }
 
         public ApplicationDbContext() : base()
@@ -28,11 +27,6 @@ namespace OazachaosuCore.Data
         public Task<int> SaveChangesAsync()
         {
             return base.SaveChangesAsync(default(CancellationToken));
-        }
-
-        public new void Add(object obj)
-        {
-            base.Add(obj);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

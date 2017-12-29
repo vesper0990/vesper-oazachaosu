@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OazachaosuCore.Helpers;
+using OazachaosuCore.Helpers.Respone;
 using Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,25 +21,36 @@ namespace OazachaosuCore.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Get()
+        public IActionResult Get([FromServices] IHeaderElementProvider headerElementProvider)
         {
-            var list = Repository.GetGroups();
-            IActionResult result = new JsonResult(list);
-            return result;
-        }
-
-        [HttpGet("{userId}")]
-        public IActionResult Get(long userId)
-        {
-            IActionResult result = new JsonResult(Repository.GetGroups(userId));
-            return result;
+            ApiResult result = new ApiResult();
+            DateTime dateTime = DateTime.Parse(headerElementProvider.GetElement(Request, "dateTime"));
+            string apiKey = headerElementProvider.GetElement(Request, "apikey");
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
+            {
+                result.Message = "User not found.";
+                result.Code = ResultCode.AuthorizationError;
+                return new JsonResult(result);
+            }
+            result.Object = Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime);
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider)
+        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
-            bodyProvider.Request = Request;
-            string content = await bodyProvider.GetBodyAsync();
+            string apiKey = headerElementProvider.GetElement(Request, "apikey");
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
+            {
+                return new ContentResult()
+                {
+                    Content = "Authorization error",
+                };
+            }
+            string content = await bodyProvider.GetBodyAsync(Request);
             IEnumerable<Group> groups = JsonConvert.DeserializeObject<IEnumerable<Group>>(content);
             IQueryable<Group> dbGroups = Repository.GetGroups();
             foreach (Group group in groups)

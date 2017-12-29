@@ -8,19 +8,17 @@ namespace OazachaosuCore.Helpers
     public class SimpleBodyProvider : IBodyProvider
     {
 
-        public HttpRequest Request { get; set; }
-
-        public string GetBody()
+        public string GetBody(HttpRequest request)
         {
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8))
             {
                 return reader.ReadToEnd();
             }
         }
 
-        public async Task<string> GetBodyAsync()
+        public async Task<string> GetBodyAsync(HttpRequest request)
         {
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(request.Body, Encoding.UTF8))
             {
                 return await reader.ReadToEndAsync();
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +16,7 @@ namespace Repository
 
         [Column("UserId")]
         [Required]
+        [JsonIgnore]
         public long UserId { get; set; }
 
         [Column("Name")]
@@ -32,8 +34,13 @@ namespace Repository
         [Column("CreationDate")]
         public DateTime CreationDate { get; set; }
 
+        [JsonIgnore]
+        public DateTime LastChange { get; set; }
+
+        [JsonIgnore]
         public IList<Word> Words { get; set; }
 
+        [JsonIgnore]
         public IList<Result> Results { get; set; }
 
 

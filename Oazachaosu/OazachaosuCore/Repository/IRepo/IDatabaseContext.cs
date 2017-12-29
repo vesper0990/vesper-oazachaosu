@@ -10,9 +10,7 @@ namespace Repository
         DbSet<Group> Groups { get; set; }
         DbSet<Word> Words { get; set; }
         DbSet<Result> Results { get; set; }
-        DbContext Context { get; }
-
-        void Add(object obj);
+        DbSet<User> Users { get; set; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

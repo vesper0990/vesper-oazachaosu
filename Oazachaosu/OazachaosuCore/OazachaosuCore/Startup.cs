@@ -30,13 +30,14 @@ namespace OazachaosuCore
         {
             services.AddDbContext<ApplicationDbContext>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<User, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IBodyProvider, SimpleBodyProvider>();
+            services.AddTransient<IHeaderElementProvider, HeaderElementProvider>();
             services.AddSingleton<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
 
             services.AddMvc();

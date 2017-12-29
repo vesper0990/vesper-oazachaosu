@@ -5,10 +5,8 @@ namespace OazachaosuCore.Helpers
 {
     public interface IBodyProvider
     {
-        HttpRequest Request { get; set; }
-
-        string GetBody();
-        Task<string> GetBodyAsync();
+        string GetBody(HttpRequest request);
+        Task<string> GetBodyAsync(HttpRequest request);
 
     }
 }

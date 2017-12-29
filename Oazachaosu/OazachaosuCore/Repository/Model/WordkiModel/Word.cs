@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WordkiModel;
 
 namespace Repository
 {
@@ -53,6 +52,9 @@ namespace Repository
 
         [Column("Comment")]
         public string Comment { get; set; }
+
+        [JsonIgnore]
+        public DateTime LastChange { get; set; }
 
         public Word()
         {

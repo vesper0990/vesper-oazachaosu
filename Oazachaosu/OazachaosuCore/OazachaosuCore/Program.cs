@@ -11,11 +11,11 @@ namespace OazachaosuCore
         public static void Main(string[] args)
         {
 
-            using(var context = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext())
             {
                 context.Database.EnsureCreated();
 
-                if(context.Groups.Count() == 0)
+                if (context.Groups.Count() == 0)
                 {
                     DatabaseSeed.Up();
                 }
@@ -35,6 +35,7 @@ namespace OazachaosuCore
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:5001/")
                 .Build();
     }
 }

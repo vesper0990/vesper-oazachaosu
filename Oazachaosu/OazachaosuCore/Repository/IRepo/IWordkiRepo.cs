@@ -6,7 +6,7 @@ namespace Repository
 {
     public interface IWordkiRepo
     {
-        DbContext Context { get; }
+        IQueryable<User> GetUsers();
 
         IQueryable<Group> GetGroups();
         IQueryable<Group> GetGroups(long userId);
@@ -28,7 +28,6 @@ namespace Repository
         void AddWord(Word word);
         void UpdateWord(Word word);
 
-        void Add(object obj);
         void SaveChanges();
         Task SaveChangesAsync();
     }

@@ -1,59 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OazachaosuCore.Helpers;
+using OazachaosuCore.Helpers.Respone;
 using Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OazachaosuCore.Controllers.WordkiApi
+namespace OazachaosuCore.Controllers
 {
     [Route("Results")]
     public class ResultsController : ApiControllerBase
     {
-        private IWordkiRepo WordkiRepo { get; set; }
+        private IWordkiRepo Repository { get; set; }
 
         public ResultsController(IWordkiRepo wordkiRepo) : base()
         {
-            WordkiRepo = wordkiRepo;
+            Repository = wordkiRepo;
         }
 
         [HttpGet("")]
-        public IActionResult Get()
+        public IActionResult Get([FromServices] IHeaderElementProvider headerElementProvider)
         {
-            IActionResult result = new JsonResult(WordkiRepo.GetResults());
-            return result;
-        }
-
-        [HttpGet("/{userId}")]
-        public IActionResult Get(long userId)
-        {
-            IActionResult result = new JsonResult(WordkiRepo.GetResults().Where(x => x.Group.UserId == userId));
-            return result;
+            ApiResult result = new ApiResult();
+            DateTime dateTime = DateTime.Parse(headerElementProvider.GetElement(Request, "dateTime"));
+            string apiKey = headerElementProvider.GetElement(Request, "apikey");
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
+            {
+                result.Message = "User not found.";
+                result.Code = ResultCode.AuthorizationError;
+                return new JsonResult(result);
+            }
+            result.Object = Repository.GetResults().Where(x => x.Group.UserId == user.Id && x.LastChange > dateTime);
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
-            string content = await GetContnet();
-            IList<Result> results = JsonConvert.DeserializeObject<List<Result>>(content);
-            IQueryable<Result> dbGroups = WordkiRepo.GetResults();
-            foreach (Result result in results)
+            ApiResult result = new ApiResult();
+            string apiKey = headerElementProvider.GetElement(Request, "apikey");
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
             {
-                if (dbGroups.Any(x => x.Id == result.Id))
+                result.Code = ResultCode.AuthorizationError;
+                result.Message = "User not found.";
+                return new JsonResult(result);
+            }
+            string content = await bodyProvider.GetBodyAsync(Request);
+            IList<Result> results = JsonConvert.DeserializeObject<List<Result>>(content);
+            IQueryable<Result> dbGroups = Repository.GetResults();
+            foreach (Result item in results)
+            {
+                if (dbGroups.Any(x => x.Id == item.Id))
                 {
-                    WordkiRepo.UpdateResult(result);
+                    Repository.UpdateResult(item);
                 }
                 else
                 {
-                    result.Group = WordkiRepo.GetGroup(result.ParentId);
-                    WordkiRepo.AddResult(result);
+                    item.Group = Repository.GetGroup(item.GroupId);
+                    Repository.AddResult(item);
                 }
             }
-            await WordkiRepo.SaveChangesAsync();
-            return new ContentResult()
-            {
-                Content = "Ok",
-            };
+            await Repository.SaveChangesAsync();
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
         }
 
     }

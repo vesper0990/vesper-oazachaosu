@@ -22,9 +22,11 @@ namespace OazachaosuCore.Test
             IWordkiRepo repo = DatabaseUtil.GetWordkiRepoWithDate();
             IList<Group> groups = repo.GetGroups().ToList();
 
-            mock.Setup(x => x.GetBodyAsync()).Returns(Task.FromResult("test"));
-            GroupsController controller = new GroupsController(DatabaseUtil.GetWordkiRepoWithDate());
-            Task<IActionResult> result = controller.Post(mock.Object);
+            //mock.Setup(x => x.GetBodyAsync()).Returns(Task.FromResult("test"));
+            ResultsController controller = new ResultsController(DatabaseUtil.GetWordkiRepoWithDate());
+            JsonResult result = controller.Get() as JsonResult;
+            
+            //Task<IActionResult> result = controller.Post(mock.Object);
         }
     }
 }
