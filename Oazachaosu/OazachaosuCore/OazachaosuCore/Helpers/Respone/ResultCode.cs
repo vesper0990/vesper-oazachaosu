@@ -10,5 +10,6 @@ namespace OazachaosuCore.Helpers.Respone
         Unknown = -1,
         Done,
         AuthorizationError,
+        UserNotFound,
     }
 }

@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using NUnit.Framework;
 using OazachaosuCore.Controllers;
+using OazachaosuCore.Helpers;
 using Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,12 +16,15 @@ namespace OazachaosuCore.Test.ApiControllersTests
     {
 
         GroupsController controller;
+        Mock<IHeaderElementProvider> headerElementProviderMock = new Mock<IHeaderElementProvider>();
 
         public GroupContollerGetTest()
         {
             Utility.GroupCount = 2;
             Utility.WordCount = 2;
             Utility.ResultCount = 2;
+
+            headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "dateTime")).Returns("");
         }
 
         [SetUp]

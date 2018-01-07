@@ -55,6 +55,11 @@ namespace Repository
             return GetWords().Where(x => x.Group.UserId == userId);
         }
 
+        public void AddUser(User user)
+        {
+            dbContext.Users.Add(user);
+        }
+
         public void AddGroup(Group group)
         {
             dbContext.Groups.Add(group);
