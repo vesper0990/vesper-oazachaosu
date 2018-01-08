@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 using OazachaosuCore.Controllers;
 using OazachaosuCore.Helpers;
@@ -14,7 +13,7 @@ namespace OazachaosuCore.Test
     public class UnitTest1
     {
 
-        Mock<IBodyProvider> mock = new Mock<IBodyProvider>();
+        //Mock<IBodyProvider> mock = new Mock<IBodyProvider>();
 
         [Test]
         public void TestMethod1()
@@ -24,7 +23,7 @@ namespace OazachaosuCore.Test
 
             //mock.Setup(x => x.GetBodyAsync()).Returns(Task.FromResult("test"));
             ResultsController controller = new ResultsController(DatabaseUtil.GetWordkiRepoWithDate());
-            JsonResult result = controller.Get() as JsonResult;
+            //JsonResult result = controller.Get() as JsonResult;
             
             //Task<IActionResult> result = controller.Post(mock.Object);
         }

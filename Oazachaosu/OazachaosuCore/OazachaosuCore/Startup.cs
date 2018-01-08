@@ -38,7 +38,7 @@ namespace OazachaosuCore
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IBodyProvider, SimpleBodyProvider>();
             services.AddTransient<IHeaderElementProvider, HeaderElementProvider>();
-            services.AddSingleton<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
+            services.AddTransient<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
 
             services.AddMvc();
         }

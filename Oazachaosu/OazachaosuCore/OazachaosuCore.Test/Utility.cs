@@ -27,7 +27,7 @@ namespace OazachaosuCore.Test
 
         public static List<Group> GetGroups(int count)
         {
-            
+
             List<Group> groups = new List<Group>();
 
             for (int i = 0; i < count; i++)
@@ -92,11 +92,12 @@ namespace OazachaosuCore.Test
             Group group = new Group()
             {
                 Id = groupCounter++,
-                UserId = 1,
+                UserId = DatabaseUtil.User.Id,
                 Language1 = language1,
                 Language2 = language2,
                 Name = name,
                 State = 3,
+                LastChange = new DateTime(2018, 1, 1),
             };
             for (int i = 0; i < WordCount; i++)
             {
@@ -113,23 +114,6 @@ namespace OazachaosuCore.Test
             }
             return group;
         }
-
-        //public static IUser GetUser()
-        //{
-        //    return new User()
-        //    {
-        //        LocalId = 1,
-        //        AllWords = true,
-        //        ApiKey = "asdffdsaasdffdsa",
-        //        DownloadTime = new DateTime(1990, 9, 24, 12, 0, 0),
-        //        IsLogin = true,
-        //        IsRegister = true,
-        //        LastLoginDateTime = new DateTime(1990, 9, 24, 12, 0, 0),
-        //        Name = "Name",
-        //        Password = "Password",
-        //        TranslationDirection = TranslationDirection.FromSecond,
-        //    };
-        //}
 
         public static void CheckUser(IUser expected, IUser actual)
         {

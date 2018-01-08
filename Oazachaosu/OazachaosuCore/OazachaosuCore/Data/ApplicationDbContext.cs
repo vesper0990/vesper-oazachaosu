@@ -8,7 +8,7 @@ namespace OazachaosuCore.Data
     public class ApplicationDbContext : DbContext, IDatabaseContext
     {
 
-        private static bool test = false;
+        public static bool test = false;
 
         public DbSet<Group> Groups { get; set; }
         public DbSet<Word> Words { get; set; }
@@ -17,7 +17,6 @@ namespace OazachaosuCore.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            //test = true;
         }
 
         public ApplicationDbContext() : base()

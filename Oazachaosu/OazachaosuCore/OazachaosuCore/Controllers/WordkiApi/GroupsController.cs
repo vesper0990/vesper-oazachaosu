@@ -41,14 +41,14 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
+            ApiResult result = new ApiResult();
             string apiKey = headerElementProvider.GetElement(Request, "apikey");
             User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
             if (user == null)
             {
-                return new ContentResult()
-                {
-                    Content = "Authorization error",
-                };
+                result.Code = ResultCode.UserNotFound;
+                result.Message = "User not found.";
+                return new JsonResult(result);
             }
             string content = await bodyProvider.GetBodyAsync(Request);
             IEnumerable<Group> groups = JsonConvert.DeserializeObject<IEnumerable<Group>>(content);
@@ -65,10 +65,8 @@ namespace OazachaosuCore.Controllers
                 }
             }
             await Repository.SaveChangesAsync();
-            return new ContentResult()
-            {
-                Content = "Ok",
-            };
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
         }
     }
 }
