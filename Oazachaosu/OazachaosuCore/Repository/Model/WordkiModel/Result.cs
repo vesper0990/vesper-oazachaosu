@@ -16,8 +16,8 @@ namespace Repository
         public Group Group { get; set; }
 
         private long parentId;
-        [Column("GroupId")]
-        public long GroupId { get { return Group == null ? parentId : Group.Id; } set { parentId = value; } }
+        [NotMapped]
+        public long ParentId { get { return Group == null ? parentId : Group.Id; } set { parentId = value; } }
 
         [Column("Correct")]
         public short Correct { get; set; }

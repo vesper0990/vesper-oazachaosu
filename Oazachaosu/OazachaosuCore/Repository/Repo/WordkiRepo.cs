@@ -22,7 +22,7 @@ namespace Repository
 
         public IQueryable<Group> GetGroups()
         {
-            return dbContext.Groups.AsNoTracking().Include(x => x.Words).Include(x => x.Results);
+            return dbContext.Groups.AsNoTracking();
         }
 
         public IQueryable<Group> GetGroups(long userId)

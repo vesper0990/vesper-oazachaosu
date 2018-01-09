@@ -11,22 +11,22 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace OazachaosuCore.Test.ApiControllersTests
 {
     [TestFixture]
-    public class GroupContollerGetTest
+    public class ResultsControllerGetTests
     {
 
         Mock<IHeaderElementProvider> headerElementProviderMock = new Mock<IHeaderElementProvider>();
         DbContextOptions<ApplicationDbContext> Options { get; set; }
 
-        public GroupContollerGetTest()
+        public ResultsControllerGetTests()
         {
             Utility.GroupCount = 2;
             Utility.WordCount = 2;
             Utility.ResultCount = 2;
-
             headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "dateTime")).Returns("2000/01/01");
             headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "apikey")).Returns(DatabaseUtil.User.ApiKey);
         }
@@ -38,16 +38,12 @@ namespace OazachaosuCore.Test.ApiControllersTests
             DatabaseUtil.SetData(Options);
         }
 
-        /// <summary>
-        /// Check if all groups with proper UserId and LastChange date is given by Get method
-        /// </summary>
         [Test]
-        public void Check_group_count()
+        public void Check_results_count()
         {
-            JsonResult result;
             using (var context = new ApplicationDbContext(Options))
             {
-                result = new GroupsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new ResultsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -55,18 +51,15 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
-                Assert.AreEqual(Utility.GroupCount, groups.Count());
+                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }
 
-        /// <summary>
-        /// Check if groups own to another user is not passed
-        /// </summary>
         [Test]
-        public void Check_group_count_by_user()
+        public void Check_result_count_by_user()
         {
-            using(var context = new ApplicationDbContext(Options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 User user = new User()
                 {
@@ -83,12 +76,17 @@ namespace OazachaosuCore.Test.ApiControllersTests
                     Id = 999,
                     CreationDate = new DateTime(2018, 1, 1),
                 };
+                group.AddResult(new Result() { Id = 100, ParentId = group.Id });
                 context.Groups.Add(group);
                 context.SaveChanges();
             }
-            using(var context = new ApplicationDbContext(Options))
+            using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new GroupsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                Assert.AreEqual(Utility.GroupCount * Utility.ResultCount + 1, context.Results.Count());
+            }
+            using (var context = new ApplicationDbContext(Options))
+            {
+                JsonResult result = new ResultsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -96,16 +94,13 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
-                Assert.AreEqual(Utility.GroupCount, groups.Count());
+                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }
 
-        /// <summary>
-        /// Check if groups with out update is not passed
-        /// </summary>
         [Test]
-        public void Check_group_count_by_last_change()
+        public void Check_word_count_by_last_change()
         {
             using (var context = new ApplicationDbContext(Options))
             {
@@ -114,14 +109,19 @@ namespace OazachaosuCore.Test.ApiControllersTests
                     UserId = 1,
                     Name = "groupa",
                     Id = 999,
-                    LastChange = new DateTime(1999, 1, 1),
+                    CreationDate = new DateTime(2018, 1, 1),
                 };
+                group.AddResult(new Result() { Id = 100, ParentId = group.Id, LastChange = new DateTime(1990, 1, 1) });
                 context.Groups.Add(group);
                 context.SaveChanges();
             }
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new GroupsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                Assert.AreEqual(Utility.GroupCount * Utility.ResultCount + 1, context.Results.Count());
+            }
+            using (var context = new ApplicationDbContext(Options))
+            {
+                JsonResult result = new ResultsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -129,8 +129,8 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
-                Assert.AreEqual(Utility.GroupCount, groups.Count());
+                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }
     }

@@ -42,14 +42,14 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
+            ApiResult result = new ApiResult();
             string apiKey = headerElementProvider.GetElement(Request, "apikey");
             User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
             if (user == null)
             {
-                return new ContentResult()
-                {
-                    Content = "Authorization error",
-                };
+                result.Code = ResultCode.AuthorizationError;
+                result.Message = "User not found";
+                return new JsonResult(result);
             }
             string content = await bodyProvider.GetBodyAsync(Request);
             IList<Word> words = JsonConvert.DeserializeObject<List<Word>>(content);
@@ -67,10 +67,8 @@ namespace OazachaosuCore.Controllers
                 }
             }
             Repository.SaveChanges();
-            return new ContentResult()
-            {
-                Content = "Ok",
-            };
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
         }
 
     }

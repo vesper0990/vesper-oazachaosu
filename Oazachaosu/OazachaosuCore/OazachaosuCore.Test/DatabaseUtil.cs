@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OazachaosuCore.Data;
 using Repository;
-using System;
+using System.Collections.Generic;
 
 namespace OazachaosuCore.Test
 {
@@ -10,6 +10,7 @@ namespace OazachaosuCore.Test
 
         static DatabaseUtil()
         {
+            ApplicationDbContext.test = true;
             User = new User()
             {
                 Id = 1,
@@ -21,46 +22,44 @@ namespace OazachaosuCore.Test
 
         public static User User { get; set; }
 
-        public static ApplicationDbContext Context { get; set; }
-
-
-        public static ApplicationDbContext GetEmptyDbContext()
+        public static DbContextOptions<ApplicationDbContext> GetOptions()
         {
-            ApplicationDbContext.test = true;
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                      .UseInMemoryDatabase("test")
-                      .Options;
-            Context = new ApplicationDbContext(options);
-
-            Context.Groups.Add(new Group() { Id = 1 });
-            Context.SaveChanges();
-            Context.Groups.Update(new Group() { Id = 1 });
-            Context.SaveChanges();
-            return Context;
+            return new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
+                .Options;
         }
 
-
-
-        public static ApplicationDbContext GetDbContextWithData()
+        public static void SetUser(DbContextOptions<ApplicationDbContext> options)
         {
-            ApplicationDbContext context = GetEmptyDbContext();
-
-            context.Groups.AddRange(Utility.GetGroups());
-            context.Users.Add(User);
-            context.SaveChanges();
-            return context;
+            using (var context = new ApplicationDbContext(options))
+            {
+                context.Users.Add(User);
+                context.SaveChanges();
+            }
         }
 
-        public static IWordkiRepo GetEmptyWordkiRepo()
+        public static void SetData(DbContextOptions<ApplicationDbContext> options)
         {
-            IWordkiRepo repo = new WordkiRepo(GetEmptyDbContext());
-            return repo;
-        }
-
-        public static IWordkiRepo GetWordkiRepoWithDate()
-        {
-            IWordkiRepo repo = new WordkiRepo(GetDbContextWithData());
-            return repo;
+            SetUser(options);
+            using (var context = new ApplicationDbContext(options))
+            {
+                IEnumerable<Group> groups = Utility.GetGroups();
+                foreach (Group group in groups)
+                {
+                    group.UserId = User.Id;
+                    group.LastChange = new System.DateTime(2018, 1, 1);
+                    foreach (Word word in group.Words)
+                    {
+                        word.LastChange = new System.DateTime(2018, 1, 1);
+                    }
+                    foreach (Result result in group.Results)
+                    {
+                        result.LastChange = new System.DateTime(2018, 1, 1);
+                    }
+                }
+                context.Groups.AddRange(groups);
+                context.SaveChanges();
+            }
         }
 
     }

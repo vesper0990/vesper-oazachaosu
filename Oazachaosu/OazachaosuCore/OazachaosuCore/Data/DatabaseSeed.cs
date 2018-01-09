@@ -45,6 +45,7 @@ namespace OazachaosuCore.Data
                             Language2 = "Język",
                             Language1Comment = "Example",
                             Language2Comment = "Przykład",
+                            LastChange = new DateTime(2018, 1, 1),
                         };
                         group.AddWord(word);
 
@@ -63,6 +64,7 @@ namespace OazachaosuCore.Data
                             TimeCount = 10,
                             TranslationDirection = WordkiModel.Enums.TranslationDirection.FromSecond,
                             Wrong = 10,
+                            LastChange = new DateTime(2018, 1, 1),
                         };
                         group.AddResult(result);
                     }

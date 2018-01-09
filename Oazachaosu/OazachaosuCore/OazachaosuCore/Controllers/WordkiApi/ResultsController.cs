@@ -61,7 +61,7 @@ namespace OazachaosuCore.Controllers
                 }
                 else
                 {
-                    item.Group = Repository.GetGroup(item.GroupId);
+                    item.Group = Repository.GetGroup(item.ParentId);
                     Repository.AddResult(item);
                 }
             }
