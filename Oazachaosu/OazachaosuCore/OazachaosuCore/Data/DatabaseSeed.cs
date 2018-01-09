@@ -33,6 +33,7 @@ namespace OazachaosuCore.Data
                         Language1 = WordkiModel.LanguageType.English,
                         Language2 = WordkiModel.LanguageType.Polish,
                         Name = $"Group {i}",
+                        LastChange = new DateTime(2018, 1, 1),
                     };
 
                     for (int j = 1; j <= 10; j++)

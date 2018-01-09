@@ -7,6 +7,7 @@ using WordkiModel;
 
 namespace Repository
 {
+
     public class Group
     {
 
@@ -46,7 +47,7 @@ namespace Repository
 
         public Group()
         {
-            Id = -1;
+            Id = 0;
             UserId = -1;
             Name = string.Empty;
             Language1 = LanguageType.Default;

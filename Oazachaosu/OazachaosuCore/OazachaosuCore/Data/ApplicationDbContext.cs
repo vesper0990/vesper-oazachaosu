@@ -46,6 +46,10 @@ namespace OazachaosuCore.Data
                 .WithOne(w => w.Group);
 
             builder.Entity<Group>()
+                .Property(g => g.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.Entity<Group>()
                 .HasMany(g => g.Results)
                 .WithOne(r => r.Group);
         }

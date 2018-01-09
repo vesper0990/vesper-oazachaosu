@@ -41,6 +41,7 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
+            DateTime now = DateTime.Now;
             ApiResult result = new ApiResult();
             string apiKey = headerElementProvider.GetElement(Request, "apikey");
             User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
@@ -55,6 +56,7 @@ namespace OazachaosuCore.Controllers
             IQueryable<Result> dbGroups = Repository.GetResults();
             foreach (Result item in results)
             {
+                item.LastChange = now;
                 if (dbGroups.Any(x => x.Id == item.Id))
                 {
                     Repository.UpdateResult(item);
