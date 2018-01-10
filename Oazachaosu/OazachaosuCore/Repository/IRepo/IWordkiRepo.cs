@@ -19,6 +19,7 @@ namespace Repository
         IQueryable<Result> GetResults(long userId);
 
         void AddUser(User user);
+        void UpdateUser(User user);
 
         void AddGroup(Group group);
         void UpdateGroup(Group group);

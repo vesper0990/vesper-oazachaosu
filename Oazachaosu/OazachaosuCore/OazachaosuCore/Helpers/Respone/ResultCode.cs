@@ -11,5 +11,6 @@ namespace OazachaosuCore.Helpers.Respone
         Done,
         AuthorizationError,
         UserNotFound,
+        UserAlreadyExists,
     }
 }

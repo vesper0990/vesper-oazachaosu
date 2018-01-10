@@ -41,13 +41,22 @@ namespace OazachaosuCore.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Group>()
-                .HasMany(g => g.Words)
-                .WithOne(w => w.Group);
+            builder.Entity<User>()
+                .Property(g => g.Id)
+                .ValueGeneratedOnAdd();
 
             builder.Entity<Group>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<Group>()
+                .HasKey(g => new { g.Id, g.UserId });
+
+
+            builder.Entity<Group>()
+                .HasMany(g => g.Words)
+                .WithOne(w => w.Group);
+
 
             builder.Entity<Group>()
                 .HasMany(g => g.Results)

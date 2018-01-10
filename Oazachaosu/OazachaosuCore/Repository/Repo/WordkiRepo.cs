@@ -60,6 +60,11 @@ namespace Repository
             dbContext.Users.Add(user);
         }
 
+        public void UpdateUser(User user)
+        {
+            dbContext.Users.Update(user);
+        }
+
         public void AddGroup(Group group)
         {
             dbContext.Groups.Add(group);

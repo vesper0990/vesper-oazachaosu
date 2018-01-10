@@ -42,9 +42,9 @@ namespace OazachaosuCore.Controllers
             ApiResult result = new ApiResult();
             string userName = headerElementProvider.GetElement(Request, "userName");
             string hashPassword = headerElementProvider.GetElement(Request, "password");
-            if(Repository.GetUsers().Count(x => x.Name.Equals(userName)) > 0)
+            if(Repository.GetUsers().Any(x => x.Name.Equals(userName)))
             {
-                result.Code = ResultCode.UserNotFound;
+                result.Code = ResultCode.UserAlreadyExists;
                 return new JsonResult(result);
             }
             User user = new User()
@@ -54,6 +54,30 @@ namespace OazachaosuCore.Controllers
                 ApiKey = hashPassword
             };
             Repository.AddUser(user);
+            Repository.SaveChanges();
+            user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName));
+            result.Object = user;
+            result.Code = ResultCode.Done;
+            return new JsonResult(result);
+        }
+
+        public IActionResult Update([FromServices] IHeaderElementProvider headerElementProvider)
+        {
+            ApiResult result = new ApiResult();
+            string userName = headerElementProvider.GetElement(Request, "userName");
+            string hashPassword = headerElementProvider.GetElement(Request, "password");
+            string newHashPassword = headerElementProvider.GetElement(Request, "newPassword");
+            User user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName) && x.Password.Equals(hashPassword));
+            if(user == null)
+            {
+                result.Code = ResultCode.UserNotFound;
+                return new JsonResult(result);
+            }
+
+            user.Password = newHashPassword;
+            user.ApiKey = newHashPassword;
+            Repository.UpdateUser(user);
+            Repository.SaveChanges();
             user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName));
             result.Object = user;
             result.Code = ResultCode.Done;
