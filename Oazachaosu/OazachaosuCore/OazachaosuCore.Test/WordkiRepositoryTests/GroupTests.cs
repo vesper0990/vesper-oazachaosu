@@ -3,9 +3,7 @@ using NUnit.Framework;
 using OazachaosuCore.Data;
 using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OazachaosuCore.Test.WordkiRepositoryTests
 {
@@ -180,6 +178,24 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             {
                 Assert.AreEqual(1, context.Groups.Count());
                 CheckGroups(groupToUpdate, context.Groups.Single());
+            }
+        }
+
+        [Test]
+        public void Get_group_test()
+        {
+            Group groupToAdd = GetGroup();
+            using(var context  = new ApplicationDbContext(Options))
+            {
+                context.Groups.Add(groupToAdd);
+                context.SaveChanges();
+            }
+
+            using(var context = new ApplicationDbContext(Options))
+            {
+                IWordkiRepo repository = new WordkiRepo(context);
+                Group groupFromDatabase = repository.GetGroups().Single();
+                CheckGroups(groupToAdd, groupFromDatabase);
             }
         }
 
