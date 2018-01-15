@@ -34,7 +34,7 @@ namespace OazachaosuCore.Controllers
                 result.Code = ResultCode.AuthorizationError;
                 return new JsonResult(result);
             }
-            result.Object = Repository.GetGroups().Where(x => x.UserId == user.Id && x.State > 0 && x.LastChange > dateTime);
+            result.Object = Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime);
             result.Code = ResultCode.Done;
             return new JsonResult(result);
         }
