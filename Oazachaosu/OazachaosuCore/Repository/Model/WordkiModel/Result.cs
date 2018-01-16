@@ -28,8 +28,8 @@ namespace Repository
         [Column("Wrong")]
         public short Wrong { get; set; }
 
-        [Column("Invisibilities")]
-        public short Invisibilities { get; set; }
+        [Column("Invisible")]
+        public short Invisible { get; set; }
 
         [Column("TimeCount")]
         public short TimeCount { get; set; }

@@ -36,16 +36,16 @@ namespace Repository
         public byte Drawer { get; set; }
 
         [Column("Visible")]
-        public bool Visible { get; set; }
+        public bool IsVisible { get; set; }
 
         [Column("State")]
         public int State { get; set; }
 
         [Column("Selected")]
-        public bool Selected { get; set; }
+        public bool IsSelected { get; set; }
 
         [Column("RepeatingNumber")]
-        public ushort RepeatingNumber { get; set; }
+        public ushort RepeatingCounter { get; set; }
 
         [Column("LastRepeating")]
         public DateTime LastRepeating { get; set; }
@@ -63,7 +63,7 @@ namespace Repository
             Language2 = string.Empty;
             Language1Comment = string.Empty;
             Language2Comment = string.Empty;
-            Visible = true;
+            IsVisible = true;
             State = int.MaxValue;
             Comment = string.Empty;
         }
@@ -79,10 +79,10 @@ namespace Repository
                 Language1Comment = Language1Comment,
                 Language2Comment = Language2Comment,
                 Drawer = Drawer,
-                Visible = Visible,
+                IsVisible = IsVisible,
                 State = State,
-                Selected = Selected,
-                RepeatingNumber = RepeatingNumber,
+                IsSelected = IsSelected,
+                RepeatingCounter = RepeatingCounter,
                 LastRepeating = LastRepeating,
                 Comment = Comment
             };

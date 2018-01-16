@@ -60,8 +60,8 @@ namespace OazachaosuCore.Test
                 Language2Comment = language2Comment,
                 Drawer = drawer,
                 State = 2,
-                Visible = visible,
-                Selected = checkedUnchecked
+                IsVisible = visible,
+                IsSelected = checkedUnchecked
             };
         }
 
