@@ -12,13 +12,14 @@ namespace Repository
         [Required]
         public long Id { get; set; }
 
-        [JsonIgnore]
+        [Column("GroupId")]
         [Required]
+        public long GroupId { get; set; }
         public Group Group { get; set; }
 
-        private long parentId;
-        [NotMapped]
-        public long ParentId { get { return Group == null ? parentId : Group.Id; } set { parentId = value; } }
+        [Column("UserId")]
+        [Required]
+        public long UserId { get; set; }
 
         [Column("Language1")]
         public string Language1 { get; set; }
@@ -53,7 +54,6 @@ namespace Repository
         [Column("Comment")]
         public string Comment { get; set; }
 
-        [JsonIgnore]
         public DateTime LastChange { get; set; }
 
         public Word()
@@ -73,7 +73,8 @@ namespace Repository
             return new Word()
             {
                 Id = Id,
-                Group = Group,
+                UserId = UserId,
+                GroupId = GroupId,
                 Language1 = Language1,
                 Language2 = Language2,
                 Language1Comment = Language1Comment,

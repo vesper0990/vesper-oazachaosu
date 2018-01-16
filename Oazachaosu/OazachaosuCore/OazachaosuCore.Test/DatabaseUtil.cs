@@ -25,7 +25,7 @@ namespace OazachaosuCore.Test
         public static DbContextOptions<ApplicationDbContext> GetOptions()
         {
             return new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(System.Guid.NewGuid().ToString())
+                .UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;")
                 .Options;
         }
 
@@ -59,6 +59,15 @@ namespace OazachaosuCore.Test
                 }
                 context.Groups.AddRange(groups);
                 context.SaveChanges();
+            }
+        }
+
+        public static void ClearDatabase(DbContextOptions<ApplicationDbContext> options)
+        {
+            using (var context = new ApplicationDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
             }
         }
 

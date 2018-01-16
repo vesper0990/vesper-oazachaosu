@@ -30,29 +30,29 @@ namespace Repository
             return GetGroups().Where(x => x.UserId == userId);
         }
 
-        public Group GetGroup(long id)
+        public Group GetGroup(long id, long userId)
         {
-            return dbContext.Groups.SingleOrDefault(x => x.Id == id);
+            return dbContext.Groups.SingleOrDefault(x => x.Id == id && x.UserId == userId);
         }
 
         public IQueryable<Result> GetResults()
         {
-            return dbContext.Results.AsNoTracking().Include(x => x.Group);
+            return dbContext.Results.AsNoTracking();
         }
 
         public IQueryable<Result> GetResults(long userId)
         {
-            return GetResults().Where(x => x.Group.UserId == userId);
+            return GetResults().Where(x => x.UserId == userId);
         }
 
         public IQueryable<Word> GetWords()
         {
-            return dbContext.Words.AsNoTracking().Include(x => x.Group);
+            return dbContext.Words.AsNoTracking();
         }
 
         public IQueryable<Word> GetWords(long userId)
         {
-            return GetWords().Where(x => x.Group.UserId == userId);
+            return GetWords().Where(x => x.UserId == userId);
         }
 
         public void AddUser(User user)

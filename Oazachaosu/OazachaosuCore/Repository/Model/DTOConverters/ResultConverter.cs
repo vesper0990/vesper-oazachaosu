@@ -1,4 +1,5 @@
-﻿using WordkiModelCore.DTO;
+﻿using System.Collections.Generic;
+using WordkiModelCore.DTO;
 
 namespace Repository.Model.DTOConverters
 {
@@ -10,7 +11,7 @@ namespace Repository.Model.DTOConverters
             return new ResultDTO()
             {
                 Id = result.Id,
-                GroupId = result.ParentId,
+                GroupId = result.GroupId,
                 Correct = result.Correct,
                 Accepted = result.Accepted,
                 Wrong = result.Wrong,
@@ -28,7 +29,7 @@ namespace Repository.Model.DTOConverters
             return new Result()
             {
                 Id = result.Id,
-                ParentId = result.GroupId,
+                GroupId = result.GroupId,
                 Correct = result.Correct,
                 Accepted = result.Accepted,
                 Wrong = result.Wrong,
@@ -39,6 +40,22 @@ namespace Repository.Model.DTOConverters
                 DateTime = result.DateTime,
                 State = result.State,
             };
+        }
+
+        public static IEnumerable<Result> GetResultsFromDTOs(IEnumerable<ResultDTO> results)
+        {
+            foreach(ResultDTO result in results)
+            {
+                yield return GetModelFromDTO(result);
+            }
+        }
+
+        public static IEnumerable<ResultDTO> GetDTOsFromResults(IEnumerable<Result> results)
+        {
+            foreach (Result result in results)
+            {
+                yield return GetDTOFromModel(result);
+            }
         }
     }
 }

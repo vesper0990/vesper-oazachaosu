@@ -22,6 +22,7 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetUser(Options);
         }
 
@@ -141,7 +142,7 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             {
                 IWordkiRepo repository = new WordkiRepo(context);
                 repository.AddGroup(groupToAdd);
-                Assert.Throws<ArgumentException>(new TestDelegate(repository.SaveChanges));
+                Assert.Throws<DbUpdateException>(new TestDelegate(repository.SaveChanges));
             }
         }
 
@@ -185,13 +186,13 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
         public void Get_group_test()
         {
             Group groupToAdd = GetGroup();
-            using(var context  = new ApplicationDbContext(Options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 context.Groups.Add(groupToAdd);
                 context.SaveChanges();
             }
 
-            using(var context = new ApplicationDbContext(Options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 IWordkiRepo repository = new WordkiRepo(context);
                 Group groupFromDatabase = repository.GetGroups().Single();
@@ -218,8 +219,8 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
                 Id = 2,
                 Language1 = WordkiModel.LanguageType.English,
                 Language2 = WordkiModel.LanguageType.Italian,
-                CreationDate = DateTime.Now,
-                LastChange = DateTime.Now,
+                CreationDate = new DateTime(1990, 1, 1),
+                LastChange = new DateTime(1990, 1, 1),
                 Name = "name",
                 State = 1,
                 UserId = DatabaseUtil.User.Id,

@@ -23,6 +23,7 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
         }
 
         [Test]
@@ -91,7 +92,7 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
                 userToAdd.Id = 1;
                 IWordkiRepo repository = new WordkiRepo(context);
                 repository.AddUser(userToAdd);
-                Assert.Throws<ArgumentException>(new TestDelegate(repository.SaveChanges));
+                Assert.Throws<DbUpdateException>(new TestDelegate(repository.SaveChanges));
             }
         }
 

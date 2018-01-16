@@ -52,15 +52,21 @@ namespace OazachaosuCore.Data
             builder.Entity<Group>()
                 .HasKey(g => new { g.Id, g.UserId });
 
-
-            builder.Entity<Group>()
-                .HasMany(g => g.Words)
-                .WithOne(w => w.Group);
-
-
-            builder.Entity<Group>()
-                .HasMany(g => g.Results)
-                .WithOne(r => r.Group);
+            builder.Entity<Result>()
+                .HasKey(r => new { r.Id, r.UserId });
+            builder.Entity<Result>()
+                .HasOne(x => x.Group)
+                .WithMany(x => x.Results)
+                .HasForeignKey(x => new { x.GroupId, x.UserId })
+                .HasConstraintName("FK_Result_Group");
+            
+            builder.Entity<Word>()
+                .HasKey(r => new { r.Id, r.UserId });
+            builder.Entity<Word>()
+                .HasOne(x => x.Group)
+                .WithMany(x => x.Words)
+                .HasForeignKey(x => new { x.GroupId, x.UserId })
+                .HasConstraintName("FK_Word_Group");
         }
 
     }

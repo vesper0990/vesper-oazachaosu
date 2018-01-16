@@ -30,6 +30,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void Setup()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "userName")).Returns("user");
             headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "password")).Returns("password");
         }

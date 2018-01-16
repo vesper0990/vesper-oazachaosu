@@ -1,4 +1,5 @@
-﻿using WordkiModelCore.DTO;
+﻿using System.Collections.Generic;
+using WordkiModelCore.DTO;
 
 namespace Repository.Model.DTOConverters
 {
@@ -10,7 +11,7 @@ namespace Repository.Model.DTOConverters
             return new WordDTO()
             {
                 Id = word.Id,
-                GroupId = word.ParentId,
+                GroupId = word.GroupId,
                 Language1 = word.Language1,
                 Language2 = word.Language2,
                 Language1Comment = word.Language1Comment,
@@ -30,7 +31,7 @@ namespace Repository.Model.DTOConverters
             return new Word()
             {
                 Id = word.Id,
-                ParentId = word.GroupId,
+                GroupId = word.GroupId,
                 Language1 = word.Language1,
                 Language2 = word.Language2,
                 Language1Comment = word.Language1Comment,
@@ -45,5 +46,20 @@ namespace Repository.Model.DTOConverters
             };
         }
 
+        public static IEnumerable<Word> GetWordsFromDTOs(IEnumerable<WordDTO> words)
+        {
+            foreach(WordDTO word in words)
+            {
+                yield return GetModelFromDTO(word);
+            }
+        }
+
+        public static IEnumerable<WordDTO> GetDTOsFromWords(IEnumerable<Word> words)
+        {
+            foreach (Word word in words)
+            {
+                yield return GetDTOFromModel(word);
+            }
+        }
     }
 }

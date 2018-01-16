@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
 using Repository;
+using Repository.Model.DTOConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
@@ -33,7 +36,7 @@ namespace OazachaosuCore.Controllers
                 result.Code = ResultCode.AuthorizationError;
                 return new JsonResult(result);
             }
-            result.Object = Repository.GetResults().Where(x => x.Group.UserId == user.Id && x.LastChange > dateTime);
+            result.Object = ResultConverter.GetDTOsFromResults(Repository.GetResults().Where(x => x.UserId == user.Id && x.LastChange > dateTime));
             result.Code = ResultCode.Done;
             return new JsonResult(result);
         }
@@ -52,18 +55,24 @@ namespace OazachaosuCore.Controllers
                 return new JsonResult(result);
             }
             string content = await bodyProvider.GetBodyAsync(Request);
-            IList<Result> results = JsonConvert.DeserializeObject<List<Result>>(content);
-            IQueryable<Result> dbGroups = Repository.GetResults();
+            IEnumerable<ResultDTO> DTOs = JsonConvert.DeserializeObject<IEnumerable<ResultDTO>>(content);
+            IEnumerable<Result> results = ResultConverter.GetResultsFromDTOs(DTOs);
+            IQueryable<Group> dbGroups = Repository.GetGroups(user.Id).Include(x => x.Results);
             foreach (Result item in results)
             {
                 item.LastChange = now;
-                if (dbGroups.Any(x => x.Id == item.Id))
+                item.UserId = user.Id;
+                Group group = dbGroups.SingleOrDefault(x => x.Id == item.GroupId);
+                if (group == null)
+                {
+                    continue;
+                }
+                if(group.Results.Any(x => x.Id == item.Id))
                 {
                     Repository.UpdateResult(item);
                 }
                 else
                 {
-                    item.Group = Repository.GetGroup(item.ParentId);
                     Repository.AddResult(item);
                 }
             }

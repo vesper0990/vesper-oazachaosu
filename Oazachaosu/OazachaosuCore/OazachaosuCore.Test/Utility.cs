@@ -78,7 +78,7 @@ namespace OazachaosuCore.Test
                 Correct = correct,
                 Accepted = accepted,
                 Wrong = wrong,
-                Invisibilities = invisibilities,
+                Invisible = invisibilities,
                 DateTime = new DateTime(1990, 9, 24, 12, 0, 0),
                 LessonType = lessonType,
                 TimeCount = timeCount,
@@ -126,5 +126,13 @@ namespace OazachaosuCore.Test
 
         }
 
+
+        public static void Print(object obj)
+        {
+            foreach(var property in obj.GetType().GetProperties())
+            {
+                Console.WriteLine("{0,-40} {1,-30}", property.Name, property.GetValue(obj));
+            }
+        }
     }
 }

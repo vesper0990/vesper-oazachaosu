@@ -11,6 +11,7 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Test.ApiControllersTests
 {
@@ -35,6 +36,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetData(Options);
         }
 
@@ -55,7 +57,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
+                IEnumerable<GroupDTO> groups = apiResult.Object as IEnumerable<GroupDTO>;
                 Assert.AreEqual(Utility.GroupCount, groups.Count());
             }
         }
@@ -96,7 +98,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
+                IEnumerable<GroupDTO> groups = apiResult.Object as IEnumerable<GroupDTO>;
                 Assert.AreEqual(Utility.GroupCount, groups.Count());
             }
         }
@@ -129,7 +131,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Group> groups = apiResult.Object as IEnumerable<Group>;
+                IEnumerable<GroupDTO> groups = apiResult.Object as IEnumerable<GroupDTO>;
                 Assert.AreEqual(Utility.GroupCount, groups.Count());
             }
         }

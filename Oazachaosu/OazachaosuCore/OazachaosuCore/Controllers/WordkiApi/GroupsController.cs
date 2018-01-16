@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
 using Repository;
+using Repository.Model.DTOConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
@@ -34,7 +35,7 @@ namespace OazachaosuCore.Controllers
                 result.Code = ResultCode.AuthorizationError;
                 return new JsonResult(result);
             }
-            result.Object = Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime);
+            result.Object = GroupConverter.GetDTOsFromGroups(Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime));
             result.Code = ResultCode.Done;
             return new JsonResult(result);
         }
@@ -53,12 +54,14 @@ namespace OazachaosuCore.Controllers
                 return new JsonResult(result);
             }
             string content = await bodyProvider.GetBodyAsync(Request);
-            IEnumerable<Group> groups = JsonConvert.DeserializeObject<IEnumerable<Group>>(content);
+            IEnumerable<GroupDTO> DTOs = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(content);
+            IEnumerable<Group> groups = GroupConverter.GetGroupsFromDTOs(DTOs);
             IQueryable<Group> dbGroups = Repository.GetGroups();
             foreach (Group group in groups)
             {
                 group.LastChange = now;
-                if (dbGroups.Any(x => x.Id == group.Id))
+                group.UserId = user.Id;
+                if (dbGroups.Any(x => x.Id == group.Id && x.UserId == group.UserId))
                 {
                     Repository.UpdateGroup(group);
                 }

@@ -21,7 +21,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
     {
         Mock<IBodyProvider> bodyProviderMock = new Mock<IBodyProvider>();
         Mock<IHeaderElementProvider> headerElementProviderMock = new Mock<IHeaderElementProvider>();
-        string postData = "[{\"id\":1,\"parentId\":1,\"language1\":\"Language\",\"language2\":\"Język\",\"language1Comment\":\"Example\",\"language2Comment\":\"Przykład\",\"drawer\":0,\"visible\":true,\"state\":2147483647,\"selected\":false,\"repeatingNumber\":0,\"lastRepeating\":\"0001-01-01T00:00:00\",\"comment\":\"Comment for word 1\"},{\"id\":2,\"parentId\":1,\"language1\":\"Language\",\"language2\":\"Język\",\"language1Comment\":\"Example\",\"language2Comment\":\"Przykład\",\"drawer\":0,\"visible\":true,\"state\":2147483647,\"selected\":false,\"repeatingNumber\":0,\"lastRepeating\":\"0001-01-01T00:00:00\",\"comment\":\"Comment for word 2\"}]";
+        string postData = "[{\"Id\":1,\"Gid\":1,\"L1\":\"Language\",\"L2\":\"Język\",\"L1C\":\"Example\",\"L2C\":\"Przykład\",\"D\":0,\"V\":true,\"S\":2147483647,\"IS\":false,\"RC\":0,\"LR\":\"0001-01-01T00:00:00\",\"C\":\"Comment for word 1\"},{\"Id\":2,\"Gid\":1,\"L1\":\"Language\",\"L2\":\"Język\",\"L1C\":\"Example\",\"L2C\":\"Przykład\",\"D\":0,\"V\":true,\"S\":2147483647,\"IS\":false,\"RC\":0,\"LR\":\"0001-01-01T00:00:00\",\"C\":\"Comment for word 2\"}]";
         DbContextOptions<ApplicationDbContext> Options { get; set; }
 
 
@@ -36,6 +36,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetUser(Options);
             using (var context = new ApplicationDbContext(Options))
             {
@@ -54,6 +55,9 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 ApiResult apiResult = jsonResult.Value as ApiResult;
                 Assert.NotNull(apiResult, "ApiResult is null");
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
+            }
+            using(var context = new ApplicationDbContext(Options))
+            {
                 Assert.AreEqual(2, context.Words.Count());
             }
         }
@@ -66,7 +70,8 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 Word word = new Word()
                 {
                     Id = 100,
-                    ParentId = 1,
+                    GroupId = 1,
+                    UserId = DatabaseUtil.User.Id,
                 };
                 context.Words.Add(word);
                 context.SaveChanges();
@@ -87,13 +92,13 @@ namespace OazachaosuCore.Test.ApiControllersTests
         [Test]
         public void Post_data_to_update()
         {
-
             using (var context = new ApplicationDbContext(Options))
             {
                 Word word = new Word()
                 {
                     Id = 1,
-                    ParentId = 1,
+                    GroupId = 1,
+                    UserId = DatabaseUtil.User.Id,
                     Language1 = "asdf",
                 };
                 context.Words.Add(word);

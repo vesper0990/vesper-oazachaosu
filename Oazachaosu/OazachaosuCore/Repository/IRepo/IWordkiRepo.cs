@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -10,7 +9,7 @@ namespace Repository
 
         IQueryable<Group> GetGroups();
         IQueryable<Group> GetGroups(long userId);
-        Group GetGroup(long id);
+        Group GetGroup(long id, long userId);
 
         IQueryable<Word> GetWords();
         IQueryable<Word> GetWords(long userId);

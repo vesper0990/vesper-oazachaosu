@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Test.ApiControllersTests
 {
@@ -35,6 +36,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetData(Options);
         }
 
@@ -51,7 +53,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                IEnumerable<ResultDTO> results = apiResult.Object as IEnumerable<ResultDTO>;
                 Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }
@@ -76,7 +78,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
                     Id = 999,
                     CreationDate = new DateTime(2018, 1, 1),
                 };
-                group.AddResult(new Result() { Id = 100, ParentId = group.Id });
+                group.AddResult(new Result() { Id = 100, GroupId = group.Id });
                 context.Groups.Add(group);
                 context.SaveChanges();
             }
@@ -94,7 +96,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                IEnumerable<ResultDTO> results = apiResult.Object as IEnumerable<ResultDTO>;
                 Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }
@@ -111,7 +113,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
                     Id = 999,
                     CreationDate = new DateTime(2018, 1, 1),
                 };
-                group.AddResult(new Result() { Id = 100, ParentId = group.Id, LastChange = new DateTime(1990, 1, 1) });
+                group.AddResult(new Result() { Id = 100, GroupId = group.Id, LastChange = new DateTime(1990, 1, 1) });
                 context.Groups.Add(group);
                 context.SaveChanges();
             }
@@ -129,7 +131,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
                 Assert.AreEqual(ResultCode.Done, apiResult.Code);
 
-                IEnumerable<Result> results = apiResult.Object as IEnumerable<Result>;
+                IEnumerable<ResultDTO> results = apiResult.Object as IEnumerable<ResultDTO>;
                 Assert.AreEqual(Utility.GroupCount * Utility.ResultCount, results.Count());
             }
         }

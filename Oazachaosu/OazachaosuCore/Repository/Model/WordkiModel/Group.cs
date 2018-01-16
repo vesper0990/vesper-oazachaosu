@@ -60,14 +60,14 @@ namespace Repository
 
         public void AddWord(Word word)
         {
-            word.Group = this;
+            word.GroupId = Id;
             Words.Add(word);
 
         }
 
         public void AddResult(Result result)
         {
-            result.Group = this;
+            result.GroupId = Id;
             Results.Add(result);
         }
 

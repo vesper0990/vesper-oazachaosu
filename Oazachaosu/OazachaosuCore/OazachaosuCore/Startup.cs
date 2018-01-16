@@ -35,10 +35,10 @@ namespace OazachaosuCore
             //    .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IBodyProvider, SimpleBodyProvider>();
-            services.AddTransient<IHeaderElementProvider, HeaderElementProvider>();
-            services.AddTransient<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IBodyProvider, SimpleBodyProvider>();
+            services.AddScoped<IHeaderElementProvider, HeaderElementProvider>();
+            services.AddScoped<IWordkiRepo>(provider => new WordkiRepo(services.BuildServiceProvider().GetService<ApplicationDbContext>()));
 
             services.AddMvc();
         }

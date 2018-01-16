@@ -60,7 +60,7 @@ namespace OazachaosuCore.Data
                             Accepted = 10,
                             Correct = 10,
                             DateTime = new DateTime(1990, 9, 24),
-                            Invisibilities = 10,
+                            Invisible = 10,
                             LessonType = WordkiModel.Enums.LessonType.TypingLesson,
                             TimeCount = 10,
                             TranslationDirection = WordkiModel.Enums.TranslationDirection.FromSecond,
@@ -81,8 +81,8 @@ namespace OazachaosuCore.Data
             {
                 foreach (var group in context.Groups)
                 {
-                    context.RemoveRange(context.Results.Where(x => x.Group == group));
-                    context.RemoveRange(context.Words.Where(x => x.Group == group));
+                    context.RemoveRange(context.Results.Where(x => x.GroupId == group.Id));
+                    context.RemoveRange(context.Words.Where(x => x.GroupId == group.Id));
                 }
                 context.SaveChanges();
             }

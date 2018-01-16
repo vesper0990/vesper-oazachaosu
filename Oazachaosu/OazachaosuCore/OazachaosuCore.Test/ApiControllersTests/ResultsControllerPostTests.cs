@@ -21,7 +21,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
     {
         Mock<IBodyProvider> bodyProviderMock = new Mock<IBodyProvider>();
         Mock<IHeaderElementProvider> headerElementProviderMock = new Mock<IHeaderElementProvider>();
-        string postData = "[{\"id\":1,\"parentId\":1,\"correct\":10,\"accepted\":10,\"wrong\":10,\"invisibilities\":10,\"timeCount\":10,\"translationDirection\":1,\"lessonType\":1,\"dateTime\":\"1990-09-24T00:00:00\",\"state\":2147483647},{\"id\":2,\"parentId\":1,\"correct\":10,\"accepted\":10,\"wrong\":10,\"invisibilities\":10,\"timeCount\":10,\"translationDirection\":1,\"lessonType\":1,\"dateTime\":\"1990-09-24T00:00:00\",\"state\":2147483647}]";
+        string postData = "[{\"Id\":1,\"Gid\":1,\"C\":10,\"A\":10,\"W\":10,\"IV\":10,\"TC\":10,\"TD\":1,\"LT\":1,\"DT\":\"1990-09-24T00:00:00\",\"S\":2147483647},{\"Id\":2,\"Gid\":1,\"C\":10,\"A\":10,\"W\":10,\"IV\":10,\"TC\":10,\"TD\":1,\"LT\":1,\"DT\":\"1990-09-24T00:00:00\",\"S\":2147483647}]";
         DbContextOptions<ApplicationDbContext> Options { get; set; }
 
 
@@ -36,6 +36,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetUser(Options);
             using (var context = new ApplicationDbContext(Options))
             {
@@ -66,7 +67,8 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 Result Result = new Result()
                 {
                     Id = 100,
-                    ParentId = 1,
+                    GroupId = 1,
+                    UserId = DatabaseUtil.User.Id,
                 };
                 context.Results.Add(Result);
                 context.SaveChanges();
@@ -91,7 +93,8 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 Result Result = new Result()
                 {
                     Id = 1,
-                    ParentId = 1,
+                    GroupId = context.Groups.First().Id,
+                    UserId = DatabaseUtil.User.Id,
                     Correct = 999,
                 };
                 context.Results.Add(Result);
@@ -109,6 +112,44 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 Result ResultFromDb = context.Results.SingleOrDefault(x => x.Id == 1);
                 Assert.NotNull(ResultFromDb);
                 Assert.AreEqual(10, ResultFromDb.Correct);
+            }
+        }
+
+        [Test]
+        public void Post_date_with_two_users()
+        {
+            using (var context = new ApplicationDbContext(Options))
+            {
+                User user2 = new User()
+                {
+                    Id = 3,
+                    ApiKey = "3",
+                    Name = "3",
+                    Password = "3",
+                };
+                context.Users.Add(user2);
+                Group groupForUser2 = new Group()
+                {
+                    Id = 1,
+                    UserId = 3,
+                };
+                Result result = new Result()
+                {
+                    Id = 1,
+                    GroupId = groupForUser2.Id,
+                };
+                groupForUser2.Results.Add(result);
+                context.Groups.Add(groupForUser2);
+                context.SaveChanges();
+            }
+            using (var context = new ApplicationDbContext(Options))
+            {
+                JsonResult jsonResult = new ResultsController(new WordkiRepo(context)).Post(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
+                Assert.NotNull(jsonResult);
+                ApiResult apiResult = jsonResult.Value as ApiResult;
+                Assert.NotNull(apiResult);
+                Assert.AreEqual(ResultCode.Done, apiResult.Code);
+                Assert.AreEqual(3, context.Results.Count());
             }
         }
 

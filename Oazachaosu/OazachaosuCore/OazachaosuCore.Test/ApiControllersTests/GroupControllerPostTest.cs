@@ -18,7 +18,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
     {
         Mock<IBodyProvider> bodyProviderMock = new Mock<IBodyProvider>();
         Mock<IHeaderElementProvider> headerElementProviderMock = new Mock<IHeaderElementProvider>();
-        string postData = "[{\"id\":1,\"name\":\"Group 1\",\"language1\":1,\"language2\":2,\"state\":2147483647,\"creationDate\":\"2017-12-29T13:03:18.486645\"},{\"id\":2,\"name\":\"Group 1\",\"language1\":1,\"language2\":2,\"state\":2147483647,\"creationDate\":\"2017-12-29T13:03:18.486645\"}]";
+        string postData = "[{\"Id\":1,\"N\":\"Group 1\",\"L1\":1,\"L2\":2,\"S\":2147483647,\"CD\":\"2017-12-29T13:03:18.486645\"},{\"Id\":2,\"N\":\"Group 1\",\"L1\":1,\"L2\":2,\"S\":2147483647,\"CD\":\"2017-12-29T13:03:18.486645\"}]";//
         DbContextOptions<ApplicationDbContext> Options { get; set; }
 
         public GroupControllerPostTest()
@@ -32,6 +32,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         public void SetUp()
         {
             Options = DatabaseUtil.GetOptions();
+            DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetUser(Options);
         }
 
@@ -84,6 +85,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
                 {
                     Id = 1,
                     Name = "jakas",
+                    UserId = DatabaseUtil.User.Id,
                 };
                 context.Groups.Add(group);
                 context.SaveChanges();
