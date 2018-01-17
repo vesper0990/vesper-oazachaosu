@@ -26,6 +26,10 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             DatabaseUtil.SetUser(Options);
         }
 
+        /// <summary>
+        /// Try to add default group to database. Check groups count and equivalation groups from database and 
+        /// this one which was added.
+        /// </summary>
         [Test]
         public void Add_group_test()
         {
@@ -45,6 +49,10 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             }
         }
 
+        /// <summary>
+        /// Add group to empty database with Id set on 0. Check groups count and
+        /// if added group in database has Id not equal 0 (it should be increased).
+        /// </summary>
         [Test]
         public void Add_group_without_id_test()
         {
@@ -60,12 +68,16 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             {
                 Assert.AreEqual(1, context.Groups.Count());
                 Group groupFromDatabase = context.Groups.Single();
-                Assert.AreEqual(1, groupFromDatabase.Id);
+                Assert.AreNotEqual(0, groupFromDatabase.Id);
                 groupToAdd.Id = 1;
                 CheckGroups(groupToAdd, groupFromDatabase);
             }
         }
 
+        /// <summary>
+        /// Add couple of groups with Id set on 0. Check groups count and 
+        /// if all groups have Id different then 0.
+        /// </summary>
         [Test]
         public void Add_group_without_id_with_another_groups()
         {
@@ -89,13 +101,20 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
                     repository.SaveChanges();
                 }
             }
-
             using (var context = new ApplicationDbContext(Options))
             {
                 Assert.AreEqual(9, context.Groups.Count());
+                foreach(Group group in context.Groups)
+                {
+                    Assert.AreNotEqual(0, group.Id);
+                }
             }
         }
-
+        
+        /// <summary>
+        /// Add group to database with two users and group with the same Id.
+        /// Check groups count.
+        /// </summary>
         [Test]
         public void Add_group_with_the_same_id_and_different_userId_test()
         {
@@ -128,6 +147,9 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             }
         }
 
+        /// <summary>
+        /// Try to add same group twice. Check if execption was thrown.
+        /// </summary>
         [Test]
         public void Try_to_add_same_group_test()
         {
@@ -146,6 +168,9 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             }
         }
 
+        /// <summary>
+        /// Try to update group. Check groups count and equivalence of updated group.
+        /// </summary>
         [Test]
         public void Update_group_test()
         {
@@ -182,6 +207,9 @@ namespace OazachaosuCore.Test.WordkiRepositoryTests
             }
         }
 
+        /// <summary>
+        /// Try to get groups from database. Check group count
+        /// </summary>
         [Test]
         public void Get_group_test()
         {

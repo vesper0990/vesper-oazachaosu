@@ -55,6 +55,9 @@ namespace OazachaosuCore.Data
             builder.Entity<Result>()
                 .HasKey(r => new { r.Id, r.UserId });
             builder.Entity<Result>()
+                .Property(g => g.Id)
+                .ValueGeneratedOnAdd();
+            builder.Entity<Result>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Results)
                 .HasForeignKey(x => new { x.GroupId, x.UserId })
@@ -62,6 +65,9 @@ namespace OazachaosuCore.Data
             
             builder.Entity<Word>()
                 .HasKey(r => new { r.Id, r.UserId });
+            builder.Entity<Word>()
+                .Property(g => g.Id)
+                .ValueGeneratedOnAdd();
             builder.Entity<Word>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Words)
