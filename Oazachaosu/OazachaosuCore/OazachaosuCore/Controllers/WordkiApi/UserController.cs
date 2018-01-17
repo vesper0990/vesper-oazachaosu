@@ -2,7 +2,9 @@
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
 using Repository;
+using Repository.Model.DTOConverters;
 using System.Linq;
+using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
@@ -22,7 +24,7 @@ namespace OazachaosuCore.Controllers
             string userName = headerElementProvider.GetElement(Request, "userName");
             string hashPassword = headerElementProvider.GetElement(Request, "password");
             User user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName));
-            if(user == null)
+            if (user == null)
             {
                 result.Code = ResultCode.UserNotFound;
                 return new JsonResult(result);
@@ -33,7 +35,7 @@ namespace OazachaosuCore.Controllers
                 return new JsonResult(result);
             }
             result.Code = ResultCode.Done;
-            result.Object = user;
+            result.Object = UserConverter.GetDTOFromModel(user);
             return new JsonResult(result);
         }
 
@@ -42,7 +44,7 @@ namespace OazachaosuCore.Controllers
             ApiResult result = new ApiResult();
             string userName = headerElementProvider.GetElement(Request, "userName");
             string hashPassword = headerElementProvider.GetElement(Request, "password");
-            if(Repository.GetUsers().Any(x => x.Name.Equals(userName)))
+            if (Repository.GetUsers().Any(x => x.Name.Equals(userName)))
             {
                 result.Code = ResultCode.UserAlreadyExists;
                 return new JsonResult(result);
@@ -55,8 +57,8 @@ namespace OazachaosuCore.Controllers
             };
             Repository.AddUser(user);
             Repository.SaveChanges();
-            user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName));
-            result.Object = user;
+            UserDTO userDto = UserConverter.GetDTOFromModel(Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName)));
+            result.Object = userDto;
             result.Code = ResultCode.Done;
             return new JsonResult(result);
         }
@@ -68,7 +70,7 @@ namespace OazachaosuCore.Controllers
             string hashPassword = headerElementProvider.GetElement(Request, "password");
             string newHashPassword = headerElementProvider.GetElement(Request, "newPassword");
             User user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName) && x.Password.Equals(hashPassword));
-            if(user == null)
+            if (user == null)
             {
                 result.Code = ResultCode.UserNotFound;
                 return new JsonResult(result);
@@ -79,7 +81,7 @@ namespace OazachaosuCore.Controllers
             Repository.UpdateUser(user);
             Repository.SaveChanges();
             user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userName));
-            result.Object = user;
+            result.Object = UserConverter.GetDTOFromModel(user);
             result.Code = ResultCode.Done;
             return new JsonResult(result);
         }
