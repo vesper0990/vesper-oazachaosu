@@ -41,7 +41,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             using (var context = new ApplicationDbContext(Options))
             {
                 headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "userName")).Returns("");
-                JsonResult result = new UserController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new UserController(new WordkiRepo(context)).Get2(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -57,7 +57,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             using (var context = new ApplicationDbContext(Options))
             {
                 headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "password")).Returns("");
-                JsonResult result = new UserController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new UserController(new WordkiRepo(context)).Get2(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -72,7 +72,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         {
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new UserController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new UserController(new WordkiRepo(context)).Get2(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;

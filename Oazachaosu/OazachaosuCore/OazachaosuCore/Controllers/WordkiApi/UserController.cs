@@ -4,10 +4,12 @@ using OazachaosuCore.Helpers.Respone;
 using Repository;
 using Repository.Model.DTOConverters;
 using System.Linq;
+using System.Net;
 using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
+    [Route("[controller]")]
     public class UserController : ApiControllerBase
     {
 
@@ -18,7 +20,53 @@ namespace OazachaosuCore.Controllers
             Repository = repository;
         }
 
-        public IActionResult Get([FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpGet("{name}/{password}")]
+        public IActionResult Get(string name, string password)
+        {
+            User user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(name));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound);
+            }
+            if (!user.Password.Equals(password))
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            return Json(UserConverter.GetDTOFromModel(user));
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] UserDTO userDto)
+        {
+            if (Repository.GetUsers().Any(x => x.Name.Equals(userDto.Name)))
+            {
+                return StatusCode((int)HttpStatusCode.Found);
+            }
+            User user = UserConverter.GetModelFromDTO(userDto);
+            Repository.AddUser(user);
+            Repository.SaveChanges();
+            userDto = UserConverter.GetDTOFromModel(Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userDto.Name)));
+            return Json(userDto);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] UserDTO userDto)
+        {
+            User user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.Password));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound);
+            }
+            user.Password = userDto.Password;
+            user.ApiKey = userDto.Password;
+            Repository.UpdateUser(user);
+            Repository.SaveChanges();
+            user = Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userDto.Name));
+            return Json(UserConverter.GetDTOFromModel(Repository.GetUsers().SingleOrDefault(x => x.Name.Equals(userDto.Name))));
+        }
+
+        [HttpGet("Get2")]
+        public IActionResult Get2([FromServices] IHeaderElementProvider headerElementProvider)
         {
             ApiResult result = new ApiResult();
             string userName = headerElementProvider.GetElement(Request, "userName");
@@ -39,7 +87,8 @@ namespace OazachaosuCore.Controllers
             return new JsonResult(result);
         }
 
-        public IActionResult Post([FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpPost("Post2")]
+        public IActionResult Post2([FromServices] IHeaderElementProvider headerElementProvider)
         {
             ApiResult result = new ApiResult();
             string userName = headerElementProvider.GetElement(Request, "userName");
@@ -63,7 +112,8 @@ namespace OazachaosuCore.Controllers
             return new JsonResult(result);
         }
 
-        public IActionResult Update([FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpPut]
+        public IActionResult Update2([FromServices] IHeaderElementProvider headerElementProvider)
         {
             ApiResult result = new ApiResult();
             string userName = headerElementProvider.GetElement(Request, "userName");
