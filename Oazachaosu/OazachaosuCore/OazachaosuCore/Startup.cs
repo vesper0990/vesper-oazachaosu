@@ -18,17 +18,29 @@ namespace OazachaosuCore
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+
+        public Startup(IConfiguration configuration, IHostingEnvironment currentEnviroment)
         {
             Configuration = configuration;
+            CurrentEnvironment = currentEnviroment;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment CurrentEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>();
+            if (CurrentEnvironment.IsEnvironment("Testing"))
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;"));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;"));
+            }
 
             //services.AddIdentity<User, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()

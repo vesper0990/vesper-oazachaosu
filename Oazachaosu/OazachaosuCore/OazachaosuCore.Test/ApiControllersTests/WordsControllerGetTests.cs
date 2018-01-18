@@ -45,7 +45,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         {
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new WordsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new WordsController(new WordkiRepo(context)).Get3(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -88,7 +88,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             }
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new WordsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new WordsController(new WordkiRepo(context)).Get3(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -123,7 +123,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             }
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new WordsController(new WordkiRepo(context)).Get(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new WordsController(new WordkiRepo(context)).Get3(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result);
 
                 ApiResult apiResult = result.Value as ApiResult;

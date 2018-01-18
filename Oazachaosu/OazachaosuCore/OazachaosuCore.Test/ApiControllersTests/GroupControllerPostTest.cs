@@ -41,7 +41,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         {
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
+                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post2(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
                 Assert.NotNull(jsonResult);
                 ApiResult apiResult = jsonResult.Value as ApiResult;
                 Assert.NotNull(apiResult);
@@ -65,7 +65,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
 
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
+                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post2(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
                 Assert.NotNull(jsonResult);
                 ApiResult apiResult = jsonResult.Value as ApiResult;
                 Assert.NotNull(apiResult);
@@ -92,7 +92,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             }
             using(var context  = new ApplicationDbContext(Options))
             {
-                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
+                JsonResult jsonResult = new GroupsController(new WordkiRepo(context)).Post2(bodyProviderMock.Object, headerElementProviderMock.Object).Result as JsonResult;
                 Assert.NotNull(jsonResult);
                 ApiResult apiResult = jsonResult.Value as ApiResult;
                 Assert.NotNull(apiResult);

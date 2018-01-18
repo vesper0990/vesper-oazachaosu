@@ -30,11 +30,6 @@ namespace OazachaosuCore.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (test)
-            {
-                return;
-            }
-            optionsBuilder.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

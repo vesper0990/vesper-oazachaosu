@@ -3,17 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
+using OazachaosuCore.Models.ApiViewModels;
 using Repository;
 using Repository.Model.DTOConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
-    [Route("Results")]
+    [Route("[controller]")]
     public class ResultsController : ApiControllerBase
     {
         private IWordkiRepo Repository { get; set; }
@@ -23,8 +25,53 @@ namespace OazachaosuCore.Controllers
             Repository = wordkiRepo;
         }
 
-        [HttpGet("")]
-        public IActionResult Get([FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpGet("{dateTime}/{apiKey}")]
+        public IActionResult Get(DateTime dateTime, string apiKey)
+        {
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            return Json(ResultConverter.GetDTOsFromResults(Repository.GetResults().Where(x => x.UserId == user.Id && x.LastChange > dateTime)));
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] PostResultsViewModel data)
+        {
+            DateTime now = DateTime.Now;
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(data.ApiKey));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            IEnumerable<Result> results = ResultConverter.GetResultsFromDTOs(data.Data);
+            IQueryable<Group> dbGroups = Repository.GetGroups(user.Id).Include(x => x.Words);
+            foreach (Result result in results)
+            {
+                result.LastChange = now;
+                result.UserId = user.Id;
+                Group group = dbGroups.SingleOrDefault(x => x.Id == result.GroupId);
+                if (group == null)
+                {
+                    continue;
+                }
+                if (group.Words.Any(x => x.Id == result.Id))
+                {
+                    Repository.UpdateResult(result);
+                }
+                else
+                {
+                    Repository.AddResult(result);
+                }
+            }
+            Repository.SaveChanges();
+            return Ok();
+        }
+
+
+        [HttpGet("Get2")]
+        public IActionResult Get2([FromServices] IHeaderElementProvider headerElementProvider)
         {
             ApiResult result = new ApiResult();
             DateTime dateTime = DateTime.Parse(headerElementProvider.GetElement(Request, "dateTime"));
@@ -41,8 +88,8 @@ namespace OazachaosuCore.Controllers
             return new JsonResult(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpPost("Post2")]
+        public async Task<IActionResult> Post2([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
             DateTime now = DateTime.Now;
             ApiResult result = new ApiResult();

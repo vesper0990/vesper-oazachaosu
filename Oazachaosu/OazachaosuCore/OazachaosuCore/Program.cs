@@ -11,24 +11,24 @@ namespace OazachaosuCore
         public static void Main(string[] args)
         {
 
-            using (var context = new ApplicationDbContext())
-            {
-                context.Database.EnsureCreated();
+            //using (var context = new ApplicationDbContext())
+            //{
+            //    context.Database.EnsureCreated();
 
-                if (context.Groups.Count() == 0)
-                {
-                    DatabaseSeed.Up();
-                }
-                //Group group = context.Groups.FirstOrDefault();
-                //Word word = new Word()
-                //{
-                //    Id = 100,
-                //};
-                //group.AddWord(word);
-                //context.Words.Add(word);
-                //context.SaveChanges();
+            //    if (context.Groups.Count() == 0)
+            //    {
+            //        DatabaseSeed.Up();
+            //    }
+            //    //Group group = context.Groups.FirstOrDefault();
+            //    //Word word = new Word()
+            //    //{
+            //    //    Id = 100,
+            //    //};
+            //    //group.AddWord(word);
+            //    //context.Words.Add(word);
+            //    //context.SaveChanges();
 
-            }
+            //}
             BuildWebHost(args).Run();
         }
 

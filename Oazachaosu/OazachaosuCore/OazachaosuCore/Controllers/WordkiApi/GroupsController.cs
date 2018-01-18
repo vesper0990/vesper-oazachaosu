@@ -2,17 +2,19 @@
 using Newtonsoft.Json;
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
+using OazachaosuCore.Models.ApiViewModels;
 using Repository;
 using Repository.Model.DTOConverters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Controllers
 {
-    [Route("Groups")]
+    [Route("[controller]")]
     public class GroupsController : ApiControllerBase
     {
         private IWordkiRepo Repository { get; set; }
@@ -22,8 +24,48 @@ namespace OazachaosuCore.Controllers
             Repository = wordkiRepo;
         }
 
-        [HttpGet("")]
-        public IActionResult Get([FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpGet("{dateTime}/{apiKey}")]
+        public IActionResult Get(DateTime dateTime, string apiKey)
+        {
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            return Json(GroupConverter.GetDTOsFromGroups(Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] PostGroupViewModel datas)
+        {
+            DateTime now = DateTime.Now;
+            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(datas.ApiKey));
+            if (user == null)
+            {
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            IEnumerable<Group> groups = GroupConverter.GetGroupsFromDTOs(datas.Data);
+            IQueryable<Group> dbGroups = Repository.GetGroups();
+            foreach (Group group in groups)
+            {
+                group.LastChange = now;
+                group.UserId = user.Id;
+                if (dbGroups.Any(x => x.Id == group.Id && x.UserId == group.UserId))
+                {
+                    Repository.UpdateGroup(group);
+                }
+                else
+                {
+                    Repository.AddGroup(group);
+                }
+            }
+            await Repository.SaveChangesAsync();
+            return Ok();
+        }
+
+
+        [HttpGet("get2")]
+        public IActionResult Get2([FromServices] IHeaderElementProvider headerElementProvider)
         {
             ApiResult result = new ApiResult();
             DateTime dateTime = DateTime.Parse(headerElementProvider.GetElement(Request, "dateTime"));
@@ -40,8 +82,8 @@ namespace OazachaosuCore.Controllers
             return new JsonResult(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
+        [HttpPost("Post2")]
+        public async Task<IActionResult> Post2([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
         {
             DateTime now = DateTime.Now;
             ApiResult result = new ApiResult();
