@@ -12,7 +12,7 @@ namespace OazachaosuCore.Data
 
         public static void Up()
         {
-            using (var context = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext(ApplicationDbContext.GetOptions()))
             {
 
                 User user = new User()

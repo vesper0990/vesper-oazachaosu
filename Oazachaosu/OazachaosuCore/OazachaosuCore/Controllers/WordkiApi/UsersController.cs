@@ -11,12 +11,12 @@ using WordkiModelCore.DTO;
 namespace OazachaosuCore.Controllers
 {
     [Route("[controller]")]
-    public class UserController : ApiControllerBase
+    public class UsersController : ApiControllerBase
     {
 
         private IWordkiRepo Repository { get; set; }
 
-        public UserController(IWordkiRepo repository)
+        public UsersController(IWordkiRepo repository)
         {
             Repository = repository;
         }
@@ -41,7 +41,7 @@ namespace OazachaosuCore.Controllers
         {
             if (Repository.GetUsers().Any(x => x.Name.Equals(userDto.Name)))
             {
-                return StatusCode((int)HttpStatusCode.Found);
+                return StatusCode((int)HttpStatusCode.Found, userDto);
             }
             User user = UserConverter.GetModelFromDTO(userDto);
             user.ApiKey = RandomString(32);

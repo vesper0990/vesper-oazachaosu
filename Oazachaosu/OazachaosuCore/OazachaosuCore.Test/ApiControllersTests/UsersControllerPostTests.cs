@@ -40,7 +40,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
         {
             using (var context = new ApplicationDbContext(Options))
             {
-                JsonResult result = new UserController(new WordkiRepo(context)).Post2(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new UsersController(new WordkiRepo(context)).Post2(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result, "Problem with get JsonResult");
 
                 ApiResult apiResult = result.Value as ApiResult;
@@ -64,7 +64,7 @@ namespace OazachaosuCore.Test.ApiControllersTests
             {
                 headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "userName")).Returns("user2");
                 headerElementProviderMock.Setup(x => x.GetElement(It.IsAny<HttpRequest>(), "password")).Returns("password2");
-                JsonResult result = new UserController(new WordkiRepo(context)).Post2(headerElementProviderMock.Object) as JsonResult;
+                JsonResult result = new UsersController(new WordkiRepo(context)).Post2(headerElementProviderMock.Object) as JsonResult;
                 Assert.NotNull(result, "Problem with get JsonResult");
 
                 ApiResult apiResult = result.Value as ApiResult;

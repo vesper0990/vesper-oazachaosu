@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using OazachaosuCore.Data;
 using System;
-using System.Linq;
 using System.Net.Http;
 
 namespace OazachaosuCore.Test.EndToEndTests.ApiTests

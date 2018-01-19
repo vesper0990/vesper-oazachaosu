@@ -12,7 +12,6 @@ namespace OazachaosuCore.Test
 
         static DatabaseUtil()
         {
-            ApplicationDbContext.test = true;
             User = new User()
             {
                 Id = 1,
@@ -24,12 +23,10 @@ namespace OazachaosuCore.Test
 
         public static User User { get; set; }
 
-        public static DbContextOptions<ApplicationDbContext> GetOptions()
-        {
-            return new DbContextOptionsBuilder<ApplicationDbContext>()
+        public static DbContextOptions<ApplicationDbContext> GetOptions() =>
+            new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;")
                 .Options;
-        }
 
         public static void SetUser(DbContextOptions<ApplicationDbContext> options)
         {
@@ -110,7 +107,7 @@ namespace OazachaosuCore.Test
                 IsSelected = checkedUnchecked,
                 LastRepeating = new DateTime(2000, 1, 1),
                 LastChange = new DateTime(2000, 1, 1),
-                
+
             };
         }
 

@@ -8,7 +8,10 @@ namespace OazachaosuCore.Data
     public class ApplicationDbContext : DbContext, IDatabaseContext
     {
 
-        public static bool test = false;
+        public static DbContextOptions<ApplicationDbContext> GetOptions() =>
+            new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;")
+                .Options;
 
         public DbSet<Group> Groups { get; set; }
         public DbSet<Word> Words { get; set; }
@@ -26,10 +29,6 @@ namespace OazachaosuCore.Data
         public Task<int> SaveChangesAsync()
         {
             return base.SaveChangesAsync(default(CancellationToken));
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
