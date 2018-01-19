@@ -39,6 +39,14 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserDTO userDto)
         {
+            if (string.IsNullOrEmpty(userDto.Name))
+            {
+                return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Name)} is empty.");
+            }
+            if (string.IsNullOrEmpty(userDto.Password))
+            {
+                return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Password)} is empty.");
+            }
             if (Repository.GetUsers().Any(x => x.Name.Equals(userDto.Name)))
             {
                 return StatusCode((int)HttpStatusCode.Found, userDto);

@@ -10,23 +10,22 @@ using System.Threading.Tasks;
 namespace OazachaosuCore.Test.EndToEndTests.ApiTests
 {
     [TestFixture]
-    public class WordsControllerTests : ApiTestBase
+    public class WordsControllerGetTests : ApiTestBase
     {
-        public WordsControllerTests() : base()
+        public WordsControllerGetTests() : base()
         {
         }
 
         [SetUp]
         public void SetUp()
         {
-            DatabaseUtil.ClearDatabase(options);
-            DatabaseUtil.SetUser(options);
+            DatabaseUtil.ClearDatabase(Options);
+            DatabaseUtil.SetUser(Options);
         }
 
         [Test]
         public async Task Try_to_get_words_with_right_user()
         {
-            // Act
             var response = await client.GetAsync("Words/1990-01-01/apikey");
             response.EnsureSuccessStatusCode();
 
@@ -49,12 +48,12 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             Group groupToAdd = DatabaseUtil.GetGroup();
             Word wordToAdd = DatabaseUtil.GetWord();
             wordToAdd.Id = 1;
-            using (var context = new ApplicationDbContext(options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 context.Groups.Add(groupToAdd);
                 context.SaveChanges();
             }
-            using (var context = new ApplicationDbContext(options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 context.Words.Add(wordToAdd);
                 context.SaveChanges();

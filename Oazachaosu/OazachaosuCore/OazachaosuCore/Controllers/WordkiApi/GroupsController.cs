@@ -38,6 +38,10 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostGroupViewModel datas)
         {
+            if (string.IsNullOrEmpty(datas.ApiKey))
+            {
+                return StatusCode((int)HttpStatusCode.UnsupportedMediaType);
+            }
             DateTime now = DateTime.Now;
             User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(datas.ApiKey));
             if (user == null)

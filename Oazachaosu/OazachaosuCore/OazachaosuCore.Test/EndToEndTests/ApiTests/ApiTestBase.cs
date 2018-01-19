@@ -11,7 +11,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
     {
         protected readonly TestServer server;
         protected readonly HttpClient client;
-        protected DbContextOptions<ApplicationDbContext> options;
+        protected DbContextOptions<ApplicationDbContext> Options;
 
         public ApiTestBase()
         {
@@ -19,9 +19,9 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
                 .UseEnvironment("Testing")
                 .UseStartup<Startup>());
             client = server.CreateClient();
-            options = DatabaseUtil.GetOptions();
+            Options = DatabaseUtil.GetOptions();
 
-            using (var context = new ApplicationDbContext(options))
+            using (var context = new ApplicationDbContext(Options))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();

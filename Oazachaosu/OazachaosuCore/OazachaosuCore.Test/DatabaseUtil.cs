@@ -12,13 +12,7 @@ namespace OazachaosuCore.Test
 
         static DatabaseUtil()
         {
-            User = new User()
-            {
-                Id = 1,
-                ApiKey = "apikey",
-                Name = "user",
-                Password = "password",
-            };
+            User = GetUser();
         }
 
         public static User User { get; set; }
@@ -28,13 +22,19 @@ namespace OazachaosuCore.Test
                 .UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;")
                 .Options;
 
-        public static void SetUser(DbContextOptions<ApplicationDbContext> options)
+
+        public static void SetUser(DbContextOptions<ApplicationDbContext> options, User user)
         {
             using (var context = new ApplicationDbContext(options))
             {
-                context.Users.Add(User);
+                context.Users.Add(user);
                 context.SaveChanges();
             }
+        }
+
+        public static void SetUser(DbContextOptions<ApplicationDbContext> options)
+        {
+            SetUser(options, GetUser());
         }
 
         public static void SetData(DbContextOptions<ApplicationDbContext> options)
@@ -70,11 +70,28 @@ namespace OazachaosuCore.Test
             }
         }
 
-        public static Group GetGroup(LanguageType language1 = LanguageType.English, LanguageType language2 = LanguageType.Polish, string name = "Name")
+        public static void SetGroup(DbContextOptions<ApplicationDbContext> options)
+        {
+            SetGroup(options, GetGroup());
+        }
+
+        public static void SetGroup(DbContextOptions<ApplicationDbContext> options, Group group)
+        {
+            using (var context = new ApplicationDbContext(options))
+            {
+                context.Groups.Add(group);
+                context.SaveChanges();
+            }
+        }
+
+        public static Group GetGroup(long id = 1,
+            LanguageType language1 = LanguageType.English,
+            LanguageType language2 = LanguageType.Polish,
+            string name = "Name")
         {
             Group group = new Group()
             {
-                Id = 1,
+                Id = id,
                 UserId = User.Id,
                 Language1 = language1,
                 Language2 = language2,
@@ -111,5 +128,19 @@ namespace OazachaosuCore.Test
             };
         }
 
+        public static User GetUser(
+            long id = 1,
+            string apiKey = "apiKey",
+            string name = "name",
+            string password = "password")
+        {
+            return new User()
+            {
+                Id = id,
+                ApiKey = apiKey,
+                Name = name,
+                Password = password,
+            };
+        }
     }
 }
