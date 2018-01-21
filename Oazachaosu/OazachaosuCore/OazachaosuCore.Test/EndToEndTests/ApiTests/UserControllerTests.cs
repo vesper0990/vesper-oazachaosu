@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using OazachaosuCore.Mappers;
 using Repository;
-using Repository.Model.DTOConverters;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -15,6 +14,8 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
     [TestFixture]
     public class UserControllerTests : ApiTestBase
     {
+
+        IMapper mapper = AutoMapperConfig.Initialize();
 
         public UserControllerTests() : base()
         {
@@ -46,7 +47,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         {
             DatabaseUtil.SetUser(Options);
             var response = await client.GetAsync($"Users/{DatabaseUtil.User.Name}/xxx");
-            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         public async Task Try_to_post_user_without_name()
         {
             User user = DatabaseUtil.GetUser(id: 0, apiKey: null, name: null);
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(UserConverter.GetDTOFromModel(user)), Encoding.UTF8, "application/json");
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(user)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
             Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
         }
@@ -77,7 +78,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         public async Task Try_to_post_user_without_password()
         {
             User user = DatabaseUtil.GetUser(id: 0, apiKey: null, password: null);
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(UserConverter.GetDTOFromModel(user)), Encoding.UTF8, "application/json");
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(user)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
             Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
         }
@@ -86,7 +87,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         public async Task Try_to_post_user_with_proper_data()
         {
             User user = DatabaseUtil.GetUser(id: 0, apiKey: null);
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(UserConverter.GetDTOFromModel(user)), Encoding.UTF8, "application/json");
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(user)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
@@ -104,9 +105,9 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         {
             DatabaseUtil.SetUser(Options);
             User userToSend = DatabaseUtil.GetUser(id: 0, apiKey: null);
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(UserConverter.GetDTOFromModel(userToSend)), Encoding.UTF8, "application/json");
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(userToSend)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
-            Assert.AreEqual(HttpStatusCode.Found, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
 
