@@ -13,6 +13,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using OazachaosuCore.Modules;
 using OazachaosuCore.Settings;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace OazachaosuCore
 {
@@ -85,7 +86,7 @@ namespace OazachaosuCore
                 var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
                 dataInitializer.SeedAsync();
             }
-
+            app.UseMiddleware(typeof(Framework.ExceptionHandlerMiddleware));
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

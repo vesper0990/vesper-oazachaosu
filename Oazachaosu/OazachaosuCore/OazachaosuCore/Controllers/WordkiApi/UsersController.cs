@@ -38,7 +38,8 @@ namespace OazachaosuCore.Controllers
         {
             if (string.IsNullOrEmpty(userDto.Name))
             {
-                return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Name)} is empty.");
+                throw new Exception("test");
+                //return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Name)} is empty.");
             }
             if (string.IsNullOrEmpty(userDto.Password))
             {
