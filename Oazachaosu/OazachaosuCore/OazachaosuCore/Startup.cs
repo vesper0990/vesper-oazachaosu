@@ -14,6 +14,9 @@ using Autofac.Extensions.DependencyInjection;
 using OazachaosuCore.Modules;
 using OazachaosuCore.Settings;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace OazachaosuCore
 {
@@ -67,8 +70,11 @@ namespace OazachaosuCore
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-            IApplicationLifetime appLifeTime)
+            IApplicationLifetime appLifeTime, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddNLog();
+            env.ConfigureNLog("nlog.config");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

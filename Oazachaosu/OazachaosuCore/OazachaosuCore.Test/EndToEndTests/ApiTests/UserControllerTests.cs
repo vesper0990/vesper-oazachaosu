@@ -71,7 +71,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             User user = DatabaseUtil.GetUser(id: 0, apiKey: null, name: null);
             HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(user)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
-            Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             User user = DatabaseUtil.GetUser(id: 0, apiKey: null, password: null);
             HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(user)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
-            Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]
@@ -107,9 +107,29 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             User userToSend = DatabaseUtil.GetUser(id: 0, apiKey: null);
             HttpContent content = new StringContent(JsonConvert.SerializeObject(mapper.Map<User, UserDTO>(userToSend)), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Users", content);
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
+        [Test]
+        public async Task Try_to_check_if_user_exist_if_it_not_exist()
+        {
+            var response = await client.GetAsync($"Users/xxx");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            bool isExists = JsonConvert.DeserializeObject<bool>(responseString);
+            Assert.IsFalse(isExists);
+        }
+
+        [Test]
+        public async Task Try_to_check_if_user_exist_if_it_exist()
+        {
+            DatabaseUtil.SetUser(Options);
+            var response = await client.GetAsync($"Users/{DatabaseUtil.User.Name}");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            bool isExists = JsonConvert.DeserializeObject<bool>(responseString);
+            Assert.IsTrue(isExists);
+        }
 
 
     }

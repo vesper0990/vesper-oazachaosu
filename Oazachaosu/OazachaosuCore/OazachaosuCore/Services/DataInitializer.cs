@@ -23,17 +23,13 @@ namespace OazachaosuCore.Services
         public async Task SeedAsync()
         {
             dbContext.Database.EnsureCreated();
-            if((await userService.GetAllUserNames()).Any())
+            if ((await userService.GetAllUserNames()).Any())
             {
                 return;
             }
             for (int i = 1; i <= 10; i++)
             {
-                await userService.RegisterAsync(new WordkiModelCore.DTO.UserDTO()
-                {
-                    Name = $"User{i}",
-                    Password = $"SecretPassword{i}",
-                });
+                await userService.RegisterAsync($"User{i}", $"SecretPassword{i}");
             }
         }
     }

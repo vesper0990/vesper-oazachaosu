@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OazachaosuCore.Extensions;
 using OazachaosuCore.Settings;
 using Repository;
 using System;
@@ -27,6 +28,11 @@ namespace OazachaosuCore.Services
             return await Task.FromResult<IEnumerable<string>>(wordkiRepo.GetUsers().Select(x => x.Name));
         }
 
+        public async Task<bool> IsExists(string name)
+        {
+            return await Task.FromResult(wordkiRepo.GetUsers().Any(x => x.Name == name));
+        }
+
         public async Task<UserDTO> GetAsync(string name, string password)
         {
             User user;
@@ -42,10 +48,14 @@ namespace OazachaosuCore.Services
             return mapper.Map<User, UserDTO>(user);
         }
 
-        public async Task RegisterAsync(UserDTO userDto)
+        public async Task RegisterAsync(string name, string password)
         {
-            User user = mapper.Map<UserDTO, User>(userDto);
-            user.ApiKey = RandomString(32);
+            User user = new User()
+            {
+                Name = name,
+                Password = password
+            };
+            user.ApiKey = Util.GenerateRandomString(32);
             wordkiRepo.AddUser(user);
             await wordkiRepo.SaveChangesAsync();
         }
@@ -58,12 +68,5 @@ namespace OazachaosuCore.Services
             await wordkiRepo.SaveChangesAsync();
         }
 
-        private static Random random = new Random();
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
     }
 }

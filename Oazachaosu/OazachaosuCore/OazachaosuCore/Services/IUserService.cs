@@ -7,9 +7,9 @@ namespace OazachaosuCore.Services
     public interface IUserService : IService
     {
         Task<IEnumerable<string>> GetAllUserNames();
+        Task<bool> IsExists(string name);
         Task<UserDTO> GetAsync(string name, string password);
-        Task RegisterAsync(UserDTO userDto);
+        Task RegisterAsync(string name, string password);
         Task UpdateAsync(string apiKey, string oldPassword, string newPassword);
-
     }
 }

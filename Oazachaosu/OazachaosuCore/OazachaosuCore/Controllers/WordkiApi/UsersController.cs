@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
+using OazachaosuCore.Exceptions;
 using OazachaosuCore.Services;
 using Repository;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using WordkiModelCore.DTO;
 
@@ -12,6 +13,7 @@ namespace OazachaosuCore.Controllers
     [Route("[controller]")]
     public class UsersController : ApiControllerBase
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUserService userService;
         private IWordkiRepo Repository { get; set; }
@@ -22,11 +24,18 @@ namespace OazachaosuCore.Controllers
             this.userService = userService;
         }
 
+        [HttpGet("{name}")]
+        public async Task<IActionResult> IsExisted(string name)
+        {
+            bool isExists = await userService.IsExists(name);
+            return Json(isExists);
+        }
+
         [HttpGet("{name}/{password}")]
         public async Task<IActionResult> Get(string name, string password)
         {
             UserDTO user = await userService.GetAsync(name, password);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -38,19 +47,24 @@ namespace OazachaosuCore.Controllers
         {
             if (string.IsNullOrEmpty(userDto.Name))
             {
-                throw new Exception("test");
-                //return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Name)} is empty.");
+                throw new ApiException(ErrorCode.NameIsEmpty, $"Property: {nameof(userDto.Name)} cannot be empty.");
             }
             if (string.IsNullOrEmpty(userDto.Password))
             {
-                return StatusCode((int)HttpStatusCode.UnsupportedMediaType, $"Property: {nameof(userDto.Password)} is empty.");
+                throw new ApiException(ErrorCode.PasswordIsEmpty, $"Property: {nameof(userDto.Password)} cannot be empty.");
+            }
+            if (await userService.IsExists(userDto.Name))
+            {
+                throw new ApiException(ErrorCode.UserAlreadyExists, $"User with name: {userDto.Name} has already existed");
             }
             try
             {
-                await userService.RegisterAsync(userDto);
-            }catch(Exception e)
+                await userService.RegisterAsync(userDto.Name, userDto.Password);
+            }
+            catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.Found);
+                logger.Error(e, $"Message: {e.Message}, StackTrace: {e.StackTrace}, ExceptionType: {e.GetType()}");
+                throw new ApiException(ErrorCode.Undefined, "Internal server exception");
             }
             return await Get(userDto.Name, userDto.Password);
         }
@@ -60,11 +74,12 @@ namespace OazachaosuCore.Controllers
         {
             try
             {
-            await userService.UpdateAsync(userDto.ApiKey, userDto.Password, "newpassword");
-
-            }catch(Exception e)
+                await userService.UpdateAsync(userDto.ApiKey, userDto.Password, "newpassword");
+            }
+            catch (Exception e)
             {
-
+                logger.Error(e, $"Message: {e.Message}, StackTrace: {e.StackTrace}, ExceptionType: {e.GetType()}");
+                throw new ApiException(ErrorCode.Undefined, "Internal server exception");
             }
             return Json(await Get(userDto.Name, "newpassword"));
         }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using OazachaosuCore.Exceptions;
 
 namespace OazachaosuCore.Framework
 {
@@ -29,7 +30,7 @@ namespace OazachaosuCore.Framework
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var errorCode = "error";
+            var errorCode = ErrorCode.Undefined;
             var statusCode = HttpStatusCode.BadRequest;
             var exceptionType = exception.GetType();
             switch (exception)
@@ -37,11 +38,11 @@ namespace OazachaosuCore.Framework
                 case Exception e when exceptionType == typeof(UnauthorizedAccessException):
                     statusCode = HttpStatusCode.Unauthorized;
                     break;
-                case Exception e when exceptionType == typeof(Exception):
+                case ApiException e when exceptionType == typeof(ApiException):
                     statusCode = HttpStatusCode.InternalServerError;
+                    errorCode = e.Code;
                     break;
             }
-
             var response = new { code = errorCode, message = exception.Message };
             var payload = JsonConvert.SerializeObject(response);
             context.Response.ContentType = "application/json";
