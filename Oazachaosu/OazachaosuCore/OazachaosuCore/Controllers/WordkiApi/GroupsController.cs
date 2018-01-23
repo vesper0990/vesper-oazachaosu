@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OazachaosuCore.Exceptions;
 using OazachaosuCore.Helpers;
 using OazachaosuCore.Helpers.Respone;
 using OazachaosuCore.Models.ApiViewModels;
+using OazachaosuCore.Services;
 using Repository;
 using Repository.Model.DTOConverters;
 using System;
@@ -17,22 +19,25 @@ namespace OazachaosuCore.Controllers
     [Route("[controller]")]
     public class GroupsController : ApiControllerBase
     {
-        private IWordkiRepo Repository { get; set; }
 
-        public GroupsController(IWordkiRepo wordkiRepo) : base()
+        private readonly IUserService userService;
+        private readonly IGroupService groupService;
+
+        public GroupsController(IUserService userService, IGroupService groupService) : base()
         {
-            Repository = wordkiRepo;
+            this.userService = userService;
+            this.groupService = groupService;
         }
 
         [HttpGet("{dateTime}/{apiKey}")]
-        public IActionResult Get(DateTime dateTime, string apiKey)
+        public async Task<IActionResult> Get(DateTime dateTime, string apiKey)
         {
-            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
+            User user = await userService.GetUserAsync(apiKey);
             if (user == null)
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized);
+                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
             }
-            return Json(GroupConverter.GetDTOsFromGroups(Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime)));
+            return Json(groupService.GetGroups(user.Id, dateTime));
         }
 
         [HttpPost]
@@ -40,85 +45,28 @@ namespace OazachaosuCore.Controllers
         {
             if (string.IsNullOrEmpty(datas.ApiKey))
             {
-                return StatusCode((int)HttpStatusCode.UnsupportedMediaType);
+                throw new ApiException(ErrorCode.ApiKeyIsEmpty, $"Parameter: {nameof(datas.ApiKey)} cannot be empty.");
             }
             DateTime now = DateTime.Now;
-            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(datas.ApiKey));
+            User user = await userService.GetUserAsync(datas.ApiKey);
             if (user == null)
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized);
+                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {datas.ApiKey} is not found.");
             }
-            IEnumerable<Group> groups = GroupConverter.GetGroupsFromDTOs(datas.Data);
-            IQueryable<Group> dbGroups = Repository.GetGroups();
-            foreach (Group group in groups)
+            IEnumerable<Group> dbGroups = groupService.GetAll();
+            foreach (GroupDTO groupDto in datas.Data)
             {
-                group.LastChange = now;
-                group.UserId = user.Id;
-                if (dbGroups.Any(x => x.Id == group.Id && x.UserId == group.UserId))
+                if (dbGroups.Any(x => x.Id == groupDto.Id && x.UserId == user.Id))
                 {
-                    Repository.UpdateGroup(group);
+                    groupService.Update(groupDto, user.Id);
                 }
                 else
                 {
-                    Repository.AddGroup(group);
+                    groupService.Add(groupDto, user.Id);
                 }
             }
-            await Repository.SaveChangesAsync();
+            groupService.SaveChanges();
             return Ok();
-        }
-
-
-        [HttpGet("get2")]
-        public IActionResult Get2([FromServices] IHeaderElementProvider headerElementProvider)
-        {
-            ApiResult result = new ApiResult();
-            DateTime dateTime = DateTime.Parse(headerElementProvider.GetElement(Request, "dateTime"));
-            string apiKey = headerElementProvider.GetElement(Request, "apikey");
-            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
-            if (user == null)
-            {
-                result.Message = "User not found.";
-                result.Code = ResultCode.AuthorizationError;
-                return new JsonResult(result);
-            }
-            result.Object = GroupConverter.GetDTOsFromGroups(Repository.GetGroups().Where(x => x.UserId == user.Id && x.LastChange > dateTime));
-            result.Code = ResultCode.Done;
-            return new JsonResult(result);
-        }
-
-        [HttpPost("Post2")]
-        public async Task<IActionResult> Post2([FromServices] IBodyProvider bodyProvider, [FromServices] IHeaderElementProvider headerElementProvider)
-        {
-            DateTime now = DateTime.Now;
-            ApiResult result = new ApiResult();
-            string apiKey = headerElementProvider.GetElement(Request, "apikey");
-            User user = Repository.GetUsers().SingleOrDefault(x => x.ApiKey.Equals(apiKey));
-            if (user == null)
-            {
-                result.Code = ResultCode.UserNotFound;
-                result.Message = "User not found.";
-                return new JsonResult(result);
-            }
-            string content = await bodyProvider.GetBodyAsync(Request);
-            IEnumerable<GroupDTO> DTOs = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(content);
-            IEnumerable<Group> groups = GroupConverter.GetGroupsFromDTOs(DTOs);
-            IQueryable<Group> dbGroups = Repository.GetGroups();
-            foreach (Group group in groups)
-            {
-                group.LastChange = now;
-                group.UserId = user.Id;
-                if (dbGroups.Any(x => x.Id == group.Id && x.UserId == group.UserId))
-                {
-                    Repository.UpdateGroup(group);
-                }
-                else
-                {
-                    Repository.AddGroup(group);
-                }
-            }
-            await Repository.SaveChangesAsync();
-            result.Code = ResultCode.Done;
-            return new JsonResult(result);
         }
     }
 }

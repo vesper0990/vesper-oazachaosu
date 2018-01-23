@@ -23,6 +23,11 @@ namespace OazachaosuCore.Services
             this.wordkiRepo = workiRepo;
         }
 
+        public Task<User> GetUserAsync(string apiKey)
+        {
+            return wordkiRepo.GetUsers().SingleOrDefaultAsync(x => x.ApiKey == apiKey);
+        }
+
         public async Task<IEnumerable<string>> GetAllUserNames()
         {
             return await Task.FromResult<IEnumerable<string>>(wordkiRepo.GetUsers().Select(x => x.Name));

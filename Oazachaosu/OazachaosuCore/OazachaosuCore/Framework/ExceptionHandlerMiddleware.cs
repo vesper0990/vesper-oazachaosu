@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using NLog;
 using OazachaosuCore.Exceptions;
 
 namespace OazachaosuCore.Framework
@@ -10,6 +11,8 @@ namespace OazachaosuCore.Framework
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
 
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
@@ -36,6 +39,7 @@ namespace OazachaosuCore.Framework
             switch (exception)
             {
                 case Exception e when exceptionType == typeof(UnauthorizedAccessException):
+                    logger.Error(exception, $"Message: {exception.Message} | StackTrace: {exception.StackTrace}");
                     statusCode = HttpStatusCode.Unauthorized;
                     break;
                 case ApiException e when exceptionType == typeof(ApiException):

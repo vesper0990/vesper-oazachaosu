@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Repository;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WordkiModelCore.DTO;
 
@@ -6,6 +7,9 @@ namespace OazachaosuCore.Services
 {
     public interface IUserService : IService
     {
+
+        Task<User> GetUserAsync(string apiKey);
+
         Task<IEnumerable<string>> GetAllUserNames();
         Task<bool> IsExists(string name);
         Task<UserDTO> GetAsync(string name, string password);

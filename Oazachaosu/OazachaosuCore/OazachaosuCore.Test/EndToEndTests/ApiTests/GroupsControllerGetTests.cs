@@ -45,7 +45,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         public async Task Try_to_get_group_with_wrong_apikey()
         {
             var response = await client.GetAsync($"Groups/1990-01-01/xxx");
-            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]

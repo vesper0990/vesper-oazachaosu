@@ -3,3 +3,4 @@
  - create common project for api and desktop applicaiton
  - correct rest of api like userscontroller
  - create test for rest of api like usercontroller
+ - check in test errorcode if during request handle some exception was thrown

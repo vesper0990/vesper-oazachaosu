@@ -38,7 +38,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             post.Data = new List<GroupDTO> { GroupConverter.GetDTOFromModel(DatabaseUtil.GetGroup()) };
             StringContent content = new StringContent(JsonConvert.SerializeObject(post), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Groups", content);
-            Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]

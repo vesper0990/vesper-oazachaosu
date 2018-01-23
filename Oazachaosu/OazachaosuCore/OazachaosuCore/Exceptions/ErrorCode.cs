@@ -5,6 +5,8 @@
         Undefined = 0,
         NameIsEmpty,
         PasswordIsEmpty,
+        ApiKeyIsEmpty,
         UserAlreadyExists,
+        UserNotFound,
     }
 }
