@@ -19,13 +19,14 @@ namespace OazachaosuCore.Services
             this.mapper = mapper;
         }
 
-
         public IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime)
         {
-            foreach (Group group in repository.GetGroups().Where(x => x.LastChange > dateTime && x.UserId == userId))
-            {
-                yield return mapper.Map<Group, GroupDTO>(group);
-            }
+            return mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(repository.GetGroups().Where(x => x.LastChange > dateTime && x.UserId == userId));
+        }
+
+        public IEnumerable<Group> GetGroups(long userId)
+        {
+            return repository.GetGroups().Where(x => x.UserId == userId);
         }
 
         public IEnumerable<Group> GetAll()

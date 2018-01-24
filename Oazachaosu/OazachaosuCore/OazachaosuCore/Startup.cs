@@ -57,6 +57,7 @@ namespace OazachaosuCore
             services.AddScoped<IWordkiRepo, WordkiRepo>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IWordService, WordService>();
             services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton(AutoMapperConfig.Initialize());
 

@@ -9,6 +9,7 @@ namespace OazachaosuCore.Services
     {
 
         IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime);
+        IEnumerable<Group> GetGroups(long userId);
         IEnumerable<Group> GetAll();
 
         void Update(GroupDTO group, long userId);

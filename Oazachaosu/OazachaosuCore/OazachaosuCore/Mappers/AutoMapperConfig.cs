@@ -14,6 +14,7 @@ namespace OazachaosuCore.Mappers
                 cfg.CreateMap<Group, GroupDTO>();
                 cfg.CreateMap<GroupDTO, Group>();
                 cfg.CreateMap<Word, WordDTO>();
+                cfg.CreateMap<WordDTO, Word>();
                 cfg.CreateMap<Result, ResultDTO>();
             })
             .CreateMapper();
