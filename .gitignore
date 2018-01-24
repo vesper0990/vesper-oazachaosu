@@ -22,3 +22,11 @@
 /Oazachaosu/OazachaosuCore/OazachaosuCore/bin
 /Oazachaosu/OazachaosuCore/Repository/bin/Release/netcoreapp2.0
 /Oazachaosu/OazachaosuCore/OazachaosuCore.Test/bin/Release/netcoreapp2.0
+/src/Oazachaosu.Api/bin
+/src/Oazachaosu.Api/obj
+/src/Oazachaosu.Core/bin
+/src/Oazachaosu.Core/obj
+/src/Oazachaosu.Core.Common/bin/Debug/netstandard2.0
+/src/Oazachaosu.Core.Common/obj
+/tests/Oazachaosu.Test/bin
+/tests/Oazachaosu.Test/obj

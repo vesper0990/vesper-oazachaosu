@@ -1,0 +1,48 @@
+﻿using AutoMapper;
+using Oazachaosu.Core;
+using Oazachaosu.Core.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Oazachaosu.Api.Services
+{
+    public class ResultService : IResultService
+    {
+
+        private readonly IWordkiRepo repository;
+        private readonly IMapper mapper;
+
+        public ResultService(IWordkiRepo repository, IMapper mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
+        }
+
+        public IEnumerable<ResultDTO> Get(long userId, DateTime dateTime)
+        {
+            return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(repository.GetResults().Where(x => x.UserId == userId && x.LastChange > dateTime));
+        }
+
+        public void Add(ResultDTO resultDto, long userId)
+        {
+            Result result = mapper.Map<ResultDTO, Result>(resultDto);
+            result.UserId = userId;
+            result.LastChange = DateTime.Now;
+            repository.AddResult(result);
+        }
+
+        public void Update(ResultDTO resultDto, long userId)
+        {
+            Result result = mapper.Map<ResultDTO, Result>(resultDto);
+            result.UserId = userId;
+            result.LastChange = DateTime.Now;
+            repository.UpdateResult(result);
+        }
+
+        public void SaveChanges()
+        {
+            repository.SaveChanges();
+        }
+    }
+}
