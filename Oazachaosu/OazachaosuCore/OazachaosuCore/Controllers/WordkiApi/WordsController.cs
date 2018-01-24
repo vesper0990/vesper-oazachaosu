@@ -25,6 +25,7 @@ namespace OazachaosuCore.Controllers
         {
             this.wordService = wordService;
             this.userService = userService;
+            this.groupService = groupService;
         }
 
         [HttpGet("{dateTime}/{apiKey}")]
@@ -41,13 +42,12 @@ namespace OazachaosuCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostWordsViewModel data)
         {
-            DateTime now = DateTime.Now;
             User user = await userService.GetUserAsync(data.ApiKey);
             if (user == null)
             {
                 throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {data.ApiKey} is not found.");
             }
-            IEnumerable<Group> dbGroups = groupService.GetGroups(user.Id);
+            IEnumerable<Group> dbGroups = groupService.GetGroups(user.Id).Include(x => x.Words);
             foreach (WordDTO word in data.Data)
             {
                 Group group = dbGroups.SingleOrDefault(x => x.Id == word.GroupId);

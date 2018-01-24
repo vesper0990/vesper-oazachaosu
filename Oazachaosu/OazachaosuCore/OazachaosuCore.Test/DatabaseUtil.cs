@@ -102,7 +102,9 @@ namespace OazachaosuCore.Test
             return group;
         }
 
-        public static Word GetWord(string language1 = "lang1",
+        public static Word GetWord(
+            long id = 0,
+            string language1 = "lang1",
             string language2 = "lang2",
             string language1Comment = "lang1Comment",
             string language2Comment = "lang2Comment",
@@ -112,6 +114,7 @@ namespace OazachaosuCore.Test
         {
             return new Word()
             {
+                Id = id,
                 GroupId = 1,
                 UserId = User.Id,
                 Language1 = language1,

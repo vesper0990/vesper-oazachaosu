@@ -1,6 +1,7 @@
 ﻿using Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WordkiModelCore.DTO;
 
 namespace OazachaosuCore.Services
@@ -9,7 +10,7 @@ namespace OazachaosuCore.Services
     {
 
         IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime);
-        IEnumerable<Group> GetGroups(long userId);
+        IQueryable<Group> GetGroups(long userId);
         IEnumerable<Group> GetAll();
 
         void Update(GroupDTO group, long userId);

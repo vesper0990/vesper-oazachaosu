@@ -24,7 +24,7 @@ namespace OazachaosuCore.Services
             return mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(repository.GetGroups().Where(x => x.LastChange > dateTime && x.UserId == userId));
         }
 
-        public IEnumerable<Group> GetGroups(long userId)
+        public IQueryable<Group> GetGroups(long userId)
         {
             return repository.GetGroups().Where(x => x.UserId == userId);
         }

@@ -1,6 +1,4 @@
 ﻿ - create more valuable logs
- - remove apicontrollersTests (they are out of date)
  - create common project for api and desktop applicaiton
- - correct rest of api like userscontroller
- - create test for rest of api like usercontroller
+ - create test for resultsController
  - check in test errorcode if during request handle some exception was thrown
