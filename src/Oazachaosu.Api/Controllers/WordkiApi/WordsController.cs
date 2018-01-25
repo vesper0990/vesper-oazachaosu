@@ -4,6 +4,7 @@ using Oazachaosu.Api.Exceptions;
 using Oazachaosu.Api.Models.ApiViewModels;
 using Oazachaosu.Api.Services;
 using Oazachaosu.Core;
+using Oazachaosu.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

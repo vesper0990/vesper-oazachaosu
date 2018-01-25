@@ -5,7 +5,7 @@ namespace Oazachaosu.Api.Services
     public interface IDataInitializer
     {
 
-        Task SeedAsync();
+        Task SeedAsync(bool isSeed);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oazachaosu.Core.Common;
+using System;
 
 namespace Oazachaosu.Api.Exceptions
 {

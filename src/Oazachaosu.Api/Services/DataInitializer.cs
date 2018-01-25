@@ -17,9 +17,13 @@ namespace Oazachaosu.Api.Services
         }
 
 
-        public async Task SeedAsync()
+        public async Task SeedAsync(bool isSeed)
         {
             dbContext.Database.EnsureCreated();
+            if (!isSeed)
+            {
+                return;
+            }
             if ((await userService.GetAllUserNames()).Any())
             {
                 return;

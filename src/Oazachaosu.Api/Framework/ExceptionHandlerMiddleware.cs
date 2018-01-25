@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using NLog;
 using Oazachaosu.Api.Exceptions;
+using Oazachaosu.Core.Common;
 
 namespace Oazachaosu.Api.Framework
 {
@@ -38,9 +39,9 @@ namespace Oazachaosu.Api.Framework
             var exceptionType = exception.GetType();
             switch (exception)
             {
-                case Exception e when exceptionType == typeof(UnauthorizedAccessException):
+                case Exception e when exceptionType == typeof(Exception):
                     logger.Error(exception, $"Message: {exception.Message} | StackTrace: {exception.StackTrace}");
-                    statusCode = HttpStatusCode.Unauthorized;
+                    statusCode = HttpStatusCode.BadRequest;
                     break;
                 case ApiException e when exceptionType == typeof(ApiException):
                     statusCode = HttpStatusCode.InternalServerError;

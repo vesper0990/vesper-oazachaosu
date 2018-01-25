@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Oazachaosu.Api.Exceptions;
 using Oazachaosu.Api.Services;
@@ -15,7 +14,6 @@ namespace Oazachaosu.Api.Controllers
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUserService userService;
-        private readonly IMapper mapper;
 
         public UsersController(IUserService userService)
         {
@@ -35,7 +33,7 @@ namespace Oazachaosu.Api.Controllers
             UserDTO user = await userService.GetAsync(name, password);
             if (user == null)
             {
-                return NotFound();
+                throw new ApiException(ErrorCode.UserNotFound, $"User with name: '{name}' and password: '{password}' is not found.");
             }
             return Json(user);
         }

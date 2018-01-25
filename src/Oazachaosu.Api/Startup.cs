@@ -89,11 +89,8 @@ namespace Oazachaosu.Api
             }
 
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
-            if (generalSettings.SeedData)
-            {
-                var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
-                dataInitializer.SeedAsync();
-            }
+            var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+            dataInitializer.SeedAsync(generalSettings.SeedData);
             app.UseMiddleware(typeof(Framework.ExceptionHandlerMiddleware));
             app.UseStaticFiles();
             app.UseAuthentication();
