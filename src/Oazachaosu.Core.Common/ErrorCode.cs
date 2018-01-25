@@ -1,4 +1,4 @@
-﻿namespace Oazachaosu.Api.Exceptions
+﻿namespace Oazachaosu.Core.Common
 {
     public enum ErrorCode
     {

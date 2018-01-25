@@ -2,26 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Oazachaosu/Oazachaosu/bin
-/Oazachaosu/Oazachaosu/obj
-/Oazachaosu/OazachaosuRepository/bin
-/Oazachaosu/OazachaosuRepository/obj
-/Oazachaosu/packages
-/Oazachaosu/Repository/obj
-/Oazachaosu/.vs
-/Oazachaosu/Repository/bin
-/Oazachaosu/OazachaosuCore/.vs
-/Oazachaosu/OazachaosuCore/OazachaosuCore/bin/Debug/netcoreapp2.0
-/Oazachaosu/OazachaosuCore/OazachaosuCore/obj
-/.vs/vesper-oazachaosu/v15
-/.vs
-/Oazachaosu/OazachaosuCore/OazachaosuCore.Test/bin/Debug/netcoreapp2.0
-/Oazachaosu/OazachaosuCore/OazachaosuCore.Test/obj
-/Oazachaosu/OazachaosuCore/Repository/bin/Debug/netcoreapp2.0
-/Oazachaosu/OazachaosuCore/Repository/obj
-/Oazachaosu/OazachaosuCore/OazachaosuCore/bin
-/Oazachaosu/OazachaosuCore/Repository/bin/Release/netcoreapp2.0
-/Oazachaosu/OazachaosuCore/OazachaosuCore.Test/bin/Release/netcoreapp2.0
 /src/Oazachaosu.Api/bin
 /src/Oazachaosu.Api/obj
 /src/Oazachaosu.Core/bin
@@ -30,3 +10,4 @@
 /src/Oazachaosu.Core.Common/obj
 /tests/Oazachaosu.Test/bin
 /tests/Oazachaosu.Test/obj
+/.vs
