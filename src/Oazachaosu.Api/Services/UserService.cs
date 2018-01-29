@@ -58,7 +58,8 @@ namespace Oazachaosu.Api.Services
             User user = new User()
             {
                 Name = name,
-                Password = password
+                Password = password,
+                CreationDateTime = DateTime.Now,                
             };
             user.ApiKey = Util.GenerateRandomString(32);
             wordkiRepo.AddUser(user);

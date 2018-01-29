@@ -14,7 +14,5 @@ namespace Oazachaosu.Core.Common
         public string Password { get; set; }
         [JsonProperty("CreationDateTime")]
         public string CreationDateTime { get; set; }
-        [JsonProperty("LastLoginDateTime")]
-        public string LastLoginDateTime { get; set; }
     }
 }
