@@ -1,4 +1,3 @@
 ﻿ - create more valuable logs
- - create common project for api and desktop applicaiton
  - create test for resultsController
  - check in test errorcode if during request handle some exception was thrown

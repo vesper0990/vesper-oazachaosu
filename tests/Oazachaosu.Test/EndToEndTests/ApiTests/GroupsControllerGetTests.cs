@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
+using Oazachaosu.Api.Data;
 using Oazachaosu.Core;
 using Oazachaosu.Core.Common;
 using System;
@@ -83,6 +84,25 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             IEnumerable<GroupDTO> groups = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(responseString);
             Assert.NotNull(groups);
             Assert.AreEqual(1, groups.Count());
+        }
+
+        [Test]
+        public async Task Try_to_get_group_with_words()
+        {
+            using(var context = new ApplicationDbContext(Options))
+            {
+                Word wordToDatabase = DatabaseUtil.GetWord();
+                wordToDatabase.LastChange = new DateTime(1990, 1, 1);
+                context.Words.Add(wordToDatabase);
+                context.SaveChanges();
+            }
+            var response = await client.GetAsync($"Groups/1995-01-01/{DatabaseUtil.User.ApiKey}");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            IEnumerable<GroupDTO> groups = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(responseString);
+
+
+
         }
     }
 }

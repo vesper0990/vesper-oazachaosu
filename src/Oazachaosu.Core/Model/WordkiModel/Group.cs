@@ -9,23 +9,14 @@ namespace Oazachaosu.Core
     {
 
         public long Id { get; set; }
-
         public long UserId { get; set; }
-
         public string Name { get; set; }
-
         public LanguageType Language1 { get; set; }
-
         public LanguageType Language2 { get; set; }
-
         public int State { get; set; }
-
         public DateTime CreationDate { get; set; }
-
         public DateTime LastChange { get; set; }
-
         public IList<Word> Words { get; set; }
-
         public IList<Result> Results { get; set; }
 
 

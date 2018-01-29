@@ -41,6 +41,10 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(post), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("Groups", content);
             Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            var responseString = await response.Content.ReadAsStringAsync();
+            ErrorDTO error = JsonConvert.DeserializeObject<ErrorDTO>(responseString);
+            Assert.NotNull(error);
+            Assert.AreEqual(ErrorCode.ApiKeyIsEmpty, error.Code);
         }
 
         [Test]

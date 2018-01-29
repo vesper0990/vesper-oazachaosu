@@ -10,6 +10,7 @@ namespace Oazachaosu.Api.Services
     {
 
         IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime);
+        IEnumerable<GroupDTO> GetGroupsWithChildren(long userId, DateTime dateTime);
         IQueryable<Group> GetGroups(long userId);
         IEnumerable<Group> GetAll();
 

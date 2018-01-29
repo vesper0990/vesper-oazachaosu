@@ -1,57 +1,23 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
 namespace Oazachaosu.Core
 {
     public class Word
     {
-
-        [Column("Id")]
-        [Required]
         public long Id { get; set; }
-
-        [Column("GroupId")]
-        [Required]
         public long GroupId { get; set; }
         public Group Group { get; set; }
-
-        [Column("UserId")]
-        [Required]
         public long UserId { get; set; }
-
-        [Column("Language1")]
         public string Language1 { get; set; }
-
-        [Column("Language2")]
         public string Language2 { get; set; }
-
-        [Column("Language1Comment")]
         public string Language1Comment { get; set; }
-
-        [Column("Language2Comment")]
         public string Language2Comment { get; set; }
-
-        [Column("Drawer")]
         public byte Drawer { get; set; }
-
-        [Column("Visible")]
         public bool IsVisible { get; set; }
-
-        [Column("State")]
         public int State { get; set; }
-
-        [Column("Selected")]
         public bool IsSelected { get; set; }
-
-        [Column("RepeatingNumber")]
         public ushort RepeatingCounter { get; set; }
-
-        [Column("LastRepeating")]
         public DateTime LastRepeating { get; set; }
-
-        [Column("Comment")]
         public string Comment { get; set; }
 
         public DateTime LastChange { get; set; }

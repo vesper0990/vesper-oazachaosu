@@ -19,9 +19,26 @@ namespace Oazachaosu.Api.Services
             this.mapper = mapper;
         }
 
+        public IEnumerable<GroupDTO> GetGroupsWithChildren(long userId, DateTime dateTime)
+        {
+            foreach (Group group in repository.GetGroups())
+            {
+                group.Words = repository.GetWords().Where(x => x.LastChange > dateTime && x.GroupId == group.Id).ToList();
+                group.Results = repository.GetResults().Where(x => x.LastChange > dateTime && x.GroupId == group.Id).ToList();
+                if (group.Words.Count == 0
+                    && group.Results.Count == 0
+                    && group.LastChange < dateTime)
+                {
+                    continue;
+                }
+                yield return mapper.Map<Group, GroupDTO>(group);
+            }
+        }
+
         public IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime)
         {
-            return mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(repository.GetGroups().Where(x => x.LastChange > dateTime && x.UserId == userId));
+            return mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(repository.GetGroups()
+            .Where(x => x.LastChange > dateTime && x.UserId == userId));
         }
 
         public IQueryable<Group> GetGroups(long userId)

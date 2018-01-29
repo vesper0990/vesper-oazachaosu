@@ -31,7 +31,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         public async Task Try_to_get_user_if_database_is_empty()
         {
             var response = await client.GetAsync("Users/name/password");
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         {
             DatabaseUtil.SetUser(Options);
             var response = await client.GetAsync($"Users/xxx/{DatabaseUtil.User.Password}");
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         {
             DatabaseUtil.SetUser(Options);
             var response = await client.GetAsync($"Users/{DatabaseUtil.User.Name}/xxx");
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [Test]
