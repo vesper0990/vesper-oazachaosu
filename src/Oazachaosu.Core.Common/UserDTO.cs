@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Oazachaosu.Core.Common
 {
@@ -13,5 +12,9 @@ namespace Oazachaosu.Core.Common
         public string Name { get; set; }
         [JsonProperty("Password")]
         public string Password { get; set; }
+        [JsonProperty("CreationDateTime")]
+        public string CreationDateTime { get; set; }
+        [JsonProperty("LastLoginDateTime")]
+        public string LastLoginDateTime { get; set; }
     }
 }
