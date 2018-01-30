@@ -21,7 +21,7 @@ namespace Oazachaosu.Api.Services
 
         public IEnumerable<GroupDTO> GetGroupsWithChildren(long userId, DateTime dateTime)
         {
-            foreach (Group group in repository.GetGroups())
+            foreach (Group group in repository.GetGroups().Where(x => x.UserId == userId))
             {
                 group.Words = repository.GetWords().Where(x => x.LastChange > dateTime && x.GroupId == group.Id).ToList();
                 group.Results = repository.GetResults().Where(x => x.LastChange > dateTime && x.GroupId == group.Id).ToList();

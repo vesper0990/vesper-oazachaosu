@@ -32,7 +32,7 @@ namespace Oazachaosu.Api.Controllers
             {
                 throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
             }
-            return Json(groupService.GetGroupsWithChildren(user.Id, dateTime));
+            return Json(groupService.GetGroups(user.Id, dateTime));
         }
 
         [HttpPost]

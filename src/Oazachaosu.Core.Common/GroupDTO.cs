@@ -18,9 +18,5 @@ namespace Oazachaosu.Core.Common
         public int State { get; set; }
         [JsonProperty("CD")]
         public DateTime CreationDate { get; set; }
-        [JsonProperty("Ws")]
-        public IList<WordDTO> Words { get; set; }
-        [JsonProperty("Rs")]
-        public IList<ResultDTO> Results { get; set; }
     }
 }
