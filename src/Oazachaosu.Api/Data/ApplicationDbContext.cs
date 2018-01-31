@@ -17,6 +17,7 @@ namespace Oazachaosu.Api.Data
         public DbSet<Word> Words { get; set; }
         public DbSet<Result> Results { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<WordkiVersion> WordkiVersions { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -34,6 +35,10 @@ namespace Oazachaosu.Api.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<WordkiVersion>()
+                .Property(v => v.Id)
+                .ValueGeneratedOnAdd();
 
             builder.Entity<User>()
                 .Property(g => g.Id)

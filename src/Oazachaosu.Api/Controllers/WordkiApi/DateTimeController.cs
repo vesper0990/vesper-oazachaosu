@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Oazachaosu.Api.Controllers.WordkiApi
+namespace Oazachaosu.Api.Controllers
 {
     [Route("[controller]")]
     public class DateTimeController : ApiControllerBase

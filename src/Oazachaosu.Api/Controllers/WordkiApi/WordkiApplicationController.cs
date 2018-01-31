@@ -1,28 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Oazachaosu.Api.Models;
 
 namespace Oazachaosu.Api.Controllers
 {
     [Route("[controller]")]
-    public class HomeController : Controller
+    public class WordkiApplicationController : ApiControllerBase
     {
-        [Route("Index")]
-        public IActionResult Index()
+
+        public WordkiApplicationController()
         {
-            return Json(Directory.GetCurrentDirectory());
+
         }
 
-        [HttpGet("Wordki")]
-        public async Task<IActionResult> Wordki()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             var path = Path.Combine(
                            Directory.GetCurrentDirectory(),
                           "Wordki.zip");
-
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
             {
@@ -30,6 +27,11 @@ namespace Oazachaosu.Api.Controllers
             }
             memory.Position = 0;
             return File(memory, GetContentType(path), Path.GetFileName(path));
+        }
+
+        public Task<IActionResult> Post()
+        {
+            return null;
         }
 
         private string GetContentType(string path)
@@ -56,25 +58,6 @@ namespace Oazachaosu.Api.Controllers
                 {".gif", "image/gif"},
                 {".csv", "text/csv"}
             };
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
