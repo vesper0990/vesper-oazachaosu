@@ -55,6 +55,7 @@ namespace Oazachaosu.Api.Services
         {
             Group group = mapper.Map<GroupDTO, Group>(groupDto);
             group.UserId = userId;
+            group.LastChange = DateTime.Now;
             repository.UpdateGroup(group);
         }
 
@@ -62,6 +63,7 @@ namespace Oazachaosu.Api.Services
         {
             Group group = mapper.Map<GroupDTO, Group>(groupDto);
             group.UserId = userId;
+            group.LastChange = DateTime.Now;
             repository.AddGroup(group);
         }
 
