@@ -16,6 +16,7 @@ namespace Oazachaosu.Api.Mappers
                 cfg.CreateMap<Word, WordDTO>();
                 cfg.CreateMap<WordDTO, Word>();
                 cfg.CreateMap<Result, ResultDTO>();
+                cfg.CreateMap<ResultDTO, Result>();
             })
             .CreateMapper();
     }
