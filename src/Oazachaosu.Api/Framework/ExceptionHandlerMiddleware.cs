@@ -32,7 +32,7 @@ namespace Oazachaosu.Api.Framework
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var errorCode = ErrorCode.Undefined;
             var statusCode = HttpStatusCode.BadRequest;
@@ -48,11 +48,21 @@ namespace Oazachaosu.Api.Framework
                     errorCode = e.Code;
                     break;
             }
-            var response = new { code = errorCode, message = exception.Message };
+            var response = new { code = errorCode, message = CollectExceptionsInformation(exception) };
             var payload = JsonConvert.SerializeObject(response);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
             return context.Response.WriteAsync(payload);
         }
+
+        private string CollectExceptionsInformation(Exception exception)
+        {
+            if(exception.InnerException == null)
+            {
+                return $"'{exception.Message}'\n";
+            }
+            string result = $"'{exception.Message}'\n{CollectExceptionsInformation(exception.InnerException)}";
+            return result;
+        } 
     }
 }
