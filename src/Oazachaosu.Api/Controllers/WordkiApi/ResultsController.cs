@@ -46,7 +46,7 @@ namespace Oazachaosu.Api.Controllers
             {
                 throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {data.ApiKey} is not found.");
             }
-            IEnumerable<Group> dbGroups = groupService.GetGroups(user.Id).Include(x => x.Words);
+            IEnumerable<Group> dbGroups = groupService.GetGroups(user.Id).Include(x => x.Results);
             foreach (var result in data.Data)
             {
                 Group group = dbGroups.SingleOrDefault(x => x.Id == result.GroupId);
