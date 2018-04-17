@@ -61,6 +61,10 @@ namespace Oazachaosu.Api
             services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton(AutoMapperConfig.Initialize());
 
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                                                             .AllowAnyMethod()
+                                                              .AllowAnyHeader()));
+
             services.AddMvc();
 
             var builder = new ContainerBuilder();
@@ -87,7 +91,7 @@ namespace Oazachaosu.Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseCors("AllowAll");
             var generalSettings = app.ApplicationServices.GetService<GeneralSettings>();
             var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
             dataInitializer.SeedAsync(generalSettings.SeedData).ConfigureAwait(false);

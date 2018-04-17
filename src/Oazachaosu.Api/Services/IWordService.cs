@@ -8,6 +8,7 @@ namespace Oazachaosu.Api.Services
     {
 
         IEnumerable<WordDTO> Get(long userId, DateTime dateTime);
+        IEnumerable<WordDTO> Get(long userId, long groupId);
 
         void Add(WordDTO wordDto, long userId);
         void Update(WordDTO wordDto, long userId);

@@ -39,6 +39,17 @@ namespace Oazachaosu.Api.Controllers
             return Json(wordService.Get(user.Id, dateTime));
         }
 
+        [HttpGet("{dateTime}/{groupId}/{apiKey}")]
+        public async Task<IActionResult> Get(long groupId, string apiKey)
+        {
+            User user = await userService.GetUserAsync(apiKey);
+            if (user == null)
+            {
+                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
+            }
+            return Json(wordService.Get(user.Id, groupId));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostWordsViewModel data)
         {

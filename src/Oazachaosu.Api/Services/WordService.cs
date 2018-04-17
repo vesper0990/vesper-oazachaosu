@@ -24,6 +24,14 @@ namespace Oazachaosu.Api.Services
             return mapper.Map<IEnumerable<Word>, IEnumerable<WordDTO>>(repository.GetWords().Where(x => x.UserId == userId && x.LastChange > dateTime));
         }
 
+        public IEnumerable<WordDTO> Get(long userId, long groupId)//todo tests
+        {
+            return mapper.Map<IEnumerable<Word>, IEnumerable<WordDTO>>(repository.GetWords().Where(x => 
+            x.UserId == userId && 
+            x.GroupId == groupId &&
+            x.State > 0));
+        }
+
         public void Add(WordDTO wordDto, long userId)
         {
             Word word = mapper.Map<WordDTO, Word>(wordDto);
