@@ -3,6 +3,7 @@ using Oazachaosu.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Oazachaosu.Api.Services
 {
@@ -11,6 +12,7 @@ namespace Oazachaosu.Api.Services
 
         IEnumerable<GroupDTO> GetGroups(long userId, DateTime dateTime);
         IEnumerable<GroupDTO> GetGroupsWithChildren(long userId, DateTime dateTime);
+        Task<IEnumerable<GroupItemDTO>> GetGroupItems(long userId);
         IQueryable<Group> GetGroups(long userId);
         IEnumerable<Group> GetAll();
 

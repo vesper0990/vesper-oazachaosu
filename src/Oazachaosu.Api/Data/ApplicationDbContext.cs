@@ -18,6 +18,7 @@ namespace Oazachaosu.Api.Data
         public DbSet<Result> Results { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<WordkiVersion> WordkiVersions { get; set; }
+        public DbContext This { get { return this; } }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

@@ -4,6 +4,7 @@ using Oazachaosu.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Oazachaosu.Api.Services
 {
@@ -39,6 +40,11 @@ namespace Oazachaosu.Api.Services
         {
             return mapper.Map<IEnumerable<Group>, IEnumerable<GroupDTO>>(repository.GetGroups()
             .Where(x => x.LastChange > dateTime && x.UserId == userId));
+        }
+
+        public async Task<IEnumerable<GroupItemDTO>> GetGroupItems(long userId)//todo tests
+        {
+            return await repository.GetGroupItems(userId);
         }
 
         public IQueryable<Group> GetGroups(long userId)

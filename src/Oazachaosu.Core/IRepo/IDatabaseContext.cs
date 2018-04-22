@@ -12,6 +12,7 @@ namespace Oazachaosu.Core
         DbSet<Result> Results { get; set; }
         DbSet<User> Users { get; set; }
         DbSet<WordkiVersion> WordkiVersions { get; set; }
+        DbContext This { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

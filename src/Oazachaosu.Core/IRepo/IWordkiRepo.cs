@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Oazachaosu.Core
@@ -10,6 +11,7 @@ namespace Oazachaosu.Core
         IQueryable<Group> GetGroups();
         IQueryable<Group> GetGroups(long userId);
         Group GetGroup(long id, long userId);
+        Task<IEnumerable<Common.GroupItemDTO>> GetGroupItems(long userId);
 
         IQueryable<Word> GetWords();
         IQueryable<Word> GetWords(long userId);
