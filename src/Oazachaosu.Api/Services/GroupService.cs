@@ -57,6 +57,12 @@ namespace Oazachaosu.Api.Services
             return repository.GetGroups();
         }
 
+        public GroupDetailDTO GetGroupDetail(long userId, long groupId)
+        {
+            return mapper.Map<Group, GroupDetailDTO>(repository.GetGroupWithChildren(userId, groupId));
+        }
+
+
         public void Update(GroupDTO groupDto, long userId)
         {
             Group group = mapper.Map<GroupDTO, Group>(groupDto);

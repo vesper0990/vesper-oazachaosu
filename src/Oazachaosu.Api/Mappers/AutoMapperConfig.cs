@@ -11,10 +11,14 @@ namespace Oazachaosu.Api.Mappers
             {
                 cfg.CreateMap<User, UserDTO>();
                 cfg.CreateMap<UserDTO, User>();
+
                 cfg.CreateMap<Group, GroupDTO>();
                 cfg.CreateMap<GroupDTO, Group>();
                 cfg.CreateMap<Group, GroupItemDTO>();
                 cfg.CreateMap<GroupItemDTO, Group>();
+                cfg.CreateMap<Group, GroupDetailDTO>();
+                cfg.CreateMap<GroupDetailDTO, Group>();
+
                 cfg.CreateMap<Word, WordDTO>();
                 cfg.CreateMap<WordDTO, Word>();
                 cfg.CreateMap<Result, ResultDTO>();

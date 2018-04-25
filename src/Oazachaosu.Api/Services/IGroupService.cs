@@ -15,6 +15,7 @@ namespace Oazachaosu.Api.Services
         Task<IEnumerable<GroupItemDTO>> GetGroupItems(long userId);
         IQueryable<Group> GetGroups(long userId);
         IEnumerable<Group> GetAll();
+        GroupDetailDTO GetGroupDetail(long userId, long groupId);
 
         void Update(GroupDTO group, long userId);
         void Add(GroupDTO group, long userId);

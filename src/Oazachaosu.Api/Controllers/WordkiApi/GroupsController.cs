@@ -46,6 +46,17 @@ namespace Oazachaosu.Api.Controllers
             return Json(await groupService.GetGroupItems(user.Id));
         }
 
+        [HttpGet("getGroupDetails/{apiKey}/{groupId}")]
+        public async Task<IActionResult> GetGroupDetails(string apiKey, long groupId)
+        {
+            User user = await userService.GetUserAsync(apiKey);
+            if (user == null)
+            {
+                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
+            }
+            return Json(groupService.GetGroupDetail(user.Id, groupId));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostGroupViewModel datas)
         {
