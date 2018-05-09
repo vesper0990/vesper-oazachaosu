@@ -10,7 +10,7 @@ namespace Oazachaosu.Core.Common
         public LanguageType Language1 { get; set; }
         public LanguageType Language2 { get; set; }
         public IEnumerable<WordDTO> Words { get; set; }
-        public IEnumerable<ResultDTO> Resutls { get; set; }
+        public IEnumerable<ResultDTO> Results { get; set; }
 
     }
 }
