@@ -24,6 +24,7 @@ namespace Oazachaosu.Api.Framework
         {
             try
             {
+                logger.Debug($"Request: {context.Request.Path}");
                 await _next(context);
             }
             catch (Exception ex)

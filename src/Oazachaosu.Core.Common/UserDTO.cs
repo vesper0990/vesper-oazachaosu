@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Oazachaosu.Core.JsonConverters;
 
 namespace Oazachaosu.Core.Common
 {
     public class UserDTO
     {
         [JsonProperty("Id")]
+        [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
         [JsonProperty("ApiKey")]
         public string ApiKey { get; set; }

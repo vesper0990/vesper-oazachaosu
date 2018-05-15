@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Oazachaosu.Core.JsonConverters;
 using System;
 
 namespace Oazachaosu.Core.Common
@@ -6,8 +7,10 @@ namespace Oazachaosu.Core.Common
     public class WordDTO
     {
         [JsonProperty("Id")]
+        [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
         [JsonProperty("Gid")]
+        [JsonConverter(typeof(LongToStringConverter))]
         public long GroupId { get; set; }
         [JsonProperty("L1")]
         public string Language1 { get; set; }
