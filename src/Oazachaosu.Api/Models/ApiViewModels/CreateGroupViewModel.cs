@@ -1,13 +1,10 @@
 ﻿using Oazachaosu.Core.Common;
-using System.Collections.Generic;
 
 namespace Oazachaosu.Api.Models.ApiViewModels
 {
-    public class PostGroupViewModel
+    public class CreateGroupViewModel
     {
-
         public string ApiKey { get; set; }
-        public IEnumerable<GroupDTO> Data { get; set; }
-
+        public GroupToCreateDTO Data { get; set; }
     }
 }

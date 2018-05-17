@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oazachaosu.Api.Exceptions;
+using Oazachaosu.Api.Models;
+using Oazachaosu.Api.Models.ApiViewModels;
 using Oazachaosu.Api.Services;
 using Oazachaosu.Core;
 using Oazachaosu.Core.Common;
-using OazachaosuCore.Models.ApiViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,6 +84,24 @@ namespace Oazachaosu.Api.Controllers
                 }
             }
             groupService.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupViewModel datas)
+        {
+            if (string.IsNullOrEmpty(datas.ApiKey))
+            {
+                throw new ApiException(ErrorCode.ApiKeyIsEmpty, $"Parameter: {nameof(datas.ApiKey)} cannot be empty.");
+            }
+            DateTime now = DateTime.Now;
+            User user = await userService.GetUserAsync(datas.ApiKey);
+            if (user == null)
+            {
+                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {datas.ApiKey} is not found.");
+            }
+            Group group = 
+
             return Ok();
         }
     }

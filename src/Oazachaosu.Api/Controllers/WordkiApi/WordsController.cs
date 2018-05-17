@@ -7,6 +7,7 @@ using Oazachaosu.Core;
 using Oazachaosu.Core.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,6 +27,13 @@ namespace Oazachaosu.Api.Controllers
             this.wordService = wordService;
             this.userService = userService;
             this.groupService = groupService;
+        }
+
+        [HttpGet("Close")]
+        public IActionResult Close()
+        {
+            Environment.Exit(1);
+            return Json(true);
         }
 
         [HttpGet("{dateTime}/{apiKey}")]
@@ -62,6 +70,7 @@ namespace Oazachaosu.Api.Controllers
             foreach (var word in data.Data)
             {
                 Group group = dbGroups.SingleOrDefault(x => x.Id == word.GroupId);
+                
                 if (group == null)
                 {
                     continue;
