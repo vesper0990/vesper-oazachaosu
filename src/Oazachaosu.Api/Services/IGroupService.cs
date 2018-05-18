@@ -19,6 +19,7 @@ namespace Oazachaosu.Api.Services
 
         void Update(GroupDTO group, long userId);
         void Add(GroupDTO group, long userId);
+        void Add(GroupToCreateDTO group, long userId);
 
         void SaveChanges();
     }

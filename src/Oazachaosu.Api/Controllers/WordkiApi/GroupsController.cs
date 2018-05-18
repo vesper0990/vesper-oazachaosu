@@ -87,7 +87,7 @@ namespace Oazachaosu.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("createGroup")]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupViewModel datas)
         {
             if (string.IsNullOrEmpty(datas.ApiKey))
@@ -100,8 +100,8 @@ namespace Oazachaosu.Api.Controllers
             {
                 throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {datas.ApiKey} is not found.");
             }
-            Group group = 
-
+            groupService.Add(datas.Data, user.Id);
+            groupService.SaveChanges();
             return Ok();
         }
     }

@@ -79,6 +79,28 @@ namespace Oazachaosu.Api.Services
             repository.AddGroup(group);
         }
 
+        public void Add(GroupToCreateDTO groupDto, long userId)
+        {
+            Group group = new Group()
+            {
+                UserId = userId,
+                Name = groupDto.Name,
+                Language1 = groupDto.Language1Type,
+                Language2 = groupDto.Language2Type,
+                CreationDate = DateTime.Now,
+            };
+            repository.AddGroup(group);
+            repository.SaveChanges();
+            foreach(Word word in mapper.Map<IEnumerable<WordToCreateDTO>, IEnumerable<Word>>(groupDto.Words))
+            {
+                word.Id = DateTime.Now.Ticks;
+                word.GroupId = group.Id;
+                word.UserId = userId;
+                repository.AddWord(word);
+            }
+            repository.SaveChanges();
+        }
+
         public void SaveChanges()
         {
             repository.SaveChanges();
