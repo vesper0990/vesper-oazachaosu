@@ -19,7 +19,7 @@ namespace Oazachaosu.Api.Controllers
         private readonly IUserService userService;
         private readonly IGroupService groupService;
 
-        public GroupsController(IUserService userService, IGroupService groupService) : base()
+        public GroupsController(IUserService userService, IGroupService groupService) : base(userService)
         {
             this.userService = userService;
             this.groupService = groupService;
@@ -61,16 +61,7 @@ namespace Oazachaosu.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostGroupViewModel datas)
         {
-            if (string.IsNullOrEmpty(datas.ApiKey))
-            {
-                throw new ApiException(ErrorCode.ApiKeyIsEmpty, $"Parameter: {nameof(datas.ApiKey)} cannot be empty.");
-            }
-            DateTime now = DateTime.Now;
-            User user = await userService.GetUserAsync(datas.ApiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {datas.ApiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(datas.ApiKey);
             IEnumerable<Group> dbGroups = groupService.GetAll();
             foreach (GroupDTO groupDto in datas.Data)
             {
@@ -87,20 +78,20 @@ namespace Oazachaosu.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("createGroup")]
-        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupViewModel datas)
+        [HttpPost("AddGroup")]
+        public async Task<IActionResult> AddGroup([FromBody] AddGroupViewModel datas)
         {
-            if (string.IsNullOrEmpty(datas.ApiKey))
-            {
-                throw new ApiException(ErrorCode.ApiKeyIsEmpty, $"Parameter: {nameof(datas.ApiKey)} cannot be empty.");
-            }
-            DateTime now = DateTime.Now;
-            User user = await userService.GetUserAsync(datas.ApiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {datas.ApiKey} is not found.");
-            }
-            groupService.Add(datas.Data, user.Id);
+            User user = await CheckIfUserExists(datas.ApiKey);
+            Group newGroup = groupService.Add(datas.Data, user.Id);
+            groupService.SaveChanges();
+            return Json(newGroup.Id);
+        }
+
+        [HttpPost("EditGroup")]
+        public async Task<IActionResult> EditGroup([FromBody] EditGroupViewModel datas)
+        {
+            User user = await CheckIfUserExists(datas.ApiKey);
+            groupService.Edit(datas.Data, user.Id);
             groupService.SaveChanges();
             return Ok();
         }

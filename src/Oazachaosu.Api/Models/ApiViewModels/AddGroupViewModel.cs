@@ -2,9 +2,9 @@
 
 namespace Oazachaosu.Api.Models.ApiViewModels
 {
-    public class CreateGroupViewModel
+    public class AddGroupViewModel
     {
         public string ApiKey { get; set; }
-        public GroupToCreateDTO Data { get; set; }
+        public GroupToAddDTO Data { get; set; }
     }
 }

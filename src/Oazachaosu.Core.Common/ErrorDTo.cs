@@ -1,5 +1,4 @@
-﻿
-namespace Oazachaosu.Core.Common
+﻿namespace Oazachaosu.Core.Common
 {
     public class ErrorDTO
     {

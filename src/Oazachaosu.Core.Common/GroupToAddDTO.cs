@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 namespace Oazachaosu.Core.Common
 {
-    public class GroupToCreateDTO
+    public class GroupToAddDTO
     {
-
-        [JsonProperty("name")]
+        [JsonProperty("N")]
         public string Name { get; set; }
-        [JsonProperty("language1")]
+        [JsonProperty("L1")]
         public LanguageType Language1Type { get; set; }
-        [JsonProperty("language2")]
+        [JsonProperty("L2")]
         public LanguageType Language2Type { get; set; }
         [JsonProperty("words")]
         public IEnumerable<WordToCreateDTO> Words { get; set; }

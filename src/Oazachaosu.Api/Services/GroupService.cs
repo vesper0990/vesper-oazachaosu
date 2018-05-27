@@ -79,7 +79,7 @@ namespace Oazachaosu.Api.Services
             repository.AddGroup(group);
         }
 
-        public void Add(GroupToCreateDTO groupDto, long userId)
+        public Group Add(GroupToAddDTO groupDto, long userId)
         {
             Group group = new Group()
             {
@@ -91,14 +91,26 @@ namespace Oazachaosu.Api.Services
             };
             repository.AddGroup(group);
             repository.SaveChanges();
-            foreach(Word word in mapper.Map<IEnumerable<WordToCreateDTO>, IEnumerable<Word>>(groupDto.Words))
+            if (groupDto.Words != null)
             {
-                word.Id = DateTime.Now.Ticks;
-                word.GroupId = group.Id;
-                word.UserId = userId;
-                repository.AddWord(word);
+                foreach (Word word in mapper.Map<IEnumerable<WordToCreateDTO>, IEnumerable<Word>>(groupDto.Words))
+                {
+                    word.Id = DateTime.Now.Ticks;
+                    word.GroupId = group.Id;
+                    word.UserId = userId;
+                    repository.AddWord(word);
+                }
+                repository.SaveChanges();
             }
-            repository.SaveChanges();
+            return group;
+        }
+
+        public Group Edit(GroupToEditDTO groupToEdit, long userId)//todo test it
+        {
+            Group group = mapper.Map<GroupToEditDTO, Group>(groupToEdit);
+            group.UserId = userId;
+            repository.UpdateGroup(group);
+            return group;
         }
 
         public void SaveChanges()

@@ -18,8 +18,10 @@ namespace Oazachaosu.Api.Mappers
                 cfg.CreateMap<GroupItemDTO, Group>();
                 cfg.CreateMap<Group, GroupDetailDTO>();
                 cfg.CreateMap<GroupDetailDTO, Group>();
-                cfg.CreateMap<Group, GroupToCreateDTO>();
-                cfg.CreateMap<GroupToCreateDTO, Group>();
+                cfg.CreateMap<Group, GroupToAddDTO>();
+                cfg.CreateMap<GroupToAddDTO, Group>();
+                cfg.CreateMap<Group, GroupToEditDTO>();
+                cfg.CreateMap<GroupToEditDTO, Group>();
 
                 cfg.CreateMap<Word, WordDTO>();
                 cfg.CreateMap<WordDTO, Word>();

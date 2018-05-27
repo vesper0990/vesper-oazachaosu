@@ -3,7 +3,7 @@ using Oazachaosu.Core.JsonConverters;
 
 namespace Oazachaosu.Core.Common
 {
-    public class GroupItemDTO
+    public class GroupToEditDTO
     {
         [JsonProperty("Id")]
         [JsonConverter(typeof(LongToStringConverter))]
@@ -14,10 +14,5 @@ namespace Oazachaosu.Core.Common
         public LanguageType Language1 { get; set; }
         [JsonProperty("L2")]
         public LanguageType Language2 { get; set; }
-        [JsonProperty("WC")]
-        public int WordsCount { get; set; }
-        [JsonProperty("RC")]
-        public int ResultsCount { get; set; }
-
     }
 }
