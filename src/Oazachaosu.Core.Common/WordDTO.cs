@@ -6,33 +6,33 @@ namespace Oazachaosu.Core.Common
 {
     public class WordDTO
     {
-        [JsonProperty("Id")]
         [JsonConverter(typeof(LongToStringConverter))]
+        [JsonProperty("id")]
         public long Id { get; set; }
-        [JsonProperty("Gid")]
         [JsonConverter(typeof(LongToStringConverter))]
+        [JsonProperty("groupId")]
         public long GroupId { get; set; }
-        [JsonProperty("L1")]
+        [JsonProperty("language1")]
         public string Language1 { get; set; }
-        [JsonProperty("L2")]
+        [JsonProperty("lanuage2")]
         public string Language2 { get; set; }
-        [JsonProperty("L1C")]
+        [JsonProperty("language1Comment")]
         public string Language1Comment { get; set; }
-        [JsonProperty("L2C")]
+        [JsonProperty("language2Comment")]
         public string Language2Comment { get; set; }
-        [JsonProperty("D")]
+        [JsonProperty("drawer")]
         public byte Drawer { get; set; }
-        [JsonProperty("IV")]
+        [JsonProperty("isVisible")]
         public bool IsVisible { get; set; }
-        [JsonProperty("S")]
+        [JsonProperty("state")]
         public int State { get; set; }
-        [JsonProperty("IS")]
+        [JsonProperty("isSelected")]
         public bool IsSelected { get; set; }
-        [JsonProperty("RC")]
+        [JsonProperty("repeatingCounter")]
         public ushort RepeatingCounter { get; set; }
-        [JsonProperty("LR")]
+        [JsonProperty("lastRepeating")]
         public DateTime LastRepeating { get; set; }
-        [JsonProperty("C")]
+        [JsonProperty("comment")]
         public string Comment { get; set; }
     }
 }

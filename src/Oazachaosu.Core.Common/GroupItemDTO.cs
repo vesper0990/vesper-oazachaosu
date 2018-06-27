@@ -5,18 +5,18 @@ namespace Oazachaosu.Core.Common
 {
     public class GroupItemDTO
     {
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
-        [JsonProperty("N")]
+        [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("L1")]
+        [JsonProperty("language1")]
         public LanguageType Language1 { get; set; }
-        [JsonProperty("L2")]
+        [JsonProperty("language2")]
         public LanguageType Language2 { get; set; }
-        [JsonProperty("WC")]
+        [JsonProperty("wordsCount")]
         public int WordsCount { get; set; }
-        [JsonProperty("RC")]
+        [JsonProperty("resultCount")]
         public int ResultsCount { get; set; }
 
     }

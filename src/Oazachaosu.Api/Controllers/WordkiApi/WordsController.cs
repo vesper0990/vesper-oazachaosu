@@ -18,54 +18,33 @@ namespace Oazachaosu.Api.Controllers
     {
 
         private readonly IWordService wordService;
-        private readonly IUserService userService;
         private readonly IGroupService groupService;
 
         public WordsController(IWordService wordService, IGroupService groupService,
-            IUserService userService) : base()
+            IUserService userService) : base(userService)
         {
             this.wordService = wordService;
-            this.userService = userService;
             this.groupService = groupService;
-        }
-
-        [HttpGet("Close")]
-        public IActionResult Close()
-        {
-            Environment.Exit(1);
-            return Json(true);
         }
 
         [HttpGet("{dateTime}/{apiKey}")]
         public async Task<IActionResult> Get(DateTime dateTime, string apiKey)
         {
-            User user = await userService.GetUserAsync(apiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(apiKey);
             return Json(wordService.Get(user.Id, dateTime));
         }
 
         [HttpGet("{dateTime}/{groupId}/{apiKey}")]
         public async Task<IActionResult> Get(long groupId, string apiKey)
         {
-            User user = await userService.GetUserAsync(apiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(apiKey);
             return Json(wordService.Get(user.Id, groupId));
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostWordsViewModel data)
         {
-            User user = await userService.GetUserAsync(data.ApiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {data.ApiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(data.ApiKey);
             IEnumerable<Group> dbGroups = groupService.GetGroups(user.Id).Include(x => x.Words);
             foreach (var word in data.Data)
             {
@@ -84,6 +63,23 @@ namespace Oazachaosu.Api.Controllers
                     wordService.Add(word, user.Id);
                 }
             }
+            wordService.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost("AddWord")]
+        public async Task<IActionResult> AddWord([FromBody] AddWordViewModel viewModel)
+        {
+            User user = await CheckIfUserExists(viewModel.ApiKey);
+            long wordId = wordService.Add(viewModel.Data, user.Id);
+            return Json(wordId);
+        }
+
+        [HttpPost("UpdateWord")]
+        public async Task<IActionResult> UpdateWord([FromBody] UpdateWordViewModel viewModel)
+        {
+            User user = await CheckIfUserExists(viewModel.ApiKey);
+            wordService.Update(viewModel.Data, user.Id);
             wordService.SaveChanges();
             return Ok();
         }

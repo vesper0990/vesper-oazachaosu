@@ -25,8 +25,8 @@ namespace Oazachaosu.Api.Mappers
 
                 cfg.CreateMap<Word, WordDTO>();
                 cfg.CreateMap<WordDTO, Word>();
-                cfg.CreateMap<Word, WordToCreateDTO>();
-                cfg.CreateMap<WordToCreateDTO, Word>();
+                cfg.CreateMap<Word, WordToAddDTO>();
+                cfg.CreateMap<WordToAddDTO, Word>();
 
 
                 cfg.CreateMap<Result, ResultDTO>();

@@ -40,6 +40,23 @@ namespace Oazachaosu.Api.Services
             repository.AddWord(word);
         }
 
+        public long Add(WordToAddDTO wordToAddDTO, long userId)
+        {
+            Word word = mapper.Map<WordToAddDTO, Word>(wordToAddDTO);
+            word.UserId = userId;
+            repository.AddWord(word);
+            repository.SaveChanges();
+            return word.Id;
+        }
+
+        public void Update(WordToUpdateDTO wordToUpdateDTO, long userId)
+        {
+            Word word = mapper.Map<WordToUpdateDTO, Word>(wordToUpdateDTO);
+            word.UserId = userId;
+            repository.UpdateWord(word);
+            repository.SaveChanges();
+        }
+
         public void Update(WordDTO wordDto, long userId)
         {
             Word word = mapper.Map<WordDTO, Word>(wordDto);

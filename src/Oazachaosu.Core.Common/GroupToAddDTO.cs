@@ -12,7 +12,7 @@ namespace Oazachaosu.Core.Common
         [JsonProperty("L2")]
         public LanguageType Language2Type { get; set; }
         [JsonProperty("words")]
-        public IEnumerable<WordToCreateDTO> Words { get; set; }
+        public IEnumerable<WordToAddDTO> Words { get; set; }
 
     }
 }

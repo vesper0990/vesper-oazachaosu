@@ -24,7 +24,7 @@ namespace Oazachaosu.Core
 
         public Word()
         {
-            Id = -1;
+            Id = 0;
             Language1 = string.Empty;
             Language2 = string.Empty;
             Language1Comment = string.Empty;

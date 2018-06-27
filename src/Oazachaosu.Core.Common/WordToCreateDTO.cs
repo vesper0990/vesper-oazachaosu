@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
-
-namespace Oazachaosu.Core.Common
+﻿namespace Oazachaosu.Core.Common
 {
-    public class WordToCreateDTO
+    public class WordToAddDTO
     {
-        [JsonProperty("language1")]
+        public long GroupId { get; set; }
         public string Language1 { get; set; }
-        [JsonProperty("language2")]
         public string Language2 { get; set; }
-
+        public bool Visibility { get; set; }
+        public short Drawwe { get; set; }
     }
 }

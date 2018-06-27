@@ -16,14 +16,12 @@ namespace Oazachaosu.Api.Controllers
     public class ResultsController : ApiControllerBase
     {
         private readonly IResultService resultService;
-        private readonly IUserService userService;
         private readonly IGroupService groupService;
 
         public ResultsController(IResultService resultService, IGroupService groupService,
-            IUserService userService) : base()
+            IUserService userService) : base(userService)
         {
             this.resultService = resultService;
-            this.userService = userService;
             this.groupService = groupService;
         }
 

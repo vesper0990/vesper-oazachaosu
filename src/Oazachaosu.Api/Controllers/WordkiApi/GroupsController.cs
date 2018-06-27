@@ -16,45 +16,31 @@ namespace Oazachaosu.Api.Controllers
     public class GroupsController : ApiControllerBase
     {
 
-        private readonly IUserService userService;
         private readonly IGroupService groupService;
 
         public GroupsController(IUserService userService, IGroupService groupService) : base(userService)
         {
-            this.userService = userService;
             this.groupService = groupService;
         }
 
         [HttpGet("{dateTime}/{apiKey}")]
         public async Task<IActionResult> Get(DateTime dateTime, string apiKey)
         {
-            User user = await userService.GetUserAsync(apiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(apiKey);
             return Json(groupService.GetGroups(user.Id, dateTime));
         }
 
         [HttpGet("getGroupItems/{apikey}")]
         public async Task<IActionResult> GetGroupItems(string apiKey)
         {
-            User user = await userService.GetUserAsync(apiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(apiKey);
             return Json(await groupService.GetGroupItems(user.Id));
         }
 
         [HttpGet("getGroupDetails/{apiKey}/{groupId}")]
         public async Task<IActionResult> GetGroupDetails(string apiKey, long groupId)
         {
-            User user = await userService.GetUserAsync(apiKey);
-            if (user == null)
-            {
-                throw new ApiException(ErrorCode.UserNotFound, $"User with apiKey: {apiKey} is not found.");
-            }
+            User user = await CheckIfUserExists(apiKey);
             return Json(groupService.GetGroupDetail(user.Id, groupId));
         }
 

@@ -5,16 +5,16 @@ namespace Oazachaosu.Core.Common
 {
     public class UserDTO
     {
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
-        [JsonProperty("ApiKey")]
+        [JsonProperty("apiKey")]
         public string ApiKey { get; set; }
-        [JsonProperty("Name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("Password")]
+        [JsonProperty("password")]
         public string Password { get; set; }
-        [JsonProperty("CreationDateTime")]
+        [JsonProperty("creationDateTime")]
         public string CreationDateTime { get; set; }
     }
 }

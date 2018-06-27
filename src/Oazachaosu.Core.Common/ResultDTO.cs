@@ -6,29 +6,29 @@ namespace Oazachaosu.Core.Common
 {
     public class ResultDTO
     {
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
-        [JsonProperty("Gid")]
+        [JsonProperty("groupId")]
         [JsonConverter(typeof(LongToStringConverter))]
         public long GroupId { get; set; }
-        [JsonProperty("C")]
+        [JsonProperty("correct")]
         public short Correct { get; set; }
-        [JsonProperty("A")]
+        [JsonProperty("accepted")]
         public short Accepted { get; set; }
-        [JsonProperty("W")]
+        [JsonProperty("wrong")]
         public short Wrong { get; set; }
-        [JsonProperty("Iv")]
+        [JsonProperty("invisible")]
         public short Invisible { get; set; }
-        [JsonProperty("TC")]
+        [JsonProperty("timeCount")]
         public short TimeCount { get; set; }
-        [JsonProperty("TD")]
+        [JsonProperty("translationDirection")]
         public TranslationDirection TranslationDirection { get; set; }
-        [JsonProperty("LT")]
+        [JsonProperty("lessonType")]
         public LessonType LessonType { get; set; }
-        [JsonProperty("DT")]
+        [JsonProperty("dateTime")]
         public DateTime DateTime { get; set; }
-        [JsonProperty("S")]
+        [JsonProperty("state")]
         public int State { get; set; }
     }
 }

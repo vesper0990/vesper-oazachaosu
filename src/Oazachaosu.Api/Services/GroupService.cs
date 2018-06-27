@@ -93,7 +93,7 @@ namespace Oazachaosu.Api.Services
             repository.SaveChanges();
             if (groupDto.Words != null)
             {
-                foreach (Word word in mapper.Map<IEnumerable<WordToCreateDTO>, IEnumerable<Word>>(groupDto.Words))
+                foreach (Word word in mapper.Map<IEnumerable<WordToAddDTO>, IEnumerable<Word>>(groupDto.Words))
                 {
                     word.Id = DateTime.Now.Ticks;
                     word.GroupId = group.Id;
