@@ -13,11 +13,8 @@ namespace Oazachaosu.Api.Controllers
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IUserService userService;
-
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService) : base(userService)
         {
-            this.userService = userService;
         }
 
         [HttpGet("{name}")]

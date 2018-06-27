@@ -14,7 +14,7 @@ namespace Oazachaosu.Core.Common
         public long GroupId { get; set; }
         [JsonProperty("language1")]
         public string Language1 { get; set; }
-        [JsonProperty("lanuage2")]
+        [JsonProperty("language2")]
         public string Language2 { get; set; }
         [JsonProperty("language1Comment")]
         public string Language1Comment { get; set; }
