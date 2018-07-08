@@ -1,6 +1,6 @@
 FROM microsoft/dotnet:latest
-COPY . /app
-WORKDIR /app
+COPY . /app2
+WORKDIR /app2
 
 RUN dotnet restore
 RUN dotnet build
