@@ -42,9 +42,9 @@ namespace Oazachaosu.Api.Services
             .Where(x => x.LastChange > dateTime && x.UserId == userId));
         }
 
-        public async Task<IEnumerable<GroupItemDTO>> GetGroupItems(long userId)//todo tests
+        public IEnumerable<GroupItemDTO> GetGroupItems(long userId)//todo tests
         {
-            return await repository.GetGroupItems(userId);
+            return repository.GetGroupItems(userId);
         }
 
         public IQueryable<Group> GetGroups(long userId)

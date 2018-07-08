@@ -11,7 +11,7 @@ namespace Oazachaosu.Core
         IQueryable<Group> GetGroups();
         IQueryable<Group> GetGroups(long userId);
         Group GetGroup(long id, long userId);
-        Task<IEnumerable<Common.GroupItemDTO>> GetGroupItems(long userId);
+        IEnumerable<Common.GroupItemDTO> GetGroupItems(long userId);
         Group GetGroupWithChildren(long userId, long groupId);
 
         IQueryable<Word> GetWords();

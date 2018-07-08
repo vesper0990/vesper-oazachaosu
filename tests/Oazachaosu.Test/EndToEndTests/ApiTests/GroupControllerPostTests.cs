@@ -19,7 +19,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
     [TestFixture]
     public class GroupControllerPostTests : ApiTestBase
     {
-        PostGroupViewModel post;
+        PostGroupAllViewModel post;
         IMapper mapper;
         public GroupControllerPostTests() : base()
         {
@@ -31,7 +31,7 @@ namespace OazachaosuCore.Test.EndToEndTests.ApiTests
         {
             DatabaseUtil.ClearDatabase(Options);
             DatabaseUtil.SetUser(Options);
-            post = new PostGroupViewModel();
+            post = new PostGroupAllViewModel();
         }
 
         [Test]

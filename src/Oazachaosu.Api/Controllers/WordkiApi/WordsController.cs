@@ -49,7 +49,7 @@ namespace Oazachaosu.Api.Controllers
             foreach (var word in data.Data)
             {
                 Group group = dbGroups.SingleOrDefault(x => x.Id == word.GroupId);
-                
+
                 if (group == null)
                 {
                     continue;
@@ -80,6 +80,18 @@ namespace Oazachaosu.Api.Controllers
         {
             User user = await CheckIfUserExists(viewModel.ApiKey);
             wordService.Update(viewModel.Data, user.Id);
+            wordService.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost("UpdateAll")]
+        public async Task<IActionResult> UpdateAll([FromBody] UpdateAllViewModel viewModel)
+        {
+            User user = await CheckIfUserExists(viewModel.ApiKey);
+            foreach (var word in viewModel.Data)
+            {
+                wordService.Update(word, user.Id);
+            }
             wordService.SaveChanges();
             return Ok();
         }

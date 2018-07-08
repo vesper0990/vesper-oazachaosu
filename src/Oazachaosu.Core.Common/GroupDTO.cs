@@ -1,24 +1,23 @@
 ﻿using Newtonsoft.Json;
 using Oazachaosu.Core.JsonConverters;
 using System;
-using System.Collections.Generic;
 
 namespace Oazachaosu.Core.Common
 {
     public class GroupDTO
     {
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
-        [JsonProperty("N")]
+        [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("L1")]
+        [JsonProperty("language1")]
         public LanguageType Language1 { get; set; }
-        [JsonProperty("L2")]
+        [JsonProperty("language2")]
         public LanguageType Language2 { get; set; }
-        [JsonProperty("S")]
+        [JsonProperty("state")]
         public int State { get; set; }
-        [JsonProperty("CD")]
+        [JsonProperty("creationDate")]
         public DateTime CreationDate { get; set; }
     }
 }

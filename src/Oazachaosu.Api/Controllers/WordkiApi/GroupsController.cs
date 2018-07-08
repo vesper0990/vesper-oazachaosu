@@ -34,7 +34,7 @@ namespace Oazachaosu.Api.Controllers
         public async Task<IActionResult> GetGroupItems(string apiKey)
         {
             User user = await CheckIfUserExists(apiKey);
-            return Json(await groupService.GetGroupItems(user.Id));
+            return Json(groupService.GetGroupItems(user.Id));
         }
 
         [HttpGet("getGroupDetails/{apiKey}/{groupId}")]
@@ -44,8 +44,8 @@ namespace Oazachaosu.Api.Controllers
             return Json(groupService.GetGroupDetail(user.Id, groupId));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PostGroupViewModel datas)
+        [HttpPost("AddOrUpdate")]
+        public async Task<IActionResult> AddOrUpdate([FromBody] PostGroupAllViewModel datas)
         {
             User user = await CheckIfUserExists(datas.ApiKey);
             IEnumerable<Group> dbGroups = groupService.GetAll();
@@ -64,6 +64,18 @@ namespace Oazachaosu.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("AddAll")]
+        public async Task<IActionResult> AddAll([FromBody] PostGroupAllViewModel datas)
+        {
+            User user = await CheckIfUserExists(datas.ApiKey);
+            foreach (GroupDTO groupDto in datas.Data)
+            {
+                groupService.Add(groupDto, user.Id);
+            }
+            groupService.SaveChanges();
+            return Ok();
+        }
+        
         [HttpPost("AddGroup")]
         public async Task<IActionResult> AddGroup([FromBody] AddGroupViewModel datas)
         {

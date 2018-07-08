@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Oazachaosu.Core.JsonConverters;
+using System;
 
 namespace Oazachaosu.Core.Common
 {
@@ -16,8 +17,10 @@ namespace Oazachaosu.Core.Common
         public LanguageType Language2 { get; set; }
         [JsonProperty("wordsCount")]
         public int WordsCount { get; set; }
-        [JsonProperty("resultCount")]
+        [JsonProperty("resultsCount")]
         public int ResultsCount { get; set; }
+        [JsonProperty("lastResultDate")]
+        public DateTime? LastResultDate { get; set; }
 
     }
 }

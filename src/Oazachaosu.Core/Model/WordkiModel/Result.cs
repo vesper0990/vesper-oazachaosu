@@ -17,9 +17,9 @@ namespace Oazachaosu.Core
         public short TimeCount { get; set; }
         public TranslationDirection TranslationDirection { get; set; }
         public LessonType LessonType { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime? DateTime { get; set; }
         public int State { get; set; }
-        public DateTime LastChange { get; set; }
+        public DateTime? LastChange { get; set; }
 
         public Result()
         {

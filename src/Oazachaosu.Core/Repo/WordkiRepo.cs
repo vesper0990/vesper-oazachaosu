@@ -32,7 +32,7 @@ namespace Oazachaosu.Core
             return GetGroups().Where(x => x.UserId == userId);
         }
 
-        public async Task<IEnumerable<Common.GroupItemDTO>> GetGroupItems(long userId)
+        public IEnumerable<Common.GroupItemDTO> GetGroupItems(long userId)
         {
             return from g in dbContext.Groups where g.UserId == userId && g.State >= 0
                    select new Common.GroupItemDTO()
@@ -42,7 +42,8 @@ namespace Oazachaosu.Core
                        Language2 = g.Language2,
                        Name = g.Name,
                        WordsCount = g.Words.Count(x => x.State >= 0),
-                       ResultsCount = g.Results.Count(x => x.State >= 0)
+                       ResultsCount = g.Results.Count(x => x.State >= 0),
+                       LastResultDate = g.Results.Select(x => x.DateTime).DefaultIfEmpty(null).Max(),
                    };
         }
 
