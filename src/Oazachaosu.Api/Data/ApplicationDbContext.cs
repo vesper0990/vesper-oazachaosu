@@ -10,7 +10,7 @@ namespace Oazachaosu.Api.Data
 
         public static DbContextOptions<ApplicationDbContext> GetOptions() =>
             new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;")
+                .UseMySql(@"Server=37.233.103.134:3306;database=test;uid=root;pwd=Akuku123;")
                 .Options;
 
         public DbSet<Group> Groups { get; set; }
