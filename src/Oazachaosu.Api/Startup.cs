@@ -47,7 +47,7 @@ namespace Oazachaosu.Api
             else
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;"));
+                options.UseMySql(@"Server=37.233.103.134:3306;database=test;uid=root;pwd=Akuku123;"));
             }
             services.AddScoped<IDatabaseContext, ApplicationDbContext>();
             services.AddScoped<IEmailSender, EmailSender>();
