@@ -1,0 +1,48 @@
+version: '3'
+services:
+ webapp:
+  container_name: wordki
+  image: wordki:0.1.0
+  build:
+   context: ../
+   dockerfile: ./Docker/App.dockerfile
+   args:
+    WEBAPP_VERSION: 0.1.0
+    URL_PORT: 7909
+  ports:
+   - "5000:7909"
+  volumes:
+   - appbuild:/app
+  links:
+   - mysql
+  environment:
+   MYSQL_SERVER_NAME: db
+  env_file:
+   - secrets.env
+  depends_on:
+   - builder
+ builder:
+  container_name: builder
+  image: wordki:0.1.0.Debug
+  build:
+   context: ../
+   dockerfile: ./Docker/Build.dockerfile
+   args:
+    BUILDER_VERSION: 0.1.0
+    BUILD_CONFIG: Debug
+    BUILD_LOCATION: /app/out
+  volumes:
+   - appbuild:/app/out
+ mysql:
+  container_name: db
+  image: mysql/mysql-server:5.7
+  restart: always
+  volumes:
+   - dbvol:/var/lib/mysql
+  environment:
+   MYSQL_RANDOM_ROOT_PASSWORD: asdf
+  env_file:
+   - secrets.env
+volumes:
+ appbuild:
+ dbvol:

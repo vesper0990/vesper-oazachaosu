@@ -1,0 +1,4 @@
+docker rm -v webapp.test
+docker rm -v builder
+docker rmi $(docker images webapp)
+docker volume rm docker_appbuild
