@@ -1,4 +1,5 @@
-docker rm -v webapp.test
-docker rm -v builder
-docker rmi $(docker images webapp)
-docker volume rm docker_appbuild
+docker rm wordki
+docker rm builder
+docker rmi wordki:0.1.0
+docker rmi wordki:0.1.0.Debug
+docker volume rm scripts_appbuild

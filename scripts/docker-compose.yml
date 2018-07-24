@@ -5,7 +5,7 @@ services:
   image: wordki:0.1.0
   build:
    context: ../
-   dockerfile: ./Docker/App.dockerfile
+   dockerfile: ./scripts/App.dockerfile
    args:
     WEBAPP_VERSION: 0.1.0
     URL_PORT: 7909
@@ -16,7 +16,7 @@ services:
   links:
    - mysql
   environment:
-   MYSQL_SERVER_NAME: db
+   MYSQL_SERVER_NAME: wordkidb
   env_file:
    - secrets.env
   depends_on:
@@ -26,7 +26,7 @@ services:
   image: wordki:0.1.0.Debug
   build:
    context: ../
-   dockerfile: ./Docker/Build.dockerfile
+   dockerfile: ./scripts/Build.dockerfile
    args:
     BUILDER_VERSION: 0.1.0
     BUILD_CONFIG: Debug
@@ -34,9 +34,11 @@ services:
   volumes:
    - appbuild:/app/out
  mysql:
-  container_name: db
+  container_name: wordkidb
   image: mysql/mysql-server:5.7
   restart: always
+  ports:
+   - "3306:3306"
   volumes:
    - dbvol:/var/lib/mysql
   environment:

@@ -42,12 +42,12 @@ namespace Oazachaosu.Api
             if (CurrentEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;"));
+                options.UseMySql(@"Server=wordkidb;database=test;uid=user_name_1;pwd=my-secret-pw;"));
             }
             else
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(@"Server=37.233.103.134:3306;database=test;uid=root;pwd=Akuku123;"));
+                options.UseMySql(@"Server=wordkidb;database=test;uid=user_name_1;pwd=my-secret-pw;"));
             }
             services.AddScoped<IDatabaseContext, ApplicationDbContext>();
             services.AddScoped<IEmailSender, EmailSender>();
